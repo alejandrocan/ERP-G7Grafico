@@ -21,8 +21,9 @@ class Welcome extends CI_Controller {
 	 */
 	public function index()
 	{
-		$this->load->view('vwHeader');
-		$this->load->view('vwFooter');
+		$this->load->view('login/vwLogin_header');
+		$this->load->view('login/vwLogin_content');
+		$this->load->view('login/vwLogin_footer');
 	}
 }
 
