@@ -15,28 +15,29 @@
 	<div class="tab-content">
 		<div class="tab-pane fade in active" id="catalogos">
 			<h4>Catálogos</h4>
-			<table class="table table-bordered">
-				<tr>
 
-					<td><b>ID</b></td>
-					<td><b>UDM</b></td>
-					<td><b>Tipo</b></td>
-				</tr>
-				<tr>
-					<td>1</td>
-					<td>Electricidad</td>
-					<td>Voltaje</td>
-				</tr>
-				<tr>
-					<td>Hola</td>
-					<td>Hola</td>
-					<td>Hola</td>
-				</tr>
-			</table>
+			<?php
+				$tables = $this->db->list_tables();
+				echo '<div class="list-group">';
+				foreach ($tables as $table) {
+					echo '<a href="#" class="list-group-item">';
+					echo '<span class="glyphicon glyphicon-list-alt"> </span>';
+					echo " " . $table;
+					$this->db->from($table);
+					$rows = $this->db->count_all_results();
+					echo '<span class="badge">'. $rows .'</span>';
+					echo '</a>';
+				}
+				echo '</div>';
+			?>
 		</div>
 		<div class="tab-pane fade" id="explosion">
 			<h4>Explosión</h4>
 			<input type="text" placeholder="Buscador" class="form-control">
+			<a href="#"><span class="glyphicon glyphicon-plus-sign"></span></a>
+			<a href="#"><span class="glyphicon glyphicon-minus-sign"></span></a>
+			<a href="#"><span class="glyphicon glyphicon-pencil"></span></a>
+			<a href="#"><span class="glyphicon glyphicon-retweet"></span></a>
 		</div>
 		<div class="tab-pane fade" id="reportes">
 			<h4>Reportes</h4>
