@@ -18,8 +18,8 @@ class UserInterface extends CI_Controller {
 		$this->load->database();
 	}
 	function index() {
-		$data['title'] = 'Inicio';
-		$data['main_content'] = 'inicio';
-		$this->load->view('main_template', $data);
+		$this->load->view("vwHeader");
+		$this->load->view("vwInterface");
+		$this->load->view("vwFooter");
 	}
 }
