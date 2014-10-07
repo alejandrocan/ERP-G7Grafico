@@ -20,7 +20,7 @@
 				$tables = $this->db->list_tables();
 				echo '<div class="list-group">';
 				foreach ($tables as $table) {
-					echo '<a href="#" class="list-group-item">';
+					echo '<a href="' . base_url() . 'index.php/catalogos/" class="list-group-item">';
 					echo '<span class="glyphicon glyphicon-list-alt"> </span>';
 					echo " " . $table;
 					$this->db->from($table);
