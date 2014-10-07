@@ -19,29 +19,29 @@ function index()
         $this->form_validation->set_message('_valid_login', 'El usuario o contraseña son incorrectos');
       
         $this -> form_validation -> set_error_delimiters('<ul><li>', '</li></ul>');
-    
+        $user = FALSE;
         if ($this->form_validation->run() == FALSE)
         {
-            $data['title'] = 'Sistema de kardex y explosión de insumos';
+            $data['title'] = 'Sistema G7 Gráfico';
 
             $this->load->view('login/vwLogin_header',$data);
             $this->load->view('login/vwLogin_content',$data);
             $this->load->view('login/vwLogin_footer',$data);
         }
         else{
-                         
-             $username = $this->input->post('username');
-             $data_user = $array = array('user'=> $username, 'logued_in' => TRUE);
+            $user=TRUE;   
+            $username = $this->input->post('username');
+            $data_user = $array = array('user'=> $username, 'logued_in' => TRUE);
              
         // asignamos dos datos a la sesión --> (username y logued_in)                                     
-             $this->session->set_userdata($data_user); 
-                
-            $data['title'] = 'Administrador'; 
+            $this->session->set_userdata($data_user); 
+            
+            $data['title'] = 'Sistema G7 Gráfico'; 
             $data['user'] = $username;  // = $this->session->userdata('user');
            
             
-            $this->load->view('vwHeader');
-            $this->load->view('vwInterface',$data);
+            $this->load->view('vwHeader',$data);
+            $this->load->view('vwInterface');
             $this->load->view('vwFooter');
                  
                

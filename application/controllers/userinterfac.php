@@ -15,6 +15,7 @@ class UserInterface extends CI_Controller {
 		parent:: __construct();
 
 		/*Cargamos las base de datos*/
+  
 		$this->load->database();
 	}
 	function index() {
