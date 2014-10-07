@@ -13,8 +13,13 @@ class Catalogos extends CI_Controller {
 
 
 	function index() {
-		$this->load->view("catalogos/vwCatalogoSelected");
+		
+	}
 
+	function catalogo() {
+		$this->load->view("catalogos/vwHeader");
+		$this->load->view("catalogos/vwTest");
+		$this->load->view("vwFooter");
 	}
 
 }
