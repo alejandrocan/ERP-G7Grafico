@@ -6,8 +6,7 @@ class Login extends CI_Controller{
    { 
         parent::__construct();
         $this ->load->model('login_model');
-        $this->load->library(array('session','form_validation'));   
-           
+        $this->load->library(array('session','form_validation')); 
    }
   
 function index()
@@ -30,21 +29,22 @@ function index()
         }
         else{
             $user=TRUE;   
-            $username = $this->input->post('username');
-            $data_user = $array = array('user'=> $username, 'logued_in' => TRUE);
-             
+            $username = $this->login_model->get_username($this->input->post('username'));
+            foreach ($username as $user) {
+                $user_name = $user->nombre_usr;
+            }
+            //$username = $username->nombre_usr;
+            $data_user = $array = array('user'=> $user_name, 'logued_in' => TRUE);
+            
         // asignamos dos datos a la sesión --> (username y logued_in)                                     
             $this->session->set_userdata($data_user); 
             
             $data['title'] = 'Sistema G7 Gráfico'; 
-            $data['user'] = $username;  // = $this->session->userdata('user');
+            $data['user'] = $user_name;  // = $this->session->userdata('user');
            
-            
             $this->load->view('vwHeader',$data);
             $this->load->view('vwInterface');
             $this->load->view('vwFooter');
-                 
-               
         }
   }
    
