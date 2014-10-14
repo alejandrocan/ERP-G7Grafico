@@ -36,7 +36,7 @@ if($logued === FALSE || $session === FALSE ){ /* por seguridad hacemos doble ver
 
 				<div class="collapse navbar-collapse" id="acolapsar">
 					<ul class="nav navbar-nav">
-						<li><a href="#"><span class="glyphicon glyphicon-user"></span><?php echo ' ' . $user; ?></a></li>
+						<li><a href="<?php echo base_url(); ?>/index.php/userprofile"><span class="glyphicon glyphicon-user"></span><?php echo ' ' . $user; ?></a></li>
 						<li><a href="<?php echo base_url(); ?>/index.php/login/logout"><span class="glyphicon glyphicon-share-alt"></span> Cerrar Sesión</a></li>
 						<li class=""></li>
 					</ul>

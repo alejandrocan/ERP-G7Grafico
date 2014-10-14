@@ -15,10 +15,10 @@ class Userprofile extends CI_Controller {
 		parent:: __construct();
 
 		/*Cargamos las base de datos*/
-		//$this->load->database();
+		$this->load->database();
 	}
 	function index() {
-		$this->load->view("vwHeader");
+		$this->load->view("catalogos/vwHeader");
 		$this->load->view("vwProfile");
 		$this->load->view("vwFooter");
 	}

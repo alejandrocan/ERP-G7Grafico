@@ -25,13 +25,13 @@
           <div class="form-group">
             <label class="col-lg-3 control-label">Nombre:</label>
             <div class="col-lg-8">
-              <input class="form-control" value="Marco Antonio Maciel Tuz" type="text">
+              <h5>Marco Antonio Maciel Tuz</h5>
             </div>
           </div>
           <div class="form-group">
             <label class="col-lg-3 control-label">Email:</label>
             <div class="col-lg-8">
-              <input class="form-control" value="janesemail@gmail.com" type="text">
+              <h5>marco@gmail.com</h5>
             </div>	
           </div>
           <div class="form-group">
@@ -45,13 +45,6 @@
           	<i class="fa fa-coffee"></i>
           	This is an <strong>.alert</strong>. Use this to show important messages to the user.
           </div>-->
-          <div class="form-group">
-            <label class="col-md-3 control-label"></label>
-            <div class="col-md-8">
-              <input class="btn btn-primary" value="Guardar Cambios" type="button">
-              <span></span>
-              <input class="btn btn-default" value="Cancelar" type="reset">
-            </div>
           </div>
         </form>
       </div>
