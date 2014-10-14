@@ -15,7 +15,7 @@
 			$this->db->where('nombreusuario_usr', $username);
 			$this->db->where('contra_usr', $password);
 
-			$query = $this->db->get('usuarios');
+			$query = $this->db->get('usuario');
 
 			if($query->num_rows() > 0){
 				return TRUE;
@@ -36,7 +36,7 @@
 		function get_username($username){
 			$this->db->where('nombreusuario_usr',$username);
 
-			$query = $this->db->get('usuarios');
+			$query = $this->db->get('usuario');
 
 			if($query->num_rows() > 0){
 				return $query->result();
