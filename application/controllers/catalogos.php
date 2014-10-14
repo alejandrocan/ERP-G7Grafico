@@ -11,15 +11,10 @@ if ( ! defined('BASEPATH'))
 
 class Catalogos extends CI_Controller {
 
-
-	function index() {
-		
-	}
-
-	function catalogo() {
-		$this->load->view("catalogos/vwHeader");
-		$this->load->view("catalogos/vwTest");
-		$this->load->view("vwFooter");
+	public function catalogo() {
+		$catalogo = 'Hola';
+		$this->load->view("catalogos/vwHeader", $catalogo);
+		$this->load->view("catalogos/vwCatalogoSelected");
 	}
 
 }

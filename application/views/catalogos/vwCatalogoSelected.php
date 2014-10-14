@@ -26,7 +26,7 @@
         </table>
     </div>
 <div class="container">
-    <h3>Registros</h3>
+    <h3><?php echo $catalogo; ?></h3>
     <table class="table table-bordered table-hover">
         <thead>
             <tr>
