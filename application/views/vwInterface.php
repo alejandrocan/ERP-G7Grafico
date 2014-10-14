@@ -14,11 +14,10 @@
 	</ul>
 	<div class="tab-content">
 		<div class="tab-pane fade in active" id="catalogos">
-
 			<h4>Catálogos</h4>
-			<!-- Cargamos la lista de las tablas-->
+
 			<?php
-				
+				$tables = $this->db->list_tables();
 				echo '<div class="list-group">';
 				foreach ($tables as $table) {
 					echo '<a href="' . base_url() . 'index.php/catalogos/" class="list-group-item">';

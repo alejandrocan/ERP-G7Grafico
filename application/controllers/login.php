@@ -38,8 +38,6 @@ function index()
             
             $data['title'] = 'Sistema G7 Gráfico'; 
             $data['user'] = $username;  // = $this->session->userdata('user');
-            $this->load->model('tablas_model');
-            $data['tables'] = $this->tablas_model->mostrarTablas(); 
            
             
             $this->load->view('vwHeader',$data);
