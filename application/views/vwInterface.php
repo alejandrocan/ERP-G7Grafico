@@ -3,8 +3,6 @@
 <h3>Puesto</h3>
 </center>
 
-
-
 <div style="margin-top: 60px; margin: auto; width:70%;">
 	<ul class="nav nav-tabs">
 		<li class="active"><a href="#catalogos" data-toggle="tab">Catalogos</a></li>

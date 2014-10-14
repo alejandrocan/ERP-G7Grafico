@@ -1,5 +1,5 @@
     <div class="container">
-        <h1>Catalogo Usuarios</h1>
+        <h1>Catalogo <?php echo $catalogo; ?></h1>
     </div>
     <div class="container">
         <h3>Editar/Agregar registro</h3>
