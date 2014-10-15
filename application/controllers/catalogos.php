@@ -13,7 +13,13 @@ class Catalogos extends CI_Controller {
 
 	public function catalogo($catal) {
 		$data['catalogo'] = $catal;
+
+		$this->load->model("registros_model");		
+		$data['registros']= $this->registros_model->mostrar($catal);
+		
 		$this->load->view("catalogos/vwHeader", $data);
-		$this->load->view("catalogos/vwCatalogoSelected");
+		$this->load->view("catalogos/vwCatalogoSelected");		
 	}
+
+
 }

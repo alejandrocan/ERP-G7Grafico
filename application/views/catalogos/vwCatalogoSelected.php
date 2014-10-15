@@ -30,57 +30,47 @@
     <table class="table table-bordered table-hover">
         <thead>
             <tr>
-                <th>#</th>
-                <th>Nombre</th>
-                <th>Apellido</th>
-                <th>Asunto</th>
+                
+                <?php
+                    $columnas = $this->db->list_fields($catalogo);
+                    foreach ($columnas as $columna ) {
+                        echo "<th>" .$columna . "</th>";    
+                    }
+                ?>
                 <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>1</td>
-                <td>Rocky</td>
-                <td>Balboa</td>
-                <td>Donec nec justo eget felis facilisis fermentum.
-                    Aliquam porttitor mauris sit amet orci. Aenean
-                    dignissim pellentesque felis.
-                </td>
-                <td>
-                    <a class="btn btn-info btn-xs" href="#" role="button">Editar</a>
-                    <a class="btn btn-primary btn-xs" href="#" role="button">Duplicar</a>
-                    <a class="btn btn-danger btn-xs" href="#" role="button">Deshabilitar</a>
-                </td>
+            
+                <?php
+                
+                
+                    if(count($registros) > 0 ){
+                        foreach ($registros as $registro) {
+                            echo "<tr>";
 
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>Peter</td>
-                <td>Parker</td>
-                <td>Donec nec justo eget felis facilisis fermentum.
-                    Aliquam porttitor mauris sit amet orci.
-                    Aenean dignissim pellentesque felis.
-                </td>
-                <td>
-                    <a class="btn btn-info btn-xs" href="#" role="button">Editar</a>
-                    <a class="btn btn-primary btn-xs" href="#" role="button">Duplicar</a>
-                    <a class="btn btn-danger btn-xs" href="#" role="button">Deshabilitar</a>
-                </td>
-            </tr>
-            <tr class="danger">
-                <td>3</td>
-                <td>John</td>
-                <td>Rambo</td>
-                <td>Donec nec justo eget felis facilisis fermentum.
-                    Aliquam porttitor mauris sit amet orci.
-                    Aenean dignissim pellentesque felis.
-                </td>
-                <td>
-                    <a class="btn btn-info btn-xs" href="#" role="button">Editar</a>
-                    <a class="btn btn-primary btn-xs" href="#" role="button">Duplicar</a>
-                    <a class="btn btn-success btn-xs" href="#" role="button">Habilitar</a>
-                </td>
-            </tr>
+                            $columnas = $this->db->list_fields($catalogo);
+                            foreach ($columnas as $columna ) {
+
+                                echo "<td>" . $registro->$columna . "</td>";
+                            }
+                            echo "<td>";
+                            echo '<a class="btn btn-info btn-xs" href="" role="button">Editar</a>';
+                            echo '<a class="btn btn-primary btn-xs" href="#" role="button">Duplicar</a>';
+                            echo '<a class="btn btn-danger btn-xs" href="#" role="button">Deshabilitar</a>';
+                            echo '</td>';
+                            echo '</tr>';
+                        }
+                    }
+
+                
+                ?>
+                
+                
+                    
+
+            
+            
 
         </tbody>
     </table>
