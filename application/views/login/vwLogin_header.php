@@ -7,6 +7,7 @@
     <meta name="description" content=""/>
     <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>css/loginBootstrap.css">
     <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>css/login.css">
+    <script type="text/javascript" src="<?=base_url();?>js/loginvalidation.js"></script>
     <script type="text/javascript">
     $(document).ready(function(){
     $('#username').focus();
