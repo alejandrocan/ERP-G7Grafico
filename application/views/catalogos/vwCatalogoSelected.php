@@ -31,8 +31,7 @@
         <thead>
             <tr>
                 
-                <?php
-                    $columnas = $this->db->list_fields($catalogo);
+                <?php                    
                     foreach ($columnas as $columna ) {
                         echo "<th>" .$columna . "</th>";    
                     }
@@ -50,16 +49,48 @@
                             echo "<tr>";
 
                             $columnas = $this->db->list_fields($catalogo);
+                            $id = 1;
+                            $valor_id;
                             foreach ($columnas as $columna ) {
 
+                                if($id == 2){
+                                    $valor_id=$registro->$columna;
+                                }
+                                $id++;
                                 echo "<td>" . $registro->$columna . "</td>";
                             }
                             echo "<td>";
-                            echo '<a class="btn btn-info btn-xs" href="" role="button">Editar</a>';
-                            echo '<a class="btn btn-primary btn-xs" href="#" role="button">Duplicar</a>';
-                            echo '<a class="btn btn-danger btn-xs" href="#" role="button">Deshabilitar</a>';
-                            echo '</td>';
+                            echo '  <a class="btn btn-info btn-xs" data-toggle= "modal" href="#' . $valor_id . '" role="button">Editar</a>';
+                            echo '  <a class="btn btn-primary btn-xs" href="#" role="button">Duplicar</a>';
+                            echo '  <a class="btn btn-danger btn-xs" href="#" role="button">Deshabilitar</a>';
+                            echo '  </td>';
                             echo '</tr>';
+                            echo '<div class="modal fade" id="'.$valor_id.'" tabindex="-1" aria-hidden="true">';
+                            echo '       <div class="modal-dialog">';
+                            echo '           <div class="modal-content">';
+                            echo '               <div class="modal-header">';
+                            echo '                   <h2>Editar '.$valor_id.'</h2>';
+                            echo '              </div>';
+                            echo '              <div class="modal-body">';
+                            $id_mod = 1; 
+                            foreach ($columnas as $columna) {
+                                if($id_mod == 1){
+                                    echo '                  <label>'.$columna.'</label>';
+                                    echo '                  <p>'.$registro->$columna.'</p></br>';
+                                    $id_mod++;
+                                }
+                                else{
+                                    echo '                  <label>'.$columna;
+                                    echo '                  <input type="text" value="'.$registro->$columna.'"></input></label></br>';
+                                }
+                            }
+                            echo '              </div>';
+                            echo '              <div class="modal-footer">';
+                            echo '                  <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>';
+                            echo '              </div>';
+                            echo '          </div>';
+                            echo '      </div>';
+                            echo '</div>';
                         }
                     }
 
@@ -75,3 +106,5 @@
         </tbody>
     </table>
 </div>
+</body>
+</html>

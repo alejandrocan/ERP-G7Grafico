@@ -16,7 +16,10 @@ class Catalogos extends CI_Controller {
 
 		$this->load->model("registros_model");		
 		$data['registros']= $this->registros_model->mostrar($catal);
-		
+		$data['columnas'] = $this->registros_model->get_columns($catal);
+		$data['foraneas'] = $this->registros_model->get_foreignColumns($catal);
+		$data['tablasF'] = $this->registros_model->get_referencedTables($catal);
+		$data['referencias'] = $this->registros_model->get_referencedColumns($catal);
 		$this->load->view("catalogos/vwHeader", $data);
 		$this->load->view("catalogos/vwCatalogoSelected");		
 	}
