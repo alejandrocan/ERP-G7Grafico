@@ -52,10 +52,7 @@ class Registros_model extends  CI_Model {
 			}
 		}
 
-
-}
-
-		public function get_columns($tabla){
+				public function get_columns($tabla){
 			$columnas = $this->db->list_fields($tabla);
 			return $columnas;
 		}
@@ -74,4 +71,7 @@ class Registros_model extends  CI_Model {
 			$tablasForaneas = $this->db->query("select referenced_table_name from information_schema.key_column_usage where constraint_schema='kardex' and referenced_table_name != '' and table_name = '".$tabla."';");
 		}
 	}
+
+
+
 

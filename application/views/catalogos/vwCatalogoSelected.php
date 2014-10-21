@@ -71,13 +71,12 @@
             
                 <?php
                 
-                
                     if(count($registros) > 0 ){
                         foreach ($registros as $registro) {
                             echo "<tr>";
 
                             $columnas = $this->db->list_fields($catalogo);
-                            $id = 1;
+                            $cont = 1;
                             $valor_id;
                             foreach ($columnas as $columna ) {
 
@@ -88,33 +87,31 @@
                                     echo "<td>" . $registro->$columna . "</td>";
                                 }
                                
-                            }
-                            if($registro->estado != 0){
-                                echo "<td>";
-                                echo '<a class="btn btn-info btn-xs" href="" role="button">Editar</a>';
-                                echo '<a class="btn btn-primary btn-xs" href="#" role="button">Duplicar</a>';
-                                echo '<a class="btn btn-danger btn-xs" href="'. base_url(). 'index.php/catalogos/index/'. $catalogo .'/' . $registro->$id .'" role="button">DesHabilitar</a>';
-                                echo '</td>';
-                                echo '</tr>';
-                            }else{
-                                echo "<td>";
-                                echo '<a class="btn btn-info btn-xs" href="" role="button">Editar</a>';
-                                echo '<a class="btn btn-primary btn-xs" href="#" role="button">Duplicar</a>';
-                                echo '<a class="btn btn-success btn-xs" href="'. base_url(). 'index.php/catalogos/enabled/'. $catalogo .'/' . $registro->$id .'" role="button">Habilitar</a>';
-                                echo '</td>';
-                                echo '</tr>';
-                            }
-
-                                if($id == 2){
+                                if($cont == 2){
                                     $valor_id=$registro->$columna;
                                 }
-                                $id++;
-                                echo "<td>" . $registro->$columna . "</td>";
+                                $cont++;
                             }
                             echo "<td>";
+
                             echo '  <a class="btn btn-info btn-xs" data-toggle= "modal" data-target="#' . $valor_id . '" role="button">Editar</a>';
-                            echo '  <a class="btn btn-primary btn-xs" href="#" role="button">Duplicar</a>';
-                            echo '  <a class="btn btn-danger btn-xs" href="#" role="button">Deshabilitar</a>';
+                            if($registro->estado != 0){
+                                
+                                
+                                //echo '<a class="btn btn-primary btn-xs" href="#" role="button">Duplicar</a>';
+                                echo '<a class="btn btn-danger btn-xs" href="'. base_url(). 'index.php/catalogos/index/'. $catalogo .'/' . $registro->$id .'" role="button">DesHabilitar</a>';
+                            
+                            }else{
+
+                                
+                                //echo '<a class="btn btn-primary btn-xs" href="#" role="button">Duplicar</a>';
+                                echo '<a class="btn btn-success btn-xs" href="'. base_url(). 'index.php/catalogos/enabled/'. $catalogo .'/' . $registro->$id .'" role="button">Habilitar</a>';
+
+                            }
+
+                                
+                            
+                            
                             echo '  </td>';
                             echo '</tr>';
                             echo '<div class="modal fade" id="'.$valor_id.'" tabindex="-1" aria-hidden="true">';
