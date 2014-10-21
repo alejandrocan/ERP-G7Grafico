@@ -4,6 +4,13 @@ if (!defined('BASEPATH'))
 
 	class Registros_model extends  CI_Model{
 		
+		public function insertar($datos,$tabla)
+		{
+			if($this->db->insert($tabla, $datos))	
+				return true;
+			else
+				return false;
+		}
 
 		public function mostrar($tabla){
 			$id = $this->db->list_fields($tabla);

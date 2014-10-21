@@ -3,27 +3,44 @@
     </div>
     <div class="container">
         <h3>Editar/Agregar registro</h3>
+        <form action="<?php echo base_url();?>index.php/catalogos/insertarRegistro/<?php echo $catalogo?>" method="post">
         <table class="table table-bordered table-hover">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Nombre</th>
-                    <th>Apellido</th>
-                    <th>Asunto</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
+        <thead>
             <tr>
-                <td><input class="form-control" value="X" type="text"></td>
-                <td><input class="form-control" value="Marco Antonio" type="text"></td>
-                <td><input class="form-control" value="Maciel Tuz" type="text"></td>
-                <td><input class="form-control" value="Nada que comentar." type="text"></td>
+                
+                <?php
+                    $columnas = $this->db->list_fields($catalogo);
+                    $cont = 1;
+                    foreach ($columnas as $columna ) {
+                        if($cont!=1)
+                        {
+                            echo "<th>" .$columna . "</th>";    
+                        }
+                        $cont += 1;
+                    }
+                ?>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+            <tr>
+                <?php
+                    $columnas = $this->db->list_fields($catalogo);
+                    $cont = 1;
+                    foreach ($columnas as $columna ) {
+                        if($cont!=1)
+                        {
+                            echo '<td><input class="form-control" value="" type="text" name="' . $columna . '"></td>';    
+                        }
+                        $cont += 1;
+                    }
+                ?>
                 <td>
-                    <a class="btn btn-info btn-xs" href="#" role="button">Guardar</a>
-                    <a class="btn btn-danger btn-xs" href="#" role="button">Cancelar</a>
+                    <input type="submit" value="Guardar" class="btn btn-info btn-xs" >
+                    <input type="button" value="Cancelar" class="btn btn-danger btn-xs" action="" method="post" >
                 </td>
             </tr>
         </table>
+    </form>
     </div>
 <div class="container">
     <h3><?php echo $catalogo; ?></h3>

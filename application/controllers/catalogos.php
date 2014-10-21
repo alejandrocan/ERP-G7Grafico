@@ -10,8 +10,31 @@ if ( ! defined('BASEPATH'))
 	exit('No direct script access allowed');
 
 class Catalogos extends CI_Controller {
+	public function insertarRegistro($tabla)
+	{
+		$columnas = $this->db->list_fields($tabla);
+		$cont = 1;
+		$datos;
+		foreach ($columnas as $columna) {
+			if($cont != 1)
+			{
+				$datos[$columna] = $this->input->post($columna);
+				//$datos = array($columna => $this->input->post($columna));
+			}
+			$cont += 1;
+		}
 
-	public function catalogo($catal) {
+		$this->load->model('registros_model');
+		if($this->registros_model->insertar($datos,$tabla))
+		{
+			redirect('catalogos/index/'.$tabla);
+		}
+		else
+		{
+
+		}
+	}
+	public function index($catal) {
 		$data['catalogo'] = $catal;
 
 		$this->load->model("registros_model");		
