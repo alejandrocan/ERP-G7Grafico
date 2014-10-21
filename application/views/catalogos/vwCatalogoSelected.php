@@ -77,7 +77,7 @@
                                 echo "<td>" . $registro->$columna . "</td>";
                             }
                             echo "<td>";
-                            echo '  <a class="btn btn-info btn-xs" data-toggle= "modal" href="#' . $valor_id . '" role="button">Editar</a>';
+                            echo '  <a class="btn btn-info btn-xs" data-toggle= "modal" data-target="#' . $valor_id . '" role="button">Editar</a>';
                             echo '  <a class="btn btn-primary btn-xs" href="#" role="button">Duplicar</a>';
                             echo '  <a class="btn btn-danger btn-xs" href="#" role="button">Deshabilitar</a>';
                             echo '  </td>';
@@ -97,13 +97,33 @@
                                     $id_mod++;
                                 }
                                 else{
+                                    $numFilas = count($foraneas);
+                                    $total=1;
                                     echo '                  <label>'.$columna;
-                                    echo '                  <input type="text" value="'.$registro->$columna.'"></input></label></br>';
+                                    foreach ($foraneas as $foreign) {
+                                        if($foreign->column_name == $columna){
+                                            echo '<SELECT NAME="selCombo" SIZE=1>';
+                                            echo $foreign->referenced_column_name;
+                                            echo $foreign->referenced_table_name;
+                                            $columna_referencial=$foreign->referenced_column_name;
+                                            $consultarOpciones = $this->db->query('select '.$foreign->referenced_column_name.' from '.$foreign->referenced_table_name.';');
+                                            $consultarOpciones = $consultarOpciones->result();
+                                            foreach ($consultarOpciones as $options) {
+                                                echo '   <OPTION VALUE="link pagina 4">'.$options->$columna_referencial.'</OPTION> ';
+                                            }                                            
+                                            echo '</SELECT>'; 
+                                            break;
+                                        }
+                                        elseif ($total == $numFilas){
+                                            echo '                  <input type="text" value="'.$registro->$columna.'"></input></label></br>';
+                                        }
+                                        $total++;
+                                    }
                                 }
                             }
                             echo '              </div>';
                             echo '              <div class="modal-footer">';
-                            echo '                  <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>';
+                            echo '                  <a class="btn btn-primary" data-dismiss="modal">Guardar</a>';
                             echo '              </div>';
                             echo '          </div>';
                             echo '      </div>';

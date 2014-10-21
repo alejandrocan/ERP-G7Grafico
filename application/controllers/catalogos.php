@@ -47,5 +47,9 @@ class Catalogos extends CI_Controller {
 		$this->load->view("catalogos/vwCatalogoSelected");		
 	}
 
+	public function editarRegistro($parametros) {
+
+	}
+
 
 }

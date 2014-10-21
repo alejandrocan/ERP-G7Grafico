@@ -29,8 +29,8 @@ if (!defined('BASEPATH'))
 		}
 
 		public function get_foreignColumns($tabla){
-			$foraneas = $this->db->query("select column_name from information_schema.key_column_usage where constraint_schema='kardex' and referenced_table_name != '' and table_name = '".$tabla."';");
-			return $foraneas;
+			$foraneas = $this->db->query("select column_name,referenced_table_name, referenced_column_name from information_schema.key_column_usage where constraint_schema='kardex' and referenced_table_name != '' and table_name = '".$tabla."';");
+			return $foraneas->result();
 		}
 
 		public function get_referencedColumns($tabla){
