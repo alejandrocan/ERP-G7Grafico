@@ -12,6 +12,10 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>testing</title>
 		<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>/css/bootstrap.min.css">
+		<script scr="<?php echo base_url(); ?>js/jquery.min.js"></script>
+		<script scr="<?php echo base_url(); ?>js/bootstrap.js"></script>	
+</body>
+</html>
 	</head>
 	<body>
 		<nav class="navbar navbar-default" role="navigation">
