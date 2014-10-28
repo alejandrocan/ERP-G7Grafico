@@ -3,18 +3,25 @@ html{
 	padding:0px;
 }
 .loginbox{
-	margin: 100px auto;
-	width: 320px;
+	margin: auto;
+	width: 30%;
 	border-radius: 4px;
 	-webkit- border-radius: 4px;
 	-moz- border-radius: 4px;
-	box-shadow: 0px 2px 10px #242222;
+	/*box-shadow: 0px 2px 10px #242222;*/
 }
 input[type="submit"]{
 	margin-top: 15px;
 }
 .lblLogin{
-	font-family: "Berlin Sans FB";
+	font-family: "Dungeon";
 	font-size: 30px;
 	color: #ffffff;
+}
+.full {
+  background: url(http://1.bp.blogspot.com/-24Clxhfmpsk/Uv6ghm_8mPI/AAAAAAAAeNA/5iH1x-nD6PM/s1600/Fondos+de+Pantalla+Gratis+Abstractos+%2528211%2529.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }

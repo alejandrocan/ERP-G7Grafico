@@ -1,13 +1,4 @@
-<?php
-     $logued = $this->session->userdata('logued_in');
-     $session = $this->session->userdata('session_id');
-   
-if($logued === FALSE || $session === FALSE ){ /* por seguridad hacemos doble verificación; aunque estas 
-                                               * 2 variables siempre van a tener el mismo estado */
-    redirect('login'); exit();
-   
- }    
-?>
+
 <!DOCTYPE html>
 <!-- 
 	G7 Gráfico - Púrpura Pi
@@ -37,7 +28,7 @@ if($logued === FALSE || $session === FALSE ){ /* por seguridad hacemos doble ver
 				<div class="collapse navbar-collapse" id="acolapsar">
 					<ul class="nav navbar-nav">
 						<li><a href="<?php echo base_url(); ?>/index.php/userprofile"><span class="glyphicon glyphicon-user"></span><?php echo ' ' . $user; ?></a></li>
-						<li><a href="<?php echo base_url(); ?>/index.php/login/logout"><span class="glyphicon glyphicon-share-alt"></span> Cerrar Sesión</a></li>
+						<li><a href="<?php echo base_url(); ?>/index.php/login2/logout_ci"><span class="glyphicon glyphicon-share-alt"></span> Cerrar Sesión</a></li>
 						<li class=""></li>
 					</ul>
 				</div>

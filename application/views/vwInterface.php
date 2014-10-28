@@ -10,7 +10,7 @@
 		<li><a href="#reportes" data-toggle="tab">Reportes</a></li>
 		<li><a href="#kardex" data-toggle="tab">Kardex</a></li>
 	</ul>
-	<div class="tab-content">
+	<div class="table">
 		<div class="tab-pane fade in active" id="catalogos">
 			<h4>Catálogos</h4>
 
