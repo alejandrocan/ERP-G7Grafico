@@ -23,7 +23,7 @@ class Catalogos extends CI_Controller {
 			}
 			$cont += 1;
 		}
-
+		$datos['estado'] = 1;
 		$this->load->model('registros_model');
 		if($this->registros_model->insertar($datos,$tabla))
 		{
@@ -39,7 +39,7 @@ class Catalogos extends CI_Controller {
 		$data['catalogo'] = $catal;
 
 		$this->load->model("registros_model");		
-		$data['registros']= $this->registros_model->mostrar($catal);		
+		$data['registros']= $this->registros_model->mostrar($catal);
 		
 		if($this->uri->segment(4) != ''){
 			$id = $this->uri->segment(4);
@@ -58,7 +58,9 @@ class Catalogos extends CI_Controller {
 		$data['referencias'] = $this->registros_model->get_referencedColumns($catal);
 
 		$this->load->view("catalogos/vwHeader", $data);
-		$this->load->view("catalogos/vwCatalogoSelected");		
+		if($catal == "presentacion") {
+			$this->load->view("catalogos/vwPresentacion");
+		}
 		
 	}
 
