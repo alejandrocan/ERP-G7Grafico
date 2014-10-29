@@ -42,7 +42,8 @@ public function new_user()
     {
         if($this->input->post('token') && $this->input->post('token') == $this->session->userdata('token'))
         {
-            $this->form_validation->set_rules('username', 'nombre de usuario', 'required|trim|min_length[2]|max_length[150]|xss_clean');
+            $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
+            $this->form_validation->set_rules('username', 'user', 'required|trim|min_length[2]|max_length[150]|xss_clean');
             $this->form_validation->set_rules('password', 'password', 'required|trim|min_length[4]|max_length[150]|xss_clean');
  
             //lanzamos mensajes de error si es que los hay

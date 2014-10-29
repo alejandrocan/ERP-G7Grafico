@@ -11,14 +11,14 @@
 		<li><a href="#kardex" data-toggle="tab">Kardex</a></li>
 	</ul>
 	<div class="table">
-		<div class="tab-pane fade in active" id="catalogos">
+		<div class="table tab-pane fade in active" id="catalogos">
 			<h4>Catálogos</h4>
 
 
 
 			<?php
 				
-				echo '<div class="list-group">';
+				echo '<div class="list-group table">';
 				foreach ($tables as $table) {
 					echo '<a href="' . base_url() . 'index.php/catalogos/index/'. $table .'/" class="list-group-item">';
 					echo '<span class="glyphicon glyphicon-list-alt"> </span>';
