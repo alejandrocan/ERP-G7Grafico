@@ -36,6 +36,7 @@ class Catalogos extends CI_Controller {
 	}
 
 	public function index($catal) {
+		if($this->session->userdata('is_logued_in') ){
 		$data['catalogo'] = $catal;
 
 		$this->load->model("registros_model");		
@@ -56,11 +57,15 @@ class Catalogos extends CI_Controller {
 		$data['foraneas'] = $this->registros_model->get_foreignColumns($catal);
 		$data['tablasF'] = $this->registros_model->get_referencedTables($catal);
 		$data['referencias'] = $this->registros_model->get_referencedColumns($catal);
-
-		$this->load->view("catalogos/vwHeader", $data);
+		$data['user']=$this->session->userdata('user');
+		$data['title'] = "Sistema G7 Grafico";
+		$this->load->view("vwHeader", $data);
 		if($catal == "presentacion") {
 			$this->load->view("catalogos/vwPresentacion");
 		}
+	}
+	else
+		redirect(login2);
 		
 	}
 
@@ -74,4 +79,29 @@ class Catalogos extends CI_Controller {
 			return false;
 		}
 	}
+
+	/* Agrega una funcion para insertar los datos en la tabla de presentación */
+	public function insertPresentacion($tabla) {
+		$datos['nombre'] = $this->input->post("nombre");
+
+		$valor = $this->input->post("udm_pres");
+		$query =  $this->db->get("udm");
+		$registros = $query->result();
+		foreach ($registros as $registro ) {
+			if($registro->tipo_udm == $valor)
+				$datos['udm_pres'] = $registro->id_udm;
+				break;
+		}
+
+		
+		$datos['contenido_pres'] = $this->input->post("contenido_pres");
+		$datos['estado'] = 1;
+
+		$this->load->model('registros_model');
+		if($this->registros_model->insertar($datos,$tabla)) {
+			redirect('catalogos/index/'. $tabla);
+		}
+
+	}
+
 }
