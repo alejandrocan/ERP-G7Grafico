@@ -16,24 +16,27 @@ class Udm extends CI_Controller {
 		$datos['nombre'] = $this->input->post('Nombre');
 		$datos['tipo_udm'] = $this->input->post('Tipo');
 		$datos['estado'] = 1;
-
 		$this->load->model('udm_model');
-		if($this->udm_model->insertar($datos))
+		if(trim($datos['nombre']!=''&&$datos['tipo_udm']!='Seleccione una opción'))
 		{
-			$mensaje = '<div class="alert alert-success alert-demissable">
+			if($this->udm_model->insertar($datos))
+			{
+				$mensaje = '<div class="alert alert-success alert-demissable">
 				<button type="button" class="close" data-dismiss="alert">&times;</button>
-  				<strong>¡Hecho!</strong> Haz agregado un nuevo Registro.
+				<strong>¡Hecho!</strong> Haz agregado un nuevo Registro.
 			 	</div>';
-		}
-		else
-		{
-			$mensaje = '<div class="alert alert-danger alert-demissable">
+			}
+			else
+			{
+				$mensaje = '<div class="alert alert-danger alert-demissable">
 				<button type="button" class="close" data-dismiss="alert">&times;</button>
-  				<strong>¡Upps!</strong> Inserción no realizada. Intente de nuevo.
+				<strong>¡Upps!</strong> Inserción no realizada. Intente de nuevo.
 			 	</div>';
+			}
 		}
 		redirect('udm');
 	}
+	
 
 	public function index(){
 		$data['catalogo'] = "udm";

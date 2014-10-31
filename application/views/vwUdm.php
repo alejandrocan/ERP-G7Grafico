@@ -8,17 +8,31 @@
                 <thead>
                     <tr>
                         <th>Nombre</th>
-                         <th>Tipo</th>
+                        <th>Tipo</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td><input class="form-control" value="" type="text" name="Nombre"></td>
-                        <td><input class="form-control" value="" type="text" name="Tipo"></td>
                         <td>
-                            <input type="submit" value="Guardar" class="btn btn-info btn-xs" >
-                            <input type="button" value="Cancelar" class="btn btn-danger btn-xs" action="" method="post" >
+                            <select class="form-control" name ="Tipo">
+                                <option>Seleccione una opción</option>
+                                <option>Longitud</option>
+                                <option>Área</option>
+                                <option>Volúmen</option>
+                                <option>Cuantitativo</option>
+                                <option>Distancia</option>
+                                <option>Fuerza</option>
+                                <option>Energía</option>
+                                <option>Peso</option>
+                                <option>Tiempo</option>
+                                <option>Velocidad</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="submit" value="Guardar" class="btn btn-info btn-sm" >
+                            <input type="submit" value="Cancelar" class="btn btn-danger btn-sm">
                         </td>
                     </tr>
                 </tbody>
@@ -40,27 +54,27 @@
                 
                     if(count($registros) > 0 ){
                         foreach ($registros as $registro) {
-                            echo "<tr>";
-
-                            $columnas = $this->db->list_fields($catalogo);
-                            $cont = 1;
-                            $valor_id;
-                            foreach ($columnas as $columna ) {
-
-                                if($columna == 'estado'){
-
-                                }
-                                else{
-                                    echo "<td>" . $registro->$columna . "</td>";
-                                }
-                               
-                                if($cont == 2){
-                                    $valor_id=$registro->$columna;
-                                }
-                                $cont++;
+                            $columnas = $this->db->list_fields('udm');
+                            if($registro->estado==1)
+                            {
+                                echo '<tr>';
+                                $estado = '<a class="btn btn-success btn-sm" href="" role="button">Habilitar</a>';
                             }
-                            echo "<td>";
+                            else
+                            {
+                                echo '<tr class="danger">';
+                                $estado = '<a class="btn btn-danger btn-sm" href="" role="button">Deshabilitar</a>';
+                            }
                             
+                            echo '  <td>' . $registro->id_udm . '</td>';
+                            echo '  <td>' . $registro->nombre . '</td>';
+                            echo '  <td>' . $registro->tipo_udm . '</td>';
+                            echo '  <td>';
+                            echo $estado;
+                            echo '      <a class="btn btn-info btn-sm" data-toggle= "modal" data-target="#" role="button">Editar</a>';
+                            echo '      <a class="btn btn-primary btn-sm" href="#" role="button">Duplicar</a>';
+                            echo '  </td>';
+                            echo '</tr>';
                         }
                     }
                 ?>
