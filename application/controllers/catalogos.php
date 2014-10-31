@@ -63,6 +63,9 @@ class Catalogos extends CI_Controller {
 		if($catal == "presentacion") {
 			$this->load->view("catalogos/vwPresentacion");
 		}
+		if($catal == "producto") {
+			$this->load->view("catalogos/vwProductos");
+		}
 	}
 	else
 		redirect(login2);
@@ -101,7 +104,51 @@ class Catalogos extends CI_Controller {
 		if($this->registros_model->insertar($datos,$tabla)) {
 			redirect('catalogos/index/'. $tabla);
 		}
+	}
+	/* Agrega una funcion para insertar los datos en la tabla de producto*/
+	public function insertProducto($tabla){
+		$datos['nombre'] = $this->input->post("nombre");
+		$datos['cantidad_produc'] = $this->input->post("cantidad");
+
+		/*Busca el id de la unidad de medida seleccionada*/
+		$valor = $this->input->post("udm");
+		$query =  $this->db->get("udm");
+		$registros = $query->result();
+		foreach ($registros as $registro ) {
+			if($registro->tipo_udm == $valor)
+				$datos['udm_produc'] = $registro->id_udm;
+				break;
+		}
+		$datos['costo_produc'] = $this->input->post("costo");
+
+		/*Busca el id de la familia seleccionada*/
+		$valor = $this->input->post("familia");
+		$query =  $this->db->get("familia");
+		$registros = $query->result();
+		foreach ($registros as $registro ) {
+			if($registro->nombre == $valor)
+				$datos['familia_product'] = $registro->id_fam;
+				break;
+		}
+
+		/*Busca el id del departamento seleccionado*/
+		$valor = $this->input->post("departamento");
+		$query =  $this->db->get("departamento");
+		$registros = $query->result();
+		foreach ($registros as $registro ) {
+			if($registro->nombre_depto == $valor)
+				$datos['depto_produc'] = $registro->id_depto;
+				break;
+		}
+
+
+
+		$datos['estado'] = 1;
+
+		$this->load->model('registros_model');
+		if($this->registros_model->insertar($datos, $tabla)) {
+			redirect('catalogos/index/'. $tabla);
+		}
 
 	}
-
 }
