@@ -63,6 +63,9 @@ class Catalogos extends CI_Controller {
 		if($catal == "presentacion") {
 			$this->load->view("catalogos/vwPresentacion");
 		}
+		if($catal == "proveedor"){
+			$this->load->view("catalogos/vwProveedor");
+		}
 	}
 	else
 		redirect(login2);
