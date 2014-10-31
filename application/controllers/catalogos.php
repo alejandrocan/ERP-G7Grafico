@@ -97,6 +97,28 @@ class Catalogos extends CI_Controller {
 	}
 
 	/* Agrega una funcion para insertar los datos en la tabla de presentación */
+	public function insertPuesto($tabla) {
+		$datos['nombre'] = $this->input->post("nombre");
+		$datos['estado'] = 1;
+
+		$this->load->model('registros_model');
+		if($this->registros_model->insertar($datos,$tabla)) {
+			redirect('catalogos/index/'. $tabla);
+		}
+	}
+
+	/* Agrega una funcion para insertar los datos en la tabla de presentación */
+	public function insertDepartamento($tabla) {
+		$datos['nombre_depto'] = $this->input->post("nombre");
+		$datos['estado'] = 1;
+
+		$this->load->model('registros_model');
+		if($this->registros_model->insertar($datos,$tabla)) {
+			redirect('catalogos/index/'. $tabla);
+		}
+	}
+
+	/* Agrega una funcion para insertar los datos en la tabla de presentación */
 	public function insertPresentacion($tabla) {
 		$datos['nombre'] = $this->input->post("nombre");
 

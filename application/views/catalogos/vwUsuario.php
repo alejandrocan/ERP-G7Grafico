@@ -31,7 +31,7 @@
                         <td><input class="form-control" value="" type="text" name="apellido2"></td>
                         <td><input class="form-control" value="" type="text" name="Correo"></td>
                         <td>
-                            <select class="form-control" name ="udm_pres">
+                            <select class="form-control" name ="Tipo">
                                 <option>Administrador</option>
                                 <option>Usuario</option>
                             </select>
