@@ -104,7 +104,7 @@ class Catalogos extends CI_Controller {
 		$query =  $this->db->get("udm");
 		$registros = $query->result();
 		foreach ($registros as $registro ) {
-			if($registro->tipo_udm == $valor)
+			if($registro->nombre == $valor)
 				$datos['udm_pres'] = $registro->id_udm;
 				break;
 		}
@@ -128,7 +128,7 @@ class Catalogos extends CI_Controller {
 		$query =  $this->db->get("udm");
 		$registros = $query->result();
 		foreach ($registros as $registro ) {
-			if($registro->tipo_udm == $valor)
+			if($registro->nombre == $valor)
 				$datos['udm_produc'] = $registro->id_udm;
 				break;
 		}
@@ -140,7 +140,7 @@ class Catalogos extends CI_Controller {
 		$registros = $query->result();
 		foreach ($registros as $registro ) {
 			if($registro->nombre == $valor)
-				$datos['familia_product'] = $registro->id_fam;
+				$datos['familia_produc'] = $registro->id_fam;
 				break;
 		}
 

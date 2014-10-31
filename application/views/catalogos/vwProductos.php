@@ -22,7 +22,7 @@
                         $query = $this->db->get("udm");
                         $valores = $query->result(); ?>
                     <?php foreach ($valores as $valor): ?>
-                        <option><?php echo $valor->tipo_udm; ?></option>
+                        <option><?php echo $valor->nombre; ?></option>
                     <?php endforeach; ?>
                     </select>
                 </td>
@@ -95,10 +95,45 @@
 								<td><?php echo $registro->id_produc; ?></td>
 								<td><?php echo $registro->nombre; ?></td>
 								<td><?php echo $registro->cantidad_produc; ?></td>
-								<td><?php echo $registro->udm_produc; ?></td>
+								<!--unida de medida-->
+								<?php 
+		                            $udm = $this->db->get("udm");
+		                            $valor = $udm->result();
+		                            foreach ($valor as $v) {
+		                                if($v->id_udm == $registro->familia_produc){
+		                                    break;
+		                                }
+		                                
+		                            }
+		                        ?>
+								<td><?php echo $v->nombre; ?></td>
+
 								<td><?php echo $registro->costo_produc; ?></td>
-								<td><?php echo $registro->familia_produc; ?></td>
-								<td><?php echo $registro->depto_produc; ?></td>
+
+								<!--Familia-->
+								<?php 
+		                            $fam = $this->db->get("familia");
+		                            $valor = $fam->result();
+		                            foreach ($valor as $v) {
+		                                if($v->id_fam == $registro->familia_produc){
+		                                    break;
+		                                }
+		                                
+		                            }
+		                        ?>
+								<td><?php echo $v->nombre; ?></td>
+								<!--Depto-->
+								<?php 
+		                            $dpt = $this->db->get("departamento");
+		                            $valor = $dpt->result();
+		                            foreach ($valor as $v) {
+		                                if($v->id_depto == $registro->depto_produc){
+		                                    break;
+		                                }
+		                                
+		                            }
+		                        ?>
+								<td><?php echo $v->nombre_depto; ?></td>
 							</tr>
 
 						</thead>
