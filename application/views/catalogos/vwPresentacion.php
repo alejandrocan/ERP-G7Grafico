@@ -66,7 +66,7 @@
                             }
                         ?>
 
-                        <td><?php echo $v->tipo_udm; ?></td>
+                        <td><?php echo $v->nombre; ?></td>
                         <td><?php echo $registro->contenido_pres; ?></td>
                         <td>
                             <a class="btn btn-info btn-xs" data-toggle= "modal" data-target="#' . $valor_id . '" role="button">Editar</a>

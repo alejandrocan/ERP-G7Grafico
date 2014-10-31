@@ -1,0 +1,147 @@
+<div class="container">
+        <h1>USUARIO</h1>
+    </div>
+    <div class="">
+        <h3>Agregar registro </h3>
+        <form action="<?php echo base_url();?>index.php/usuario/insertarRegistro" method="post">
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Contraseña</th>
+                        <th>Nombre1</th>
+                        <th>Nombre2</th>
+                        <th>Apellido Paterno</th>
+                        <th>Apellido Materno</th>
+                        <th>Correo</th>
+                        <th>Tipo</th> 
+                        <th>Departamento</th>
+                        <th>Puesto</th>
+                        <th>Imagen Perfil</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input class="form-control" value="" type="text" name="Nombre"></td>
+                        <td><input class="form-control" value="" type="text" name="Contrasena"></td>
+                        <td><input class="form-control" value="" type="text" name="Nombre1"></td>
+                        <td><input class="form-control" value="" type="text" name="Nombre2"></td>
+                        <td><input class="form-control" value="" type="text" name="Apellido1"></td>
+                        <td><input class="form-control" value="" type="text" name="apellido2"></td>
+                        <td><input class="form-control" value="" type="text" name="Correo"></td>
+                        <td>
+                            <select class="form-control" name ="udm_pres">
+                                <option>Administrador</option>
+                                <option>Usuario</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select class="form-control" name ="Departamento">
+                                <?php 
+                                $query = $this->db->get("departamento");
+                                $valores = $query->result(); ?>
+                                <?php foreach ($valores as $valor): ?>
+                                <option><?php echo $valor->nombre_depto; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </td>
+                        <td>
+                            <select class="form-control" name ="Puesto">
+                                <?php 
+                                $query = $this->db->get("puesto");
+                                $valores = $query->result(); ?>
+                                <?php foreach ($valores as $valor): ?>
+                                <option><?php echo $valor->nombre; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </td>
+                        <td><input class="form-control" type="file" name="Imagen"></td>
+                        <td>
+                            <input type="submit" value="Guardar" class="btn btn-info btn-sm">
+                            <input type="submit" value="Cancelar" class="btn btn-danger btn-sm">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
+    <div class="">
+        <h3>Registros</h3>
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Contraseña</th>
+                    <th>Nombre1</th>
+                    <th>Nombre2</th>
+                    <th>Apellido Paterno</th>
+                    <th>Apellido Materno</th>
+                    <th>Correo</th>
+                    <th>Tipo</th> 
+                    <th>Departamento</th>
+                    <th>Puesto</th>
+                    <th>Imagen Perfil</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                    if(count($registros) > 0 )
+                    {
+                        foreach ($registros as $registro) {
+                            $columnas = $this->db->list_fields('usuario');
+                            if($registro->estado==1)
+                            {
+                                echo '<tr>';
+                                $estado = '<a class="btn btn-success btn-sm" href="" role="button">Habilitar</a>';
+                            }
+                            else
+                            {
+                                echo '<tr class="danger">';
+                                $estado = '<a class="btn btn-danger btn-sm" href="" role="button">Deshabilitar</a>';
+                            }
+                            
+                            echo '  <td>' . $registro->id_usr . '</td>';
+                            echo '  <td>' . $registro->nombre . '</td>';
+                            echo '  <td>' . $registro->contra_usr . '</td>';
+                            echo '  <td>' . $registro->nombre_usr . '</td>';
+                            echo '  <td>' . $registro->nombre2_usr . '</td>';
+                            echo '  <td>' . $registro->apellidop_usr . '</td>';
+                            echo '  <td>' . $registro->apellidom_usr . '</td>';
+                            echo '  <td>' . $registro->correo_usr . '</td>';
+                            echo '  <td>' . $registro->tipo_usr . '</td>';
+
+                            $depto = $this->db->get("departamento");
+                            $valor = $depto->result();
+                            foreach ($valor as $v) {
+                                if($v->id_depto == $registro->depto_usr){
+                                    echo '<td>' . $v->nombre_depto . '</td>';
+                                    break;
+                                }
+                            }
+
+                            $puesto = $this->db->get("puesto");
+                            $valor = $puesto->result();
+                            foreach ($valor as $v) {
+                                if($v->id_puesto == $registro->id_puesto){
+                                    echo '<td>' . $v->nombre . '</td>';
+                                    break;
+                                }
+                            }
+                            echo '  <td>' . $registro->imagen . '</td>';
+                            echo '  <td>';
+                            echo $estado;
+                            echo '      <a class="btn btn-info btn-sm" data-toggle= "modal" data-target="#" role="button">Editar</a>';
+                            echo '      <a class="btn btn-primary btn-sm" href="#" role="button">Duplicar</a>';
+                            echo '  </td>';
+                            echo '</tr>';
+                        }
+                    }
+                ?>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
