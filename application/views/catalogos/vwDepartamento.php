@@ -42,19 +42,19 @@
                         if($registro->estado==1)
                         {
                             echo '<tr>';
-                            $estado = '         <a class="btn btn-success btn-sm" href="" role="button">Habilitar</a>';
+                            $estado = '<a class="btn btn-danger btn-sm" href='. base_url() . 'index.php/catalogos/disabled/' . $catalogo . '/' . $registro->id_depto . ' role="button">Deshabilitar</a>';                        
                         }
                         else
                         {
                             echo '<tr class="danger">';
-                            $estado = '         <a class="btn btn-danger btn-sm" href="" role="button">Deshabilitar</a>';
-                        }                        
+                            $estado = '<a class="btn btn-success btn-sm" href='. base_url() . 'index.php/catalogos/enabled/' . $catalogo . '/' . $registro->id_depto . ' role="button">Habilitar</a>';                            
+                        }              
                         echo '  <td>' . $registro->id_depto . '</td>';
                         echo '  <td>' . $registro->nombre_depto . '</td>';
                         echo '<td>';
-                        echo $estado;
                         echo '      <a class="btn btn-info btn-sm" data-toggle= "modal" data-target="#" role="button">Editar</a>';
                         echo '      <a class="btn btn-primary btn-sm" href="#" role="button">Duplicar</a>';
+                        echo $estado;
                         echo '  </td>';
                         echo '</tr>';
                     }

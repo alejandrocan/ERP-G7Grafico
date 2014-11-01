@@ -54,8 +54,8 @@
                 </td>
                 
                 <td>
-                    <input type="submit" value="Guardar" class="btn btn-info btn-xs">
-                    <input type="button" value="Cancelar" class="btn btn-danger btn-xs" action="" method="post" >
+                    <input type="submit" value="Guardar" class="btn btn-info btn-sm">
+                    <input type="button" value="Cancelar" class="btn btn-danger btn-sm" action="" method="post" >
                 </td>
             </tr>
         </table>

@@ -49,6 +49,68 @@
 				echo '	</a>';
 				echo '</div';
 
+				echo '<div class="list-group table">';
+				echo '	<a href="' . base_url() . 'index.php/catalogos/index/familia/" class="list-group-item">';
+				echo '		<span class="glyphicon glyphicon-list-alt"> </span> Familia';
+					$this->db->from("familia");
+					$rows = $this->db->count_all_results();
+				echo '		<span class="badge">'. $rows .'</span>';
+				echo '	</a>';
+				echo '</div';
+
+				echo '<div class="list-group table">';
+				echo '	<a href="' . base_url() . 'index.php/catalogos/index/proveedor/" class="list-group-item">';
+				echo '		<span class="glyphicon glyphicon-list-alt"> </span> Proveedor';
+					$this->db->from("proveedor");
+					$rows = $this->db->count_all_results();
+				echo '		<span class="badge">'. $rows .'</span>';
+				echo '	</a>';
+				echo '</div';
+
+				echo '<div class="list-group table">';
+				echo '	<a href="' . base_url() . 'index.php/catalogos/index/udm/" class="list-group-item">';
+				echo '		<span class="glyphicon glyphicon-list-alt"> </span> UDM';
+					$this->db->from("udm");
+					$rows = $this->db->count_all_results();
+				echo '		<span class="badge">'. $rows .'</span>';
+				echo '	</a>';
+				echo '</div';
+
+				echo '<div class="list-group table">';
+				echo '	<a href="' . base_url() . 'index.php/catalogos/index/presentacion/" class="list-group-item">';
+				echo '		<span class="glyphicon glyphicon-list-alt"> </span> Presentación';
+					$this->db->from("presentacion");
+					$rows = $this->db->count_all_results();
+				echo '		<span class="badge">'. $rows .'</span>';
+				echo '	</a>';
+				echo '</div';
+
+				echo '<div class="list-group table">';
+				echo '	<a href="' . base_url() . 'index.php/catalogos/index/material/" class="list-group-item">';
+				echo '		<span class="glyphicon glyphicon-list-alt"> </span> Material';
+					$this->db->from("material");
+					$rows = $this->db->count_all_results();
+				echo '		<span class="badge">'. $rows .'</span>';
+				echo '	</a>';
+				echo '</div';
+
+				echo '<div class="list-group table">';
+				echo '	<a href="' . base_url() . 'index.php/catalogos/index/producto/" class="list-group-item">';
+				echo '		<span class="glyphicon glyphicon-list-alt"> </span> Producto';
+					$this->db->from("producto");
+					$rows = $this->db->count_all_results();
+				echo '		<span class="badge">'. $rows .'</span>';
+				echo '	</a>';
+				echo '</div';
+
+				echo '<div class="list-group table">';
+				echo '	<a href="' . base_url() . 'index.php/catalogos/index/usuario/" class="list-group-item">';
+				echo '		<span class="glyphicon glyphicon-list-alt"> </span> Usuario';
+					$this->db->from("usuario");
+					$rows = $this->db->count_all_results();
+				echo '		<span class="badge">'. $rows .'</span>';
+				echo '	</a>';
+				echo '</div';				
 			?>
 		</div>
 		<div class="tab-pane fade" id="explosion">

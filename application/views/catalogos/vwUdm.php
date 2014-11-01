@@ -1,9 +1,9 @@
     <div class="container">
-        <h1>UMD</h1>
+        <h1>UDM</h1>
     </div>
     <div class="container">
-        <h3>Agregar registro <small>UMD</small></h3>
-        <form action="<?php echo base_url();?>index.php/udm/insertarRegistro" method="post">
+        <h3>Agregar registro</h3>
+        <form action="<?php echo base_url();?>index.php/catalogos/insertUdm/<?php echo $catalogo?>" method="post">
             <table class="table table-bordered table-hover">
                 <thead>
                     <tr>
@@ -56,15 +56,15 @@
                         foreach ($registros as $registro) {
                             $columnas = $this->db->list_fields('udm');
                             if($registro->estado==1)
-                            {
-                                echo '<tr>';
-                                $estado = '<a class="btn btn-success btn-sm" href="" role="button">Habilitar</a>';
-                            }
-                            else
-                            {
-                                echo '<tr class="danger">';
-                                $estado = '<a class="btn btn-danger btn-sm" href="" role="button">Deshabilitar</a>';
-                            }
+                        {
+                            echo '<tr>';
+                            $estado = '<a class="btn btn-danger btn-sm" href='. base_url() . 'index.php/catalogos/disabled/' . $catalogo . '/' . $registro->id_udm . ' role="button">Deshabilitar</a>';                        
+                        }
+                        else
+                        {
+                            echo '<tr class="danger">';
+                            $estado = '<a class="btn btn-success btn-sm" href='. base_url() . 'index.php/catalogos/enabled/' . $catalogo . '/' . $registro->id_udm . ' role="button">Habilitar</a>';                            
+                        }
                             
                             echo '  <td>' . $registro->id_udm . '</td>';
                             echo '  <td>' . $registro->nombre . '</td>';

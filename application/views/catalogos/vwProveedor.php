@@ -3,7 +3,7 @@
     </div>
     <div class="container">
         <h3>Agregar registro </h3>
-        <form action="<?php echo base_url();?>index.php/proveedor/insertarRegistro" method="post">
+        <form action="<?php echo base_url();?>index.php/catalogos/insertProveedor/<?php echo $catalogo?>" method="post">
             <table class="table table-bordered table-hover">
                 <thead>
                     <tr>
@@ -55,17 +55,16 @@
                     {
                         foreach ($registros as $registro) {
                             $columnas = $this->db->list_fields('proveedor');
-                            if($registro->estado==1)
-                            {
-                                echo '<tr>';
-                                $estado = '         <a class="btn btn-success btn-sm" href="" role="button">Habilitar</a>';
-                            }
-                            else
-                            {
-                                echo '<tr class="danger">';
-                                $estado = '         <a class="btn btn-danger btn-sm" href="" role="button">Deshabilitar</a>';
-                            }
-                            
+                        if($registro->estado==1)
+                        {
+                            echo '<tr>';
+                            $estado = '<a class="btn btn-danger btn-sm" href='. base_url() . 'index.php/catalogos/disabled/' . $catalogo . '/' . $registro->id_proveedor . ' role="button">Deshabilitar</a>';                        
+                        }
+                        else
+                        {
+                            echo '<tr class="danger">';
+                            $estado = '<a class="btn btn-success btn-sm" href='. base_url() . 'index.php/catalogos/enabled/' . $catalogo . '/' . $registro->id_proveedor . ' role="button">Habilitar</a>';                            
+                        }
                             echo '  <td>' . $registro->id_proveedor . '</td>';
                             echo '  <td>' . $registro->nombre . '</td>';
                             echo '  <td>' . $registro->dir_prove . '</td>';

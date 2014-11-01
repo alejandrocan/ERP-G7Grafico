@@ -64,6 +64,14 @@ class Catalogos extends CI_Controller {
 			$this->load->view("catalogos/vwPresentacion");
 		}
 
+		if($catal == "udm"){
+			$this->load->view("catalogos/vwUdm");
+		}
+
+		if($catal == "usuario"){
+			$this->load->view("catalogos/vwUsuario");
+		}
+
 		if($catal == "proveedor"){
 			$this->load->view("catalogos/vwProveedor");
 		}
@@ -96,7 +104,17 @@ class Catalogos extends CI_Controller {
 		}
 	}
 
-	/* Agrega una funcion para insertar los datos en la tabla de presentación */
+		public function disabled($tabla, $id){
+		$this->load->model("registros_model");
+		if($this->registros_model->disabledRegister($tabla, $id) ){
+			redirect('catalogos/index/'. $tabla);
+		}
+		else{
+			return false;
+		}
+	}
+
+	/* Agrega una funcion para insertar los datos en la tabla de puesto */
 	public function insertPuesto($tabla) {
 		$datos['nombre'] = $this->input->post("nombre");
 		$datos['estado'] = 1;
@@ -107,7 +125,18 @@ class Catalogos extends CI_Controller {
 		}
 	}
 
-	/* Agrega una funcion para insertar los datos en la tabla de presentación */
+	public function insertUdm($tabla) {
+
+		$datos['nombre'] = $this->input->post('Nombre');
+		$datos['tipo_udm'] = $this->input->post('Tipo');
+		$datos['estado'] = 1;
+		$this->load->model('registros_model');
+		if($this->registros_model->insertar($datos,$tabla)) {
+			redirect('catalogos/index/'. $tabla);
+		}
+	}
+
+	/* Agrega una funcion para insertar los datos en la tabla de departamento */
 	public function insertDepartamento($tabla) {
 		$datos['nombre_depto'] = $this->input->post("nombre");
 		$datos['estado'] = 1;
@@ -118,25 +147,77 @@ class Catalogos extends CI_Controller {
 		}
 	}
 
-	/* Agrega una funcion para insertar los datos en la tabla de presentación */
+/* Agrega una funcion para insertar los datos en la tabla de familia */
+	public function insertFamilia($tabla) {
+		$datos['nombre'] = $this->input->post("nombre");
+		$datos['estado'] = 1;
+
+		$this->load->model('registros_model');
+		if($this->registros_model->insertar($datos,$tabla)) {
+			redirect('catalogos/index/'. $tabla);
+		}
+	}
+
+	/* Agrega una funcion para insertar los datos en la tabla de UDM */
 	public function insertPresentacion($tabla) {
 		$datos['nombre'] = $this->input->post("nombre");
-
 		$valor = $this->input->post("udm_pres");
 		$query =  $this->db->get("udm");
 		$registros = $query->result();
 		foreach ($registros as $registro ) {
 			if($registro->nombre == $valor)
+			{
 				$datos['udm_pres'] = $registro->id_udm;
 				break;
+			}
 		}
-
-		
 		$datos['contenido_pres'] = $this->input->post("contenido_pres");
 		$datos['estado'] = 1;
 
 		$this->load->model('registros_model');
 		if($this->registros_model->insertar($datos,$tabla)) {
+			redirect('catalogos/index/'. $tabla);
+		}
+	}
+
+		/* Agrega una funcion para insertar los datos en la tabla de presentación */
+	public function insertUsuario($tabla) {
+		$datos['nombre'] = $this->input->post('Nombre');
+		$datos['contra_usr'] = MD5($this->input->post('Contrasena'));
+		$datos['nombre_usr'] = $this->input->post('Nombre1');
+		$datos['nombre2_usr'] = $this->input->post('Nombre2');
+		$datos['apellidop_usr'] = $this->input->post('Apellido1');
+		$datos['apellidom_usr'] = $this->input->post('Apellido2');
+		$datos['correo_usr'] = $this->input->post('Correo');
+		$datos['tipo_usr'] = $this->input->post('Tipo');
+
+		$valor = $this->input->post("Departamento");
+		$query =  $this->db->get("departamento");
+		$registros = $query->result();
+		foreach ($registros as $registro ) {
+			if($registro->nombre_depto == $valor)
+			{
+				$datos['depto_usr'] = $registro->id_depto;
+				break;
+			}
+		}
+
+		$valor = $this->input->post("Puesto");
+		$query =  $this->db->get("puesto");
+		$registros = $query->result();
+		foreach ($registros as $registro ) {
+			if($registro->nombre == $valor)
+			{
+				$datos['id_puesto'] = $registro->id_puesto;
+				break;
+			}
+		}
+
+		$datos['imagen'] = $this->input->post('Imagen');
+		$datos['estado'] = 1;
+
+		$this->load->model('registros_model');
+		if($this->registros_model->insertar($datos, $tabla)) {
 			redirect('catalogos/index/'. $tabla);
 		}
 	}
@@ -151,8 +232,10 @@ class Catalogos extends CI_Controller {
 		$registros = $query->result();
 		foreach ($registros as $registro ) {
 			if($registro->nombre == $valor)
+			{
 				$datos['udm_produc'] = $registro->id_udm;
 				break;
+			}
 		}
 		$datos['costo_produc'] = $this->input->post("costo");
 
@@ -162,8 +245,10 @@ class Catalogos extends CI_Controller {
 		$registros = $query->result();
 		foreach ($registros as $registro ) {
 			if($registro->nombre == $valor)
+			{
 				$datos['familia_produc'] = $registro->id_fam;
 				break;
+			}
 		}
 
 		/*Busca el id del departamento seleccionado*/
@@ -172,8 +257,10 @@ class Catalogos extends CI_Controller {
 		$registros = $query->result();
 		foreach ($registros as $registro ) {
 			if($registro->nombre_depto == $valor)
+			{
 				$datos['depto_produc'] = $registro->id_depto;
 				break;
+			}
 		}
 
 

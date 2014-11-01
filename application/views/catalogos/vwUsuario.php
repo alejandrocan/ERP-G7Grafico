@@ -3,14 +3,14 @@
     </div>
     <div class="">
         <h3>Agregar registro </h3>
-        <form action="<?php echo base_url();?>index.php/usuario/insertarRegistro" method="post">
+        <form action="<?php echo base_url();?>index.php/catalogos/insertUsuario/<?php echo $catalogo?>" method="post">
             <table class="table table-bordered table-hover">
                 <thead>
                     <tr>
                         <th>Nombre</th>
                         <th>Contraseña</th>
-                        <th>Nombre1</th>
-                        <th>Nombre2</th>
+                        <th>Primer Nombre</th>
+                        <th>Segundo Nombre</th>
                         <th>Apellido Paterno</th>
                         <th>Apellido Materno</th>
                         <th>Correo</th>
@@ -24,7 +24,7 @@
                 <tbody>
                     <tr>
                         <td><input class="form-control" value="" type="text" name="Nombre"></td>
-                        <td><input class="form-control" value="" type="text" name="Contrasena"></td>
+                        <td> <input type="password" class="form-control" name="Contrasena" ></td>
                         <td><input class="form-control" value="" type="text" name="Nombre1"></td>
                         <td><input class="form-control" value="" type="text" name="Nombre2"></td>
                         <td><input class="form-control" value="" type="text" name="Apellido1"></td>
@@ -92,16 +92,16 @@
                     {
                         foreach ($registros as $registro) {
                             $columnas = $this->db->list_fields('usuario');
-                            if($registro->estado==1)
-                            {
-                                echo '<tr>';
-                                $estado = '<a class="btn btn-success btn-sm" href="" role="button">Habilitar</a>';
-                            }
-                            else
-                            {
-                                echo '<tr class="danger">';
-                                $estado = '<a class="btn btn-danger btn-sm" href="" role="button">Deshabilitar</a>';
-                            }
+                           if($registro->estado==1)
+                        {
+                            echo '<tr>';
+                            $estado = '<a class="btn btn-danger btn-sm" href='. base_url() . 'index.php/catalogos/disabled/' . $catalogo . '/' . $registro->id_usr . ' role="button">Deshabilitar</a>';                        
+                        }
+                        else
+                        {
+                            echo '<tr class="danger">';
+                            $estado = '<a class="btn btn-success btn-sm" href='. base_url() . 'index.php/catalogos/enabled/' . $catalogo . '/' . $registro->id_usr . ' role="button">Habilitar</a>';                            
+                        }
                             
                             echo '  <td>' . $registro->id_usr . '</td>';
                             echo '  <td>' . $registro->nombre . '</td>';
