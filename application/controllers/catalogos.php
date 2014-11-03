@@ -63,7 +63,6 @@ class Catalogos extends CI_Controller {
 		if($catal == "presentacion") {
 			$this->load->view("catalogos/vwPresentacion");
 		}
-
 		if($catal == "proveedor"){
 			$this->load->view("catalogos/vwProveedor");
 		}
@@ -78,6 +77,9 @@ class Catalogos extends CI_Controller {
 		}
 		if($catal == "departamento") {
 			$this->load->view("catalogos/vwDepartamento");
+		}
+		if($catal == "material") {
+			$this->load->view("catalogos/vwMaterial");
 		}
 	}
 	else
@@ -140,7 +142,7 @@ class Catalogos extends CI_Controller {
 		$registros = $query->result();
 		foreach ($registros as $registro ) {
 			if($registro->nombre == $valor)
-				$datos['familia_product'] = $registro->id_fam;
+				$datos['familia_produc'] = $registro->id_fam;
 				break;
 		}
 
@@ -163,5 +165,116 @@ class Catalogos extends CI_Controller {
 			redirect('catalogos/index/'. $tabla);
 		}
 
+	}
+
+	public function insertMaterial($tabla){
+		$datos['nombre'] = $this->input->post("nombre");
+
+		/*Busca el id de la unidad de medida seleccionada*/
+		$valor = $this->input->post("udm_material");
+		$query =  $this->db->get("udm");
+		$registros = $query->result();
+		foreach ($registros as $registro ) {
+			if($registro->nombre == $valor)
+				$datos['udm_material'] = $registro->id_udm;
+				break;
+		}
+
+		/*Busca el id de la familia seleccionada*/
+		$valor = $this->input->post("proveedor_material");
+		$query =  $this->db->get("proveedor");
+		$registros = $query->result();
+		foreach ($registros as $registro ) {
+			if($registro->nombre == $valor)
+				$datos['proveedor_material'] = $registro->id_proveedor;
+				break;
+		}
+
+		/*Busca el id del departamento seleccionado*/
+		$valor = $this->input->post("presentacion");
+		$query =  $this->db->get("presentacion");
+		$registros = $query->result();
+		foreach ($registros as $registro ) {
+			if($registro->nombre == $valor)
+				$datos['presentacion'] = $registro->id_pres;
+				break;
+		}
+
+
+		$datos['clave'] = $this->input->post("clave");
+		$datos['smax'] = $this->input->post("smax");
+		$datos['smin'] = $this->input->post("smin");
+		$datos['factor_redimiento'] = $this->input->post("factor_redimiento");
+		$datos['cantidad'] = $this->input->post("cantidad");
+		$datos['ultimo_costo'] = $this->input->post("ultimo_costo");
+		$datestring = "%Y-%m-%d %h:%i:00";
+		$time = time();
+		$datos['fecha_cotiza'] = mdate($datestring,$time);
+		$datos['ultima_edicion'] = mdate($datestring,$time);
+		$datos['usr_edicion'] = $this->session->userdata('id_usr');
+		$datos['tiempo_elaboracion'] = $this->input->post("tiempo_elaboracion");
+		$datos['orden_cronologico'] = $this->input->post("orden_cronologico");
+		$datos['estado'] = 1;
+
+		$this->load->model('registros_model');
+		if($this->registros_model->insertar($datos, $tabla)) {
+			redirect('catalogos/index/'. $tabla);
+		}
+	}
+
+	public function updateMaterial($tabla){
+		$datos['id_material'] = $this->input->post("id_material");
+		$datos['nombre'] = $this->input->post("nombre");
+
+		/*Busca el id de la unidad de medida seleccionada*/
+		$valor = $this->input->post("udm_material");
+		$query =  $this->db->get("udm");
+		$registros = $query->result();
+		foreach ($registros as $registro ) {
+			if($registro->nombre == $valor)
+				$datos['udm_material'] = $registro->id_udm;
+				break;
+		}
+
+		/*Busca el id de la familia seleccionada*/
+		$valor = $this->input->post("proveedor_material");
+		$query =  $this->db->get("proveedor");
+		$registros = $query->result();
+		foreach ($registros as $registro ) {
+			if($registro->nombre == $valor)
+				$datos['proveedor_material'] = $registro->id_proveedor;
+				break;
+		}
+
+		/*Busca el id del departamento seleccionado*/
+		$valor = $this->input->post("presentacion");
+		$query =  $this->db->get("presentacion");
+		$registros = $query->result();
+		foreach ($registros as $registro ) {
+			if($registro->nombre == $valor)
+				$datos['presentacion'] = $registro->id_pres;
+				break;
+		}
+
+
+		$datos['clave'] = $this->input->post("clave");
+		$datos['smax'] = $this->input->post("smax");
+		$datos['smin'] = $this->input->post("smin");
+		$datos['factor_redimiento'] = $this->input->post("factor_redimiento");
+		$datos['cantidad'] = $this->input->post("cantidad");
+		$datos['ultimo_costo'] = $this->input->post("ultimo_costo");
+		$datestring = "%Y-%m-%d %h:%i:00";
+		$time = time();
+		$datos['fecha_cotiza'] = mdate($datestring,$time);
+		$datos['ultima_edicion'] = mdate($datestring,$time);
+		$datos['usr_edicion'] = $this->session->userdata('id_usr');
+		$datos['tiempo_elaboracion'] = $this->input->post("tiempo_elaboracion");
+		$datos['orden_cronologico'] = $this->input->post("orden_cronologico");
+		$datos['estado'] = 1;
+
+		$this->load->model('registros_model');
+		if($this->registros_model->editar($datos, $tabla)) {
+			redirect('catalogos/index/'. $tabla);
+		}
 	}
 }
