@@ -21,7 +21,7 @@
                         $query = $this->db->get("udm");
                         $valores = $query->result(); ?>
                     <?php foreach ($valores as $valor): ?>
-                        <option><?php echo $valor->tipo_udm; ?></option>
+                        <option><?php echo $valor->nombre; ?></option>
                     <?php endforeach; ?>
                     </select>
                 </td>

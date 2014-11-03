@@ -1,12 +1,9 @@
-<div class="container">
-        <h1><?php echo $catalogo ?></h1>
-    </div>
     <div class="container">
         <h1>PROVEEDOR</h1>
     </div>
-    <div class="">
+    <div class="container">
         <h3>Agregar registro </h3>
-        <form action="<?php echo base_url();?>index.php/proveedor/insertarRegistro" method="post">
+        <form action="<?php echo base_url();?>index.php/catalogos/insertProveedor/<?php echo $catalogo?>" method="post">
             <table class="table table-bordered table-hover">
                 <thead>
                     <tr>
@@ -30,8 +27,6 @@
                         <td>
                             <input type="submit" value="Guardar" class="btn btn-info btn-sm">
                             <input type="submit" value="Cancelar" class="btn btn-danger btn-sm">
-                            <input type="submit" value="Guardar" class="btn btn-info btn-xs" >
-                            <input type="button" value="Cancelar" class="btn btn-danger btn-xs" action="" method="post" >
                         </td>
                     </tr>
                 </tbody>
@@ -55,47 +50,21 @@
             </thead>
             <tbody>
                 <?php
-<<<<<<< HEAD
-                
-                    if(count($registros) > 0 ){
-                        foreach ($registros as $registro) {
-                            echo "<tr>";
 
-                            $columnas = $this->db->list_fields($catalogo);
-                            $cont = 1;
-                            $valor_id;
-                            foreach ($columnas as $columna ) {
-
-                                if($columna == 'estado'){
-
-                                }
-                                else{
-                                    echo "<td>" . $registro->$columna . "</td>";
-                                }
-                               
-                                if($cont == 2){
-                                    $valor_id=$registro->$columna;
-                                }
-                                $cont++;
-                            }
-                            echo "<td>";
-                            
-=======
                     if(count($registros) > 0 )
                     {
                         foreach ($registros as $registro) {
                             $columnas = $this->db->list_fields('proveedor');
-                            if($registro->estado==1)
-                            {
-                                echo '<tr>';
-                                $estado = '<a class="btn btn-success btn-sm" href="" role="button">Habilitar</a>';
-                            }
-                            else
-                            {
-                                echo '<tr class="danger">';
-                                $estado = '<a class="btn btn-danger btn-sm" href="" role="button">Deshabilitar</a>';
-                            }
-                            
+                        if($registro->estado==1)
+                        {
+                            echo '<tr>';
+                            $estado = '<a class="btn btn-danger btn-sm" href='. base_url() . 'index.php/catalogos/disabled/' . $catalogo . '/' . $registro->id_proveedor . ' role="button">Deshabilitar</a>';                        
+                        }
+                        else
+                        {
+                            echo '<tr class="danger">';
+                            $estado = '<a class="btn btn-success btn-sm" href='. base_url() . 'index.php/catalogos/enabled/' . $catalogo . '/' . $registro->id_proveedor . ' role="button">Habilitar</a>';                            
+                        }
                             echo '  <td>' . $registro->id_proveedor . '</td>';
                             echo '  <td>' . $registro->nombre . '</td>';
                             echo '  <td>' . $registro->dir_prove . '</td>';
@@ -103,20 +72,15 @@
                             echo '  <td>' . $registro->correo_prove . '</td>';
                             echo '  <td>' . $registro->contacto . '</td>';
                             echo '  <td>';
-                            echo $estado;
                             echo '      <a class="btn btn-info btn-sm" data-toggle= "modal" data-target="#" role="button">Editar</a>';
                             echo '      <a class="btn btn-primary btn-sm" href="#" role="button">Duplicar</a>';
+                            echo $estado;
                             echo '  </td>';
                             echo '</tr>';
->>>>>>> origin/master
                         }
                     }
                 ?>
             </tbody>
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/master
         </table>
     </div>
 </body>
