@@ -12,6 +12,15 @@ class Registros_model extends  CI_Model {
 				return false;
 		}
 
+		public function editar($datos,$tabla)
+		{
+        	$this->db->where('id_material', $datos['id_material']);
+			if($this->db->update($tabla, $datos))	
+				return true;
+			else
+				return false;
+		}
+
 		public function mostrar($tabla){
 			$id = $this->db->list_fields($tabla);
 			foreach ($id as $valor) {
