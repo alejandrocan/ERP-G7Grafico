@@ -243,7 +243,6 @@ class Catalogos extends CI_Controller {
 				break;
 			}
 		}
-		$datos['costo_produc'] = $this->input->post("costo");
 
 		/*Busca el id de la familia seleccionada*/
 		$valor = $this->input->post("familia");
@@ -275,10 +274,12 @@ class Catalogos extends CI_Controller {
 
 
 		$datos['estado'] = 1;
-
+		$data['user']=$this->session->userdata('user');
+		$data['title'] = "Sistema G7 Grafico";
 		$this->load->model('registros_model');
 		if($this->registros_model->insertar($datos, $tabla)) {
-			redirect('catalogos/index/'. $tabla);
+			$this->load->view("vwHeader", $data);
+			$this->load->view("catalogos/vwAddMaterial");
 		}
 
 	}
