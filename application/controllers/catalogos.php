@@ -10,6 +10,13 @@ if ( ! defined('BASEPATH'))
 	exit('No direct script access allowed');
 
 class Catalogos extends CI_Controller {
+
+	function __construct() {
+        parent::__construct();
+        $this->load->library('form_validation');
+        $this->load->helper('form');
+    }
+
 	public function insertarRegistro($tabla)
 	{
 		$columnas = $this->db->list_fields($tabla);
@@ -19,7 +26,6 @@ class Catalogos extends CI_Controller {
 			if($cont != 1)
 			{
 				$datos[$columna] = $this->input->post($columna);
-				//$datos = array($columna => $this->input->post($columna));
 			}
 			$cont += 1;
 		}
@@ -35,60 +41,64 @@ class Catalogos extends CI_Controller {
 		}
 	}
 
-	public function index($catal) {
-		if($this->session->userdata('is_logued_in') ){
-		$data['catalogo'] = $catal;
+	public function index($catal) 
+	{
+		if($this->session->userdata('is_logued_in') )
+		{
+			$data['catalogo'] = $catal;
 
-		$this->load->model("registros_model");		
-		$data['registros']= $this->registros_model->mostrar($catal);
-		
-		if($this->uri->segment(4) != ''){
-			$id = $this->uri->segment(4);
-			if($this->registros_model->disabledRegister($catal, $id)) {
-				redirect('catalogos/index/'. $catal);
+			$this->load->model("registros_model");		
+			$data['registros']= $this->registros_model->mostrar($catal);
+
+			if($this->uri->segment(4) != ''){
+				$id = $this->uri->segment(4);
+				if($this->registros_model->disabledRegister($catal, $id)) {
+					redirect('catalogos/index/'. $catal);
+				}
+				else{
+					echo "error";
+				}
 			}
-			else{
-				echo "error";
+
+			$data['registros']= $this->registros_model->mostrar($catal);
+			$data['columnas'] = $this->registros_model->get_columns($catal);
+			$data['foraneas'] = $this->registros_model->get_foreignColumns($catal);
+			$data['tablasF'] = $this->registros_model->get_referencedTables($catal);
+			$data['referencias'] = $this->registros_model->get_referencedColumns($catal);
+			$data['user']=$this->session->userdata('user');
+			$data['title'] = "Sistema G7 Grafico";
+			$this->load->view("vwHeader", $data);
+			if($catal == "presentacion") {
+				$this->load->view("catalogos/vwPresentacion");
+			}
+
+			if($catal == "udm"){
+				$this->load->view("catalogos/vwUdm");
+			}
+
+			if($catal == "usuario"){
+				$this->load->view("catalogos/vwUsuario");
+				$this->load->library('form_validation');
+	        	$this->load->helper('form');
+			}
+
+			if($catal == "proveedor"){
+				$this->load->view("catalogos/vwProveedor");
+			}
+			if($catal == "producto") {
+				$this->load->view("catalogos/vwProductos");
+			}
+			if($catal == "puesto") {
+				$this->load->view("catalogos/vwPuesto");
+			}
+			if($catal == "familia") {
+				$this->load->view("catalogos/vwFamilia");
+			}
+			if($catal == "departamento") {
+				$this->load->view("catalogos/vwDepartamento");
 			}
 		}
-
-		$data['registros']= $this->registros_model->mostrar($catal);
-		$data['columnas'] = $this->registros_model->get_columns($catal);
-		$data['foraneas'] = $this->registros_model->get_foreignColumns($catal);
-		$data['tablasF'] = $this->registros_model->get_referencedTables($catal);
-		$data['referencias'] = $this->registros_model->get_referencedColumns($catal);
-		$data['user']=$this->session->userdata('user');
-		$data['title'] = "Sistema G7 Grafico";
-		$this->load->view("vwHeader", $data);
-		if($catal == "presentacion") {
-			$this->load->view("catalogos/vwPresentacion");
-		}
-
-		if($catal == "udm"){
-			$this->load->view("catalogos/vwUdm");
-		}
-
-		if($catal == "usuario"){
-			$this->load->view("catalogos/vwUsuario");
-		}
-
-		if($catal == "proveedor"){
-			$this->load->view("catalogos/vwProveedor");
-		}
-		if($catal == "producto") {
-			$this->load->view("catalogos/vwProductos");
-		}
-		if($catal == "puesto") {
-			$this->load->view("catalogos/vwPuesto");
-		}
-		if($catal == "familia") {
-			$this->load->view("catalogos/vwFamilia");
-		}
-		if($catal == "departamento") {
-			$this->load->view("catalogos/vwDepartamento");
-		}
-	}
-	else
+		else
 		redirect(login2);
 		
 	}
@@ -180,47 +190,107 @@ class Catalogos extends CI_Controller {
 		}
 	}
 
-		/* Agrega una funcion para insertar los datos en la tabla de presentación */
-	public function insertUsuario($tabla) {
-		$datos['nombre'] = $this->input->post('Nombre');
-		$datos['contra_usr'] = MD5($this->input->post('Contrasena'));
-		$datos['nombre_usr'] = $this->input->post('Nombre1');
-		$datos['nombre2_usr'] = $this->input->post('Nombre2');
-		$datos['apellidop_usr'] = $this->input->post('Apellido1');
-		$datos['apellidom_usr'] = $this->input->post('Apellido2');
-		$datos['correo_usr'] = $this->input->post('Correo');
-		$datos['tipo_usr'] = $this->input->post('Tipo');
+		/* Agrega una funcion para insertar los datos en la tabla de usuario */
+	public function insertUsuario()
+	{
 
-		$valor = $this->input->post("Departamento");
-		$query =  $this->db->get("departamento");
-		$registros = $query->result();
-		foreach ($registros as $registro ) {
-			if($registro->nombre_depto == $valor)
-			{
-				$datos['depto_usr'] = $registro->id_depto;
-				break;
-			}
+		$this->form_validation->set_rules('Nombre', 'Nombre', 'required|max_length[15]|trim|callback_espacio['.$this->input->post('Nombre').']|');
+		$this->form_validation->set_rules('Contrasena', 'Contraseña', 'required|min_length[6]|max_length[50]');
+		$this->form_validation->set_rules('Nombre1', 'Primer Nombre', 'required|max_length[15]');
+		$this->form_validation->set_rules('Nombre2', 'Segundo Nombre', 'max_length[15]');
+		$this->form_validation->set_rules('Apellido1', 'Apellido Paterno', 'required|max_length[15]');
+		$this->form_validation->set_rules('Apellido2', 'Apellido Materno', 'max_length[15]');
+		$this->form_validation->set_rules('Correo', 'Correo', 'required|valid_email|max_length[45]');
+
+        $this->form_validation->set_message('required', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>El campo %s no puede estar vacío</div>');
+        $this->form_validation->set_message('min_length', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>El campo %s debe tener al menos %d carácteres</div>');
+        $this->form_validation->set_message('max_length', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button> El campo %s no puede tener más de %d carácteres</div>');
+        $this->form_validation->set_message('valid_email', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button> El campo %s no es correo válido</div>');
+
+        if ($this->form_validation->run() == TRUE) 
+        {
+        	$this->load->helper('file');
+			$config['upload_path'] = './uploads/';
+            $config['allowed_types'] = 'gif|jpg|png';
+            $config['max_size'] = '4000';
+            $config['max_width'] = '4024';
+            $config['max_height'] = '4008';
+            $this->load->library('upload', $config);
+
+            if(!$this->upload->do_upload('Imagen'))
+            {
+            	$error = array('error' => $this->upload->display_errors());
+
+            	$this->load->model("registros_model");		
+            	$data['registros']= $this->registros_model->mostrar("usuario");
+				$data['columnas'] = $this->registros_model->get_columns("usuario");
+				$data['foraneas'] = $this->registros_model->get_foreignColumns("usuario");
+				$data['tablasF'] = $this->registros_model->get_referencedTables("usuario");
+				$data['referencias'] = $this->registros_model->get_referencedColumns("usuario");
+				$data['user']=$this->session->userdata('user');
+				$data['title'] = "Sistema G7 Grafico";
+				$data['catalogo'] = "usuario";
+				$this->load->library('form_validation');
+	        	$this->load->helper('form');
+				$this->load->view("vwHeader", $data);
+				$this->load->view("catalogos/vwUsuario",$error);
+				
+				
+            }
+				$this->load->model('registros_model');
+            	$file_info = $this->upload->data();
+            	$datos['nombre'] = $this->input->post('Nombre');
+				$datos['contra_usr'] = MD5($this->input->post('Contrasena'));
+				$datos['nombre_usr'] = $this->input->post('Nombre1');
+				$datos['nombre2_usr'] = $this->input->post('Nombre2');
+				$datos['apellidop_usr'] = $this->input->post('Apellido1');
+				$datos['apellidom_usr'] = $this->input->post('Apellido2');
+				$datos['correo_usr'] = $this->input->post('Correo');
+				$datos['tipo_usr'] = $this->input->post('Tipo');
+				$datos['imagen'] = $file_info['file_name'];
+				$datos['estado'] = 1;
+				$valor = $this->input->post("Departamento");
+				$query =  $this->db->get("departamento");
+				$registros = $query->result();
+				foreach ($registros as $registro ) {
+					if($registro->nombre == $valor)
+					{
+						$datos['depto_usr'] = $registro->id_depto;
+						break;
+					}
+				}
+				$valor = $this->input->post("Puesto");
+				$query =  $this->db->get("puesto");
+				$registros = $query->result();
+				foreach ($registros as $registro ) {
+					if($registro->nombre == $valor)
+					{
+						$datos['id_puesto'] = $registro->id_puesto;
+						break;
+					}
+				}
+				if($this->registros_model->insertar($datos, "usuario")) 
+				{
+					redirect('catalogos/index/usuario');
+				}
+			
 		}
-
-		$valor = $this->input->post("Puesto");
-		$query =  $this->db->get("puesto");
-		$registros = $query->result();
-		foreach ($registros as $registro ) {
-			if($registro->nombre == $valor)
-			{
-				$datos['id_puesto'] = $registro->id_puesto;
-				break;
-			}
-		}
-
-		$datos['imagen'] = $this->input->post('Imagen');
-		$datos['estado'] = 1;
-
-		$this->load->model('registros_model');
-		if($this->registros_model->insertar($datos, $tabla)) {
-			redirect('catalogos/index/'. $tabla);
+		else
+		{
+			$this->index("usuario");
 		}
 	}
+
+	public function espacio($nombre)
+	{
+		$res = strpos($nombre," ");
+		if($res !== FALSE)
+		{
+			return FALSE;
+		}
+		return TRUE;
+ 	}
+
 	/* Agrega una funcion para insertar los datos en la tabla de producto*/
 	public function insertProducto($tabla){
 		$datos['nombre'] = $this->input->post("nombre");

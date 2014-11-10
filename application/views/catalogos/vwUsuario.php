@@ -1,10 +1,11 @@
 <div class="container">
         <h1>USUARIO</h1>
     </div>
-    <div class="">
-        <h3>Agregar registro </h3>
-        <form action="<?php echo base_url();?>index.php/catalogos/insertUsuario/<?php echo $catalogo?>" method="post">
-            <table class="table table-bordered table-hover">
+    <div id="formulario_usuario">
+        <?=@$error?>
+        <span><?php echo validation_errors(); ?></span>
+        
+        <table class="table table-bordered table-hover">
                 <thead>
                     <tr>
                         <th>Nombre</th>
@@ -23,12 +24,13 @@
                 </thead>
                 <tbody>
                     <tr>
+                        <?php echo form_open_multipart(base_url()."index.php/catalogos/insertUsuario/")?>
                         <td><input class="form-control" value="" type="text" name="Nombre"></td>
                         <td> <input type="password" class="form-control" name="Contrasena" ></td>
                         <td><input class="form-control" value="" type="text" name="Nombre1"></td>
                         <td><input class="form-control" value="" type="text" name="Nombre2"></td>
                         <td><input class="form-control" value="" type="text" name="Apellido1"></td>
-                        <td><input class="form-control" value="" type="text" name="apellido2"></td>
+                        <td><input class="form-control" value="" type="text" name="Apellido2"></td>
                         <td><input class="form-control" value="" type="text" name="Correo"></td>
                         <td>
                             <select class="form-control" name ="Tipo">
@@ -42,7 +44,7 @@
                                 $query = $this->db->get("departamento");
                                 $valores = $query->result(); ?>
                                 <?php foreach ($valores as $valor): ?>
-                                <option><?php echo $valor->nombre_depto; ?></option>
+                                <option><?php echo $valor->nombre; ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </td>
@@ -61,11 +63,15 @@
                             <input type="submit" value="Guardar" class="btn btn-info btn-sm">
                             <input type="submit" value="Cancelar" class="btn btn-danger btn-sm">
                         </td>
+                        <?php echo form_close();?>
                     </tr>
                 </tbody>
             </table>
-        </form>
+
+
+        
     </div>
+    
     <div class="">
         <h3>Registros</h3>
         <table class="table table-bordered table-hover">
@@ -117,7 +123,7 @@
                             $valor = $depto->result();
                             foreach ($valor as $v) {
                                 if($v->id_depto == $registro->depto_usr){
-                                    echo '<td>' . $v->nombre_depto . '</td>';
+                                    echo '<td>' . $v->nombre . '</td>';
                                     break;
                                 }
                             }
@@ -143,5 +149,7 @@
             </tbody>
         </table>
     </div>
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <script src="<?php echo base_url(); ?>js/bootstrap.min.js"></script>
 </body>
 </html>

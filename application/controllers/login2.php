@@ -62,6 +62,13 @@ public function new_user()
                     'id_usr'     =>         $check_user->id_usr,
                     'tipo_usr'        =>        $check_user->tipo_usr,
                     'user'         =>         $check_user->nombre_usr.' '.$check_user->apellidop_usr,
+                    'imagen'     =>         $check_user->imagen,
+                    'correo'     =>         $check_user->correo_usr,
+                    'depto'     =>         $check_user->depto_usr,
+                    'puesto'     =>         $check_user->id_puesto,
+                    'nombreusuario'     =>         $check_user->nombre,
+                    'nombrecomp'     =>         $check_user->nombre_usr. ' ' . $check_user->nombre2_usr . ' ' . $check_user->apellidop_usr . ' ' . $check_user->apellidom_usr,
+
                     );        
                     $this->session->set_userdata($data);
                     $this->index();
