@@ -8,7 +8,6 @@
                 <th>Nombre</th>
                 <th>Cantidad</th>
                 <th>Unidad_de_medida</th>
-                <th>Costo</th>
                 <th>Familia</th>
                 <th>Departamento</th>
                 <th>Acciones</th>
@@ -22,40 +21,44 @@
                         $query = $this->db->get("udm");
                         $valores = $query->result(); ?>
                     <?php foreach ($valores as $valor): ?>
-                        <option><?php echo $valor->nombre; ?></option>
+                    	<?php if($valor->estado == 1): ?>
+                        	<option><?php echo $valor->nombre; ?></option>
+                        <?php endif; ?>
                     <?php endforeach; ?>
                     </select>
                 </td>
-
-                
-
-                <td><input class="form-control" value="" type="text" name="costo"></td>  
-
 
                 <td><select class="form-control" name ="familia">
                     <?php 
                         $query = $this->db->get("familia");
                         $valores = $query->result(); ?>
                     <?php foreach ($valores as $valor): ?>
-                        <option><?php echo $valor->nombre; ?></option>
+                    	<?php if($valor->estado == 1): ?>
+                        	<option><?php echo $valor->nombre; ?></option>
+                        <?php endif; ?>
                     <?php endforeach; ?>
                     </select>
                 </td>
 
 
                 <td><select class="form-control" name ="departamento">
-                    <?php 
+                    <?php
                         $query = $this->db->get("departamento");
                         $valores = $query->result(); ?>
                     <?php foreach ($valores as $valor): ?>
-                        <option><?php echo $valor->nombre_depto; ?></option>
+                    	<?php if ($valor->estado == 1): ?>
+                        	<option><?php echo $valor->nombre_depto; ?></option>
+                        <?php endif; ?>
                     <?php endforeach; ?>
                     </select>
                 </td>
                 
                 <td>
-                    <input type="submit" value="Guardar" class="btn btn-info btn-sm">
-                    <input type="button" value="Cancelar" class="btn btn-danger btn-sm" action="" method="post" >
+                    
+                    <button type="submit" class="btn btn-info btn-sm">
+  						Agregar
+					</button>
+                    <input type="reset" value="Cancelar" class="btn btn-danger btn-sm" action="" method="post" >
                 </td>
             </tr>
         </table>
@@ -146,10 +149,23 @@
 								<th>Producto</th>
 								<th>Cantidad usada</th>
 								<th>UDM</th>
-								
+								<th>Costo</th>
 							</tr>
 
 							<tr>
+								<?php $query = $this->db->get("producto_material");
+									$materiales = $query->result();
+								?>
+								<!--Validacion si es un material o un producto-->
+								<?php foreach ($materiales as $material): ?>
+									<?php if($material != 0): ?>
+									<!--En case de ser material-->
+										<td><?php $material->materialid ?></td>
+									<?php else: ?>
+									<!--En case de ser producto-->
+									<?php endif; ?>
+										<td><?php $material->productoid ?></td>
+								<?php endforeach; ?>
 
 							</tr>
 
@@ -165,5 +181,7 @@
 <?php else: ?>
 	<h4>No hay registros</h4>
 <?php endif; ?>
+
+<script src="<?php echo base_url();?>js/jquery.js"></script>
 </body>
 </html>

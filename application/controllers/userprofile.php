@@ -18,8 +18,17 @@ class Userprofile extends CI_Controller {
 		$this->load->database();
 	}
 	function index() {
-		$this->load->view("catalogos/vwHeader");
-		$this->load->view("vwProfile");
-		$this->load->view("vwFooter");
+		if($this->session->userdata('is_logued_in') )
+		{
+			$id = $this->session->userdata('id_usr');
+			$cualquiera = $this->db->query("select imagen from usuario where id_usr=" . $id . ";");
+			$data['datos'] = $cualquiera->result();
+			$data['user']=$this->session->userdata('user');
+			$data['title'] = "Sistema G7 Grafico";
+			$this->load->view("vwHeader", $data);
+			$this->load->view("vwProfile");
+		}
+		else
+		redirect(login2);
 	}
 }
