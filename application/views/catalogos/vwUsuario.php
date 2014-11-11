@@ -2,7 +2,7 @@
         <h1>USUARIO</h1>
     </div>
     <div id="formulario_usuario">
-        <?=@$error?>
+        <?=$error?>
         <span><?php echo validation_errors(); ?></span>
         
         <table class="table table-bordered table-hover">

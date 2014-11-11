@@ -1,40 +1,38 @@
     <div class="container">
         <h1>PROVEEDOR</h1>
     </div>
-    <div class="container">
+    <div class="container" id="formulario_proveedor">
+        <span><?php echo validation_errors(); ?></span>
         <h3>Agregar registro </h3>
-        <form action="<?php echo base_url();?>index.php/catalogos/insertProveedor/<?php echo $catalogo?>" method="post">
-            <table class="table table-bordered table-hover">
-                <thead>
-                    <tr>
-                        <th>Nombre</th>
-                         <th>Tipo</th>
-                        <th>Dirección</th>
-                        <th>Teléfono</th>
-                        <th>Correo</th>
-                        <th>Contacto</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><input class="form-control" value="" type="text" name="Nombre"></td>
-                        <td><input class="form-control" value="" type="text" name="Tipo"></td>
-                        <td><input class="form-control" value="" type="text" name="Direccion"></td>
-                        <td><input class="form-control" value="" type="text" name="Telefono"></td>
-                        <td><input class="form-control" value="" type="text" name="Correo"></td>
-                        <td><input class="form-control" value="" type="text" name="Contacto"></td>
-                        <td>
-                            <input type="submit" value="Guardar" class="btn btn-info btn-sm">
-                            <input type="submit" value="Cancelar" class="btn btn-danger btn-sm">
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </form>
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Dirección</th>
+                    <th>Teléfono</th>
+                    <th>Correo</th>
+                    <th>Contacto</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <?php echo form_open_multipart(base_url()."index.php/catalogos/insertProveedor/proveedor")?>
+                    <td><input class="form-control" value="" type="text" name="Nombre"></td>
+                    <td><input class="form-control" value="" type="text" name="Direccion"></td>
+                    <td><input class="form-control" value="" type="text" name="Telefono"></td>
+                    <td><input class="form-control" value="" type="text" name="Correo"></td>
+                    <td><input class="form-control" value="" type="text" name="Contacto"></td>
+                    <td>
+                        <input type="submit" value="Guardar" class="btn btn-info btn-sm">
+                        <a href="<?php echo base_url(). 'index.php/catalogos/index/proveedor'; ?>" class="btn btn-danger btn-sm" >Cancelar</a>
+                    </td>
+                    <?php echo form_close();?>
+                </tr>
+            </tbody>
+        </table>
     </div>
     <div class="container">
-    <div class="">
         <h3>Registros</h3>
         <table class="table table-bordered table-hover">
             <thead>
@@ -83,5 +81,7 @@
             </tbody>
         </table>
     </div>
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <script src="<?php echo base_url(); ?>js/bootstrap.min.js"></script>
 </body>
 </html>

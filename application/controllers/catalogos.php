@@ -168,16 +168,34 @@ class Catalogos extends CI_Controller {
 	}
 
 	public function insertProveedor($tabla) {
-		$datos['nombre'] = $this->input->post('Nombre');
-		$datos['dir_prove'] = $this->input->post('Direccion');
-		$datos['tel_prove'] = $this->input->post('Telefono');
-		$datos['correo_prove'] = $this->input->post('Correo');
-		$datos['contacto'] = $this->input->post('Contacto');
-		$datos['estado'] = 1;
+		$this->form_validation->set_rules('Nombre', 'Nombre', 'required|trim|max_length[50]');
+		$this->form_validation->set_rules('Direccion', 'Dirección', 'trim|max_length[50]');
+		$this->form_validation->set_rules('Telefono', 'Teléfono', 'required|trim|min_length[7]|max_length[11]');
+		$this->form_validation->set_rules('Correo', 'Correo', 'trim|valid_email|max_length[50]');
+		$this->form_validation->set_rules('Contacto', 'Contacto', 'trim|max_length[30]');
 
-		$this->load->model('registros_model');
-		if($this->registros_model->insertar($datos,$tabla)) {
-			redirect('catalogos/index/'. $tabla);
+		$this->form_validation->set_message('required', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>El campo %s no debe estar vacío</div>');
+        $this->form_validation->set_message('min_length', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>El campo %s debe ser menor a %d carácteres</div>');
+        $this->form_validation->set_message('max_length', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button> El campo %s no debe ser mayor a %d carácteres</div>');
+        $this->form_validation->set_message('valid_email', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button> El %s no es válido</div>');
+
+        if ($this->form_validation->run() == TRUE) 
+        {
+			$datos['nombre'] = $this->input->post('Nombre');
+			$datos['dir_prove'] = $this->input->post('Direccion');
+			$datos['tel_prove'] = $this->input->post('Telefono');
+			$datos['correo_prove'] = $this->input->post('Correo');
+			$datos['contacto'] = $this->input->post('Contacto');
+			$datos['estado'] = 1;
+
+			$this->load->model('registros_model');
+			if($this->registros_model->insertar($datos,$tabla)) {
+				redirect('catalogos/index/'. $tabla);
+			}
+		}
+		else
+		{
+			$this->index("proveedor");
 		}
 	}
 
@@ -219,6 +237,7 @@ class Catalogos extends CI_Controller {
         $this->form_validation->set_message('min_length', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>El campo %s debe tener al menos %d carácteres</div>');
         $this->form_validation->set_message('max_length', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button> El campo %s no puede tener más de %d carácteres</div>');
         $this->form_validation->set_message('valid_email', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button> El campo %s no es correo válido</div>');
+        $this->form_validation->set_message('espacio', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button> El campo Nombre no debe contener espacios en blanco</div>');
 
         if ($this->form_validation->run() == TRUE) 
         {
