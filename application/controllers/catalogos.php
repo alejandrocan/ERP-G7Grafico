@@ -125,12 +125,21 @@ class Catalogos extends CI_Controller {
 
 	/* Agrega una funcion para insertar los datos en la tabla de puesto */
 	public function insertPuesto($tabla) {
-		$datos['nombre'] = $this->input->post("nombre");
-		$datos['estado'] = 1;
+		$this->form_validation->set_rules('Nombre', 'Nombre', 'required|trim|max_length[50]');
+		$this->form_validation->set_message('required', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>El campo %s no debe estar vacío</div>');
 
-		$this->load->model('registros_model');
-		if($this->registros_model->insertar($datos,$tabla)) {
-			redirect('catalogos/index/'. $tabla);
+		if ($this->form_validation->run() == TRUE) 
+        {
+			$datos['nombre'] = $this->input->post("Nombre");
+			$datos['estado'] = 1;
+			$this->load->model('registros_model');
+			if($this->registros_model->insertar($datos,$tabla)) {
+				redirect('catalogos/index/'. $tabla);
+			}
+		}
+		else
+		{
+			$this->index("puesto");
 		}
 	}
 
