@@ -35,7 +35,7 @@ class Registros_model extends  CI_Model {
 
 
 		public function get_foreignColumns($tabla){
-			$foraneas = $this->db->query("select column_name,referenced_table_name,referenced_column_name from information_schema.key_column_usage where constraint_schema='kardex' and referenced_table_name != '' and table_name = '".$tabla."';");
+			$foraneas = $this->db->query("select table_name,column_name,referenced_table_name,referenced_column_name from information_schema.key_column_usage where constraint_schema='kardex' and referenced_table_name = '".$tabla."' and table_name != '';");
 			return $foraneas->result();
 		}
 

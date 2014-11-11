@@ -1,6 +1,6 @@
 
 <div class="container">
-        <h1>Puesto</h1>
+        <h1>Familia</h1>
 </div>
     <div class="container table-responsive">
         <h3>Agregar nueva Familia</h3>
@@ -57,25 +57,25 @@
                         echo $estado;
                         echo '  </td>';
                         echo '</tr>';
-                        <?php echo '<div class="modal fade" id="'.$registro->id_fam.'" tabindex="-1" aria-hidden="true">';?>
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h2>Editar <?php echo $registro->id_fam;?></h2>
-                                </div>
-                                <form id="form<?php echo $registro->id_fam;?>"action="<?php echo base_url();?>index.php/catalogos/updateFamilia/<?php echo $catalogo?>" method="post">
-                                <div class="modal-body">
-                                    
-                                        <label>ID <?php echo $registro->id_fam;?></label></br>
-                                        <input class="form-control hidden" value="<?php echo $registro->id_fam;?>" type="text" name="id_fam">                        
-                                        <label>Nombre<input class="form-control" value="<?php echo $registro->nombre;?>" type="text" name="nombre"></label></br>                                        
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="submit" class="btn btn-primary" >Actualizar</button>
-                                </div>
-                                </form>
-                            </div>
-                        </div>
+                        echo '<div class="modal fade" id="'.$registro->id_fam.'" tabindex="-1" aria-hidden="true">';
+                        echo '<div class="modal-dialog">';
+                        echo '<div class="modal-dialog">';
+                        echo '    <div class="modal-content">';
+                        echo '        <div class="modal-header">';
+                        echo '            <h2>Editar <?php echo $registro->id_fam;?></h2>';
+                        echo '        </div>';
+                        echo '        <form id="form<?php echo $registro->id_fam;?>"action="<?php echo base_url();?>index.php/catalogos/updateFamilia/<?php echo $catalogo?>" method="post">';
+                        echo '        <div class="modal-body">';
+                        echo '                <label>ID <?php echo $registro->id_fam;?></label></br>';
+                        echo '                <input class="form-control hidden" value="<?php echo $registro->id_fam;?>" type="text" name="id_fam">';                        
+                        echo '                <label>Nombre<input class="form-control" value="<?php echo $registro->nombre;?>" type="text" name="nombre"></label></br>';                                        
+                        echo '        </div>';
+                        echo '        <div class="modal-footer">';
+                        echo '            <button type="submit" class="btn btn-primary" >Actualizar</button>';
+                        echo '        </div>';
+                        echo '        </form>';
+                        echo '    </div>';
+                        echo '</div>';
                     }
                 }
             ?>    
