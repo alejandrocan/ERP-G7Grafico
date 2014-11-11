@@ -50,7 +50,7 @@
                             $estado = '<a class="btn btn-success btn-sm" href='. base_url() . 'index.php/catalogos/enabled/' . $catalogo . '/' . $registro->id_depto . ' role="button">Habilitar</a>';                            
                         }              
                         echo '  <td>' . $registro->id_depto . '</td>';
-                        echo '  <td>' . $registro->nombre_depto . '</td>';
+                        echo '  <td>' . $registro->nombre . '</td>';
                         echo '<td>';
                         echo '      <a class="btn btn-info btn-sm" data-toggle= "modal" data-target="#" role="button">Editar</a>';
                         echo '      <a class="btn btn-primary btn-sm" href="#" role="button">Duplicar</a>';
