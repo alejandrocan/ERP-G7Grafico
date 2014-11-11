@@ -100,6 +100,7 @@ class Catalogos extends CI_Controller {
 		else{
 			redirect(login2);
 		}
+	}
 
 
 	public function enabled($tabla, $id){
@@ -166,6 +167,20 @@ class Catalogos extends CI_Controller {
 		}
 	}
 
+	public function insertProveedor($tabla) {
+		$datos['nombre'] = $this->input->post('Nombre');
+		$datos['dir_prove'] = $this->input->post('Direccion');
+		$datos['tel_prove'] = $this->input->post('Telefono');
+		$datos['correo_prove'] = $this->input->post('Correo');
+		$datos['contacto'] = $this->input->post('Contacto');
+		$datos['estado'] = 1;
+
+		$this->load->model('registros_model');
+		if($this->registros_model->insertar($datos,$tabla)) {
+			redirect('catalogos/index/'. $tabla);
+		}
+	}
+
 	/* Agrega una funcion para insertar los datos en la tabla de UDM */
 	public function insertPresentacion($tabla) {
 		$datos['nombre'] = $this->input->post("nombre");
@@ -192,7 +207,7 @@ class Catalogos extends CI_Controller {
 	public function insertUsuario()
 	{
 
-		$this->form_validation->set_rules('Nombre', 'Nombre', 'required|max_length[15]|trim|callback_espacio['.$this->input->post('Nombre').']|');
+		$this->form_validation->set_rules('Nombre', 'Nombre', 'required|max_length[15]|trim|callback_espacio['.$this->input->post('Nombre').']');
 		$this->form_validation->set_rules('Contrasena', 'Contraseña', 'required|min_length[6]|max_length[50]');
 		$this->form_validation->set_rules('Nombre1', 'Primer Nombre', 'required|max_length[15]');
 		$this->form_validation->set_rules('Nombre2', 'Segundo Nombre', 'max_length[15]');

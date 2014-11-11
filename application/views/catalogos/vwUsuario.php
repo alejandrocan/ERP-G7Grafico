@@ -18,7 +18,7 @@
                         <th>Tipo</th> 
                         <th>Departamento</th>
                         <th>Puesto</th>
-                        <th>Imagen Perfil</th>
+                        <th>Imagen de Perfil</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -26,7 +26,7 @@
                     <tr>
                         <?php echo form_open_multipart(base_url()."index.php/catalogos/insertUsuario/")?>
                         <td><input class="form-control" value="" type="text" name="Nombre"></td>
-                        <td> <input type="password" class="form-control" name="Contrasena" ></td>
+                        <td><input class="form-control" type="password" name="Contrasena" ></td>
                         <td><input class="form-control" value="" type="text" name="Nombre1"></td>
                         <td><input class="form-control" value="" type="text" name="Nombre2"></td>
                         <td><input class="form-control" value="" type="text" name="Apellido1"></td>
@@ -61,7 +61,7 @@
                         <td><input class="form-control" type="file" name="Imagen"></td>
                         <td>
                             <input type="submit" value="Guardar" class="btn btn-info btn-sm">
-                            <input type="submit" value="Cancelar" class="btn btn-danger btn-sm">
+                            <a href="<?php echo base_url(). 'index.php/catalogos/index/usuario'; ?>" class="btn btn-danger btn-sm" >Cancelar</a>
                         </td>
                         <?php echo form_close();?>
                     </tr>
@@ -80,15 +80,14 @@
                     <th>ID</th>
                     <th>Nombre</th>
                     <th>Contraseña</th>
-                    <th>Nombre1</th>
-                    <th>Nombre2</th>
+                    <th>Primer Nombre</th>
+                    <th>Segundo Nombre</th>
                     <th>Apellido Paterno</th>
                     <th>Apellido Materno</th>
                     <th>Correo</th>
                     <th>Tipo</th> 
                     <th>Departamento</th>
                     <th>Puesto</th>
-                    <th>Imagen Perfil</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -136,7 +135,6 @@
                                     break;
                                 }
                             }
-                            echo '  <td>' . $registro->imagen . '</td>';
                             echo '  <td>';
                             echo $estado;
                             echo '      <a class="btn btn-info btn-sm" data-toggle= "modal" data-target="#" role="button">Editar</a>';
