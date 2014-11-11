@@ -1,12 +1,13 @@
 <!DOCTYPE html>
-<html lang="es">   
+<html>   
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
     <title><?php echo $title ?></title>
     <meta name="keywords" content=""/>
     <meta name="description" content=""/>
     <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>css/loginBootstrap.css">
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>css/login.css">
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>css/bootstrap.js"></script>
   </head>
   <body class="full">
     <nav id="header" class="navbar navbar-default">

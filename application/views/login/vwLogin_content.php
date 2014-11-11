@@ -24,5 +24,6 @@
     <?php echo form_submit(array('name' => 'submit','class'=>'btn btn-success', 'value' => 'Acceder'))?>
     <?php echo form_close();?>
 
-</div><!-- End Content --></body>
+</div><!-- End Content -->
+</body>
 </html>

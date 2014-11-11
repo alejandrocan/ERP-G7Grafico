@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container table-responsive">
         <h1>Material</h1>
 </div>
     <div class="container table-responsive">
@@ -26,31 +26,31 @@
                 <td><input class="form-control" value="" type="text" name="nombre"></td>    
                 <td><select class="form-control" name ="udm_material">
                     <?php 
+                        $this->db->where('estado','1');
                         $query = $this->db->get("udm");
                         $valores = $query->result(); ?>
                     <?php foreach ($valores as $valor): ?>
                         <option><?php echo $valor->nombre; ?></option>
                     <?php endforeach; ?>
-                    </select>
-                </td>
+                </select></td>
                 <td><select class="form-control" name ="proveedor_material">
                     <?php 
+                        $this->db->where('estado','1');
                         $query = $this->db->get("proveedor");
                         $valores = $query->result(); ?>
                     <?php foreach ($valores as $valor): ?>
                         <option><?php echo $valor->nombre; ?></option>
                     <?php endforeach; ?>
-                    </select>
-                </td>
+                </select></td>
                 <td><select class="form-control" name ="presentacion">
                     <?php 
+                        $this->db->where('estado','1');
                         $query = $this->db->get("presentacion");
                         $valores = $query->result(); ?>
                     <?php foreach ($valores as $valor): ?>
                         <option><?php echo $valor->nombre; ?></option>
                     <?php endforeach; ?>
-                    </select>
-                </td>
+                </select></td>
                 <td><input class="form-control" value="" type="text" name="clave"></td>
                 <td><input class="form-control" value="" type="text" name="smax"></td>
                 <td><input class="form-control" value="" type="text" name="smin"></td>
@@ -97,9 +97,18 @@
                 <?php foreach ($registros as $registro): ?>
                     <tr>
                     <?php $columnas = $this->db->list_fields($catalogo); ?>
+                        <?php if($registro->estado=='1')
+                        {
+                            echo '<tr>';
+                            $estado = '<a class="btn btn-danger btn-sm" href='. base_url() . 'index.php/catalogos/disabled/' . $catalogo . '/' . $registro->id_material . ' role="button">Deshabilitar</a>';                        
+                        }
+                        else
+                        {
+                            echo '<tr class="danger">';
+                            $estado = '<a class="btn btn-success btn-sm" href='. base_url() . 'index.php/catalogos/enabled/' . $catalogo . '/' . $registro->id_material . ' role="button">Habilitar</a>';                            
+                        }?>
                         <td id="id<?php echo $registro->id_material;?>"><?php echo $registro->id_material; ?></td>
                         <td id="nombre<?php echo $registro->id_material;?>"><?php echo $registro->nombre; ?></td>
-
                         <?php 
                             $udm = $this->db->get("udm");
                             $valor = $udm->result();
@@ -107,12 +116,9 @@
                                 if($v->id_udm == $registro->udm_material){
                                     break;
                                 }
-                                
                             }
                         ?>
-
                         <td id="udm<?php echo $registro->id_material;?>"><?php echo $v->nombre; ?></td>
-
                          <?php 
                             $proveedor = $this->db->get("proveedor");
                             $valor = $proveedor->result();
@@ -122,9 +128,7 @@
                                 }
                             }
                         ?>
-
                         <td id="proveedor<?php echo $registro->id_material;?>"><?php echo $v->nombre; ?></td>
-
                          <?php 
                             $presentacion = $this->db->get("presentacion");
                             $valor = $presentacion->result();
@@ -132,10 +136,8 @@
                                 if($v->id_pres == $registro->presentacion){
                                     break;
                                 }
-                                
                             }
                         ?>
-
                         <td id="pres<?php echo $registro->id_material;?>"><?php echo $v->nombre; ?></td>
                         <td id="clave<?php echo $registro->id_material;?>"><?php echo $registro->clave; ?></td>
                         <td id="smax<?php echo $registro->id_material;?>"><?php echo $registro->smax; ?></td>
@@ -145,7 +147,6 @@
                         <td id="costo<?php echo $registro->id_material;?>"><?php echo $registro->ultimo_costo; ?></td>
                         <td id="fcotiza<?php echo $registro->id_material;?>"><?php echo $registro->fecha_cotiza; ?></td>
                         <td id="edicion<?php echo $registro->id_material;?>"><?php echo $registro->ultima_edicion; ?></td>
-
                          <?php 
                             $presentacion = $this->db->get("usuario");
                             $valor = $presentacion->result();
@@ -153,17 +154,15 @@
                                 if($v->id_usr == $registro->usr_edicion){
                                     break;
                                 }
-                                
                             }
                         ?>
-
                         <td id="user_edit<?php echo $registro->id_material;?>"><?php echo $v->nombre; ?></td>
                         <td id="tiempo<?php echo $registro->id_material;?>"><?php echo $registro->tiempo_elaboracion; ?></td>
                         <td id="<?php echo $registro->id_material;?>"><?php echo $registro->orden_cronologico; ?></td>
                         <td>
                             <?php echo '<a class="btn btn-info btn-xs" data-toggle= "modal" data-target="#' . $registro->id_material . '" role="button">Editar</a>';?>
                             <a class="btn btn-primary btn-xs" href="#" role="button">Duplicar</a>
-                            <a class="btn btn-danger btn-xs" href="'. base_url(). 'index.php/catalogos/index/'. $catalogo .'/' . $registro->$id .'" role="button">DesHabilitar</a>
+                            <?php echo $estado;?>
                         </td>
                     </tr>
                     <?php echo '<div class="modal fade" id="'.$registro->id_material.'" tabindex="-1" aria-hidden="true">';?>
@@ -174,12 +173,12 @@
                                 </div>
                                 <form id="form<?php echo $registro->id_material;?>"action="<?php echo base_url();?>index.php/catalogos/updateMaterial/<?php echo $catalogo?>" method="post">
                                 <div class="modal-body">
-                                    
                                         <label>ID <?php echo $registro->id_material;?></label></br>
                                         <input class="form-control hidden" value="<?php echo $registro->id_material;?>" type="text" name="id_material">
                                         <label>Nombre<input class="form-control" value="<?php echo $registro->nombre;?>" type="text" name="nombre"></label></br>
                                         <label>Unidad de medida<select class="form-control" name ="udm_material">
                                             <?php 
+                                                $this->db->where('estado','1');
                                                 $query = $this->db->get("udm");
                                                 $valores = $query->result(); ?>
                                             <?php foreach ($valores as $valor): ?>
@@ -188,6 +187,7 @@
                                         </select></label></br>
                                         <label>Proveedor<select class="form-control" name ="proveedor_material">
                                             <?php 
+                                                $this->db->where('estado','1');
                                                 $query = $this->db->get("proveedor");
                                                 $valores = $query->result(); ?>
                                             <?php foreach ($valores as $valor): ?>
@@ -196,6 +196,7 @@
                                         </select></label></br>
                                         <label>Presentación<select class="form-control" name ="presentacion">
                                             <?php 
+                                                $this->db->where('estado','1');
                                                 $query = $this->db->get("presentacion");
                                                 $valores = $query->result(); ?>
                                             <?php foreach ($valores as $valor): ?>
@@ -210,7 +211,6 @@
                                         <label>Ultimo costo<input class="form-control" value="<?php echo $registro->ultimo_costo;?>" type="text" name="ultimo_costo"></label></br>
                                         <label>Tiempo de elaboracion<input class="form-control" value="<?php echo $registro->tiempo_elaboracion;?>" type="text" name="tiempo_elaboracion"></label></br>
                                         <label>Orden cronologico<input class="form-control" value="<?php echo $registro->orden_cronologico;?>" type="text" name="orden_cronologico"></label></br>
-                                        
                                 </div>
                                 <div class="modal-footer">
                                     <button type="submit" class="btn btn-primary" >Actualizar</button>
@@ -223,6 +223,5 @@
         </tbody>
     </table>
 </div>
-
 </body>
 </html>

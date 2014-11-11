@@ -63,8 +63,6 @@ class Catalogos extends CI_Controller {
 		if($catal == "presentacion") {
 			$this->load->view("catalogos/vwPresentacion");
 		}
-<<<<<<< HEAD
-=======
 
 		if($catal == "udm"){
 			$this->load->view("catalogos/vwUdm");
@@ -74,7 +72,6 @@ class Catalogos extends CI_Controller {
 			$this->load->view("catalogos/vwUsuario");
 		}
 
->>>>>>> 7343df8e60c3cc9b3089d5196a8cf4391c451dcf
 		if($catal == "proveedor"){
 			$this->load->view("catalogos/vwProveedor");
 		}
@@ -251,10 +248,7 @@ class Catalogos extends CI_Controller {
 		$registros = $query->result();
 		foreach ($registros as $registro ) {
 			if($registro->nombre == $valor)
-<<<<<<< HEAD
-=======
 			{
->>>>>>> 7343df8e60c3cc9b3089d5196a8cf4391c451dcf
 				$datos['familia_produc'] = $registro->id_fam;
 				break;
 			}

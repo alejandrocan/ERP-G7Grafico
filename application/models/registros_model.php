@@ -33,11 +33,35 @@ class Registros_model extends  CI_Model {
 		}
 
 
+
+		public function get_foreignColumns($tabla){
+			$foraneas = $this->db->query("select column_name,referenced_table_name,referenced_column_name from information_schema.key_column_usage where constraint_schema='kardex' and referenced_table_name != '' and table_name = '".$tabla."';");
+			return $foraneas->result();
+		}
+
+		public function get_referencedColumns($tabla){
+			$referencias = $this->db->query("select referenced_column_name from information_schema.key_column_usage where constraint_schema='kardex' and referenced_table_name != '' and table_name = '".$tabla."';");
+			return $referencias;
+		}
+
+		public function get_referencedTables($tabla){
+			$tablasForaneas = $this->db->query("select referenced_table_name from information_schema.key_column_usage where constraint_schema='kardex' and referenced_table_name != '' and table_name = '".$tabla."';");
+		}
+
 		public function disabledRegister ($tabla, $id){
 			$columns = $this->db->list_fields($tabla);
 			foreach ($columns as $column) {
 				$id_columns = $column;
 				break;
+			}
+			$columnas_foraneas = $this->registros_model->get_foreignColumns($tabla);
+			foreach ($columnas_foraneas as $cf) {
+				$col_for = $this->db->query("select ".$cf->column_name." from ".$tabla." where ".$id_columns." = ".$id.";");
+				$foreaneas = $this->db->query("select ".$cf->referenced_column_name." from ".$cf->referenced_table_name.";");
+				foreach ($foreaneas as $f) {
+					if($col_for == $f)
+						return false;
+				}
 			}
 			if($this->db->query("update ". $tabla. ' set estado = 0 where '. $id_columns . ' = '. $id)) {
 				return true;
@@ -61,24 +85,11 @@ class Registros_model extends  CI_Model {
 			}
 		}
 
-				public function get_columns($tabla){
+		public function get_columns($tabla){
 			$columnas = $this->db->list_fields($tabla);
 			return $columnas;
 		}
 
-		public function get_foreignColumns($tabla){
-			$foraneas = $this->db->query("select column_name,referenced_table_name, referenced_column_name from information_schema.key_column_usage where constraint_schema='kardex' and referenced_table_name != '' and table_name = '".$tabla."';");
-			return $foraneas->result();
-		}
-
-		public function get_referencedColumns($tabla){
-			$referencias = $this->db->query("select referenced_column_name from information_schema.key_column_usage where constraint_schema='kardex' and referenced_table_name != '' and table_name = '".$tabla."';");
-			return $referencias;
-		}
-
-		public function get_referencedTables($tabla){
-			$tablasForaneas = $this->db->query("select referenced_table_name from information_schema.key_column_usage where constraint_schema='kardex' and referenced_table_name != '' and table_name = '".$tabla."';");
-		}
 	}
 
 
