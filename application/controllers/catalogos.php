@@ -318,7 +318,7 @@ $this->form_validation->set_rules('Nombre', 'Nombre', 'required|trim|max_length[
             {
             	$error = array('error' => $this->upload->display_errors());
 
-				$this->index("usuario",$error)
+				$this->index("usuario",$error);
 				
 				
             }
