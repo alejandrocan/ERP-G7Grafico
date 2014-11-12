@@ -56,11 +56,17 @@ class Registros_model extends  CI_Model {
 			}
 			$columnas_foraneas = $this->registros_model->get_foreignColumns($tabla);
 			foreach ($columnas_foraneas as $cf) {
-				$col_for = $this->db->query("select ".$cf->column_name." from ".$tabla." where ".$id_columns." = ".$id.";");
-				$foreaneas = $this->db->query("select ".$cf->referenced_column_name." from ".$cf->referenced_table_name.";");
-				foreach ($foreaneas as $f) {
-					if($col_for == $f)
-						return false;
+				$col_for = $this->db->query("select ".$cf->referenced_column_name." from ".$cf->referenced_table_name." where ".$id_columns." = ".$id.";");
+				$col_for = $col_for->result();
+				$columna = $cf->referenced_column_name;
+				$foreaneas = $this->db->query("select ".$cf->column_name." from ".$cf->table_name.";");
+				$foreaneas = $foreaneas->result();
+				$foranea = $cf->column_name;
+				foreach ($col_for as $c) {
+					foreach ($foreaneas as $f) {
+						if($f->$foranea == $c->$columna)
+							return false;
+					}
 				}
 			}
 			if($this->db->query("update ". $tabla. ' set estado = 0 where '. $id_columns . ' = '. $id)) {

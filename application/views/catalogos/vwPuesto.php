@@ -25,6 +25,9 @@
         </tbody>
         </table>
     </div>
+    <?php if(@$error2){?>
+        <div class="container alert alert-danger alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button><?php echo @$error2;?></div>
+    <?php }?>
 
 <div class="container table-responsive">
     <h3>Descripcion</h3>
