@@ -2,7 +2,7 @@
         <h1>USUARIO</h1>
     </div>
     <div id="formulario_usuario">
-        <?=$error?>
+        <?=@$error?>
         <span><?php echo validation_errors(); ?></span>
         
         <table class="table table-bordered table-hover">
@@ -71,7 +71,11 @@
 
         
     </div>
-    
+    <?php if(@$error2){?>
+        <div class="container alert alert-danger alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button><?php echo @$error2;?></div>
+    <?php }?>
+
+
     <div class="">
         <h3>Registros</h3>
         <table class="table table-bordered table-hover">

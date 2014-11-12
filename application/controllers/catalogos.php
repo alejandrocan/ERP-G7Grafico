@@ -33,7 +33,7 @@ class Catalogos extends CI_Controller {
 		$this->load->model('registros_model');
 		if($this->registros_model->insertar($datos,$tabla))
 		{
-			redirect('catalogos/index/'.$tabla);
+			$this->index($tabla,null);
 		}
 		else
 		{
@@ -41,7 +41,7 @@ class Catalogos extends CI_Controller {
 		}
 	}
 
-	public function index($catal) 
+	public function index($catal,$erro2) 
 	{
 		if($this->session->userdata('is_logued_in') )
 		{
@@ -50,13 +50,39 @@ class Catalogos extends CI_Controller {
 			$this->load->model("registros_model");		
 			$data['registros']= $this->registros_model->mostrar($catal);
 
-			if($this->uri->segment(4) != ''){
-				$id = $this->uri->segment(4);
-				if($this->registros_model->disabledRegister($catal, $id)) {
-					redirect('catalogos/index/'. $catal);
+			$data['user']=$this->session->userdata('user');
+			$data['title'] = "Sistema G7 Grafico";
+			$this->load->view("vwHeader", $data);
+
+			if($this->uri->segment(4) != 'registros'){
+				if($catal == "udm"){
+				$this->load->view("catalogos/vwUdm",$erro2);
 				}
-				else{
-					echo "error";
+				if($catal == "presentacion") {
+					$this->load->view("catalogos/vwPresentacion",$erro2);
+				}
+				if($catal == "proveedor"){
+					$this->load->view("catalogos/vwProveedor",$erro2);
+				}
+				if($catal == "producto") {
+					$this->load->view("catalogos/vwProductos",$erro2);
+				}
+				if($catal == "puesto") {
+					$this->load->view("catalogos/vwPuesto",$erro2);
+				}
+				if($catal == "familia") {
+					$this->load->view("catalogos/vwFamilia",$erro2);
+				}
+				if($catal == "departamento") {
+					$this->load->view("catalogos/vwDepartamento",$erro2);
+				}
+				if($catal == "usuario"){
+					$this->load->view("catalogos/vwUsuario",$erro2);
+					$this->load->library('form_validation');
+		        	$this->load->helper('form');
+				}
+				if($catal == "material") {
+					$this->load->view("catalogos/vwMaterial",$erro2);
 				}
 			}
 			#$data['registros']= $this->registros_model->mostrar($catal);
@@ -64,9 +90,7 @@ class Catalogos extends CI_Controller {
 			#$data['foraneas'] = $this->registros_model->get_foreignColumns($catal);
 			#$data['tablasF'] = $this->registros_model->get_referencedTables($catal);
 			#$data['referencias'] = $this->registros_model->get_referencedColumns($catal);
-			$data['user']=$this->session->userdata('user');
-			$data['title'] = "Sistema G7 Grafico";
-			$this->load->view("vwHeader", $data);
+			else{
 			if($catal == "udm"){
 				$this->load->view("catalogos/vwUdm");
 			}
@@ -95,7 +119,7 @@ class Catalogos extends CI_Controller {
 			}
 			if($catal == "material") {
 				$this->load->view("catalogos/vwMaterial");
-			}
+			}}
 		}
 		else{
 			redirect(login2);
@@ -106,7 +130,8 @@ class Catalogos extends CI_Controller {
 	public function enabled($tabla, $id){
 		$this->load->model("registros_model");
 		if($this->registros_model->enabledRegister($tabla, $id) ){
-			redirect('catalogos/index/'. $tabla);
+			$this->index($tabla,null);
+			
 		}
 		else{
 			return false;
@@ -116,10 +141,12 @@ class Catalogos extends CI_Controller {
 		public function disabled($tabla, $id){
 		$this->load->model("registros_model");
 		if($this->registros_model->disabledRegister($tabla, $id) ){
-			redirect('catalogos/index/'. $tabla);
+			$this->index($tabla,null);
+			
 		}
 		else{
-			return false;
+			$error2['error2'] = "El resgistro esta en uso, no puede ser deshabilitado";
+			$this->index($tabla,$error2);
 		}
 	}
 
@@ -134,12 +161,13 @@ class Catalogos extends CI_Controller {
 			$datos['estado'] = 1;
 			$this->load->model('registros_model');
 			if($this->registros_model->insertar($datos,$tabla)) {
-				redirect('catalogos/index/'. $tabla);
+			$this->index($tabla,null);
+				
 			}
 		}
 		else
 		{
-			$this->index("puesto");
+			$this->index($tabla,null);
 		}
 	}
 
@@ -150,7 +178,8 @@ class Catalogos extends CI_Controller {
 		$datos['estado'] = 1;
 		$this->load->model('registros_model');
 		if($this->registros_model->insertar($datos,$tabla)) {
-			redirect('catalogos/index/'. $tabla);
+			$this->index($tabla,null);
+			
 		}
 	}
 
@@ -161,7 +190,8 @@ class Catalogos extends CI_Controller {
 
 		$this->load->model('registros_model');
 		if($this->registros_model->insertar($datos,$tabla)) {
-			redirect('catalogos/index/'. $tabla);
+			$this->index($tabla,null);
+			
 		}
 	}
 
@@ -172,7 +202,7 @@ class Catalogos extends CI_Controller {
 
 		$this->load->model('registros_model');
 		if($this->registros_model->insertar($datos,$tabla)) {
-			redirect('catalogos/index/'. $tabla);
+			$this->index($tabla,null);
 		}
 	}
 
@@ -199,12 +229,12 @@ class Catalogos extends CI_Controller {
 
 			$this->load->model('registros_model');
 			if($this->registros_model->insertar($datos,$tabla)) {
-				redirect('catalogos/index/'. $tabla);
+				redirect('catalogos/index/'. $tabla,null);
 			}
 		}
 		else
 		{
-			$this->index("proveedor");
+			$this->index($tabla,null);
 		}
 	}
 
@@ -226,7 +256,7 @@ class Catalogos extends CI_Controller {
 
 		$this->load->model('registros_model');
 		if($this->registros_model->insertar($datos,$tabla)) {
-			redirect('catalogos/index/'. $tabla);
+			$this->index($tabla,null);
 		}
 	}
 
@@ -312,13 +342,13 @@ class Catalogos extends CI_Controller {
 				}
 				if($this->registros_model->insertar($datos, "usuario")) 
 				{
-					redirect('catalogos/index/usuario');
+					$this->index("usuario",null);
 				}
 			
 		}
 		else
 		{
-			$this->index("usuario");
+			$this->index("usuario",null);
 		}
 	}
 
@@ -434,7 +464,7 @@ class Catalogos extends CI_Controller {
 
 		$this->load->model('registros_model');
 		if($this->registros_model->insertar($datos, $tabla)) {
-			redirect('catalogos/index/'. $tabla);
+			$this->index($tabla,null);
 		}
 	}
 
@@ -490,7 +520,7 @@ class Catalogos extends CI_Controller {
 
 		$this->load->model('registros_model');
 		if($this->registros_model->editar($datos, $tabla)) {
-			redirect('catalogos/index/'. $tabla);
+			$this->index($tabla,null);
 		}
 	}
 }

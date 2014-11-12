@@ -32,6 +32,11 @@
             </tbody>
         </table>
     </div>
+    <?php if(@$error2){?>
+        <div class="container alert alert-danger alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button><?php echo @$error2;?></div>
+    <?php }?>
+
+
     <div class="container">
         <h3>Registros</h3>
         <table class="table table-bordered table-hover">
