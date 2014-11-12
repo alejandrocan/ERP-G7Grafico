@@ -127,6 +127,7 @@ class Catalogos extends CI_Controller {
 	public function insertPuesto($tabla) {
 		$this->form_validation->set_rules('Nombre', 'Nombre', 'required|trim|max_length[50]');
 		$this->form_validation->set_message('required', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>El campo %s no debe estar vacío</div>');
+		$this->form_validation->set_message('max_length', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button> El campo %s no debe ser mayor a %d carácteres</div>');
 
 		if ($this->form_validation->run() == TRUE) 
         {
@@ -144,24 +145,43 @@ class Catalogos extends CI_Controller {
 	}
 
 	public function insertUdm($tabla) {
-
-		$datos['nombre'] = $this->input->post('Nombre');
-		$datos['tipo_udm'] = $this->input->post('Tipo');
-		$datos['estado'] = 1;
-		$this->load->model('registros_model');
-		if($this->registros_model->insertar($datos,$tabla)) {
-			redirect('catalogos/index/'. $tabla);
+		$this->form_validation->set_rules('Nombre', 'Nombre', 'required|trim|max_length[50]');
+		$this->form_validation->set_message('required', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>El campo %s no debe estar vacío</div>');
+		$this->form_validation->set_message('max_length', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button> El campo %s no debe ser mayor a %d carácteres</div>');
+		if ($this->form_validation->run() == TRUE) 
+        {
+			$datos['nombre'] = $this->input->post('Nombre');
+			$datos['tipo_udm'] = $this->input->post('Tipo');
+			$datos['estado'] = 1;
+			$this->load->model('registros_model');
+			if($this->registros_model->insertar($datos,$tabla)) {
+				redirect('catalogos/index/'. $tabla);
+			}
+		}
+		else
+		{
+			$this->index("udm");
 		}
 	}
 
 	/* Agrega una funcion para insertar los datos en la tabla de departamento */
 	public function insertDepartamento($tabla) {
-		$datos['nombre_depto'] = $this->input->post("nombre");
-		$datos['estado'] = 1;
+		$this->form_validation->set_rules('Nombre', 'Nombre', 'required|trim|max_length[50]');
+		$this->form_validation->set_message('required', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>El campo %s no debe estar vacío</div>');
+		$this->form_validation->set_message('max_length', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button> El campo %s no debe ser mayor a %d carácteres</div>');
 
-		$this->load->model('registros_model');
-		if($this->registros_model->insertar($datos,$tabla)) {
-			redirect('catalogos/index/'. $tabla);
+		if ($this->form_validation->run() == TRUE) 
+        {
+			$datos['nombre'] = $this->input->post("Nombre");
+			$datos['estado'] = 1;
+			$this->load->model('registros_model');
+			if($this->registros_model->insertar($datos,$tabla)) {
+				redirect('catalogos/index/'. $tabla);
+			}
+		}
+		else
+		{
+			$this->index("departamento");
 		}
 	}
 
@@ -179,7 +199,7 @@ class Catalogos extends CI_Controller {
 	public function insertProveedor($tabla) {
 		$this->form_validation->set_rules('Nombre', 'Nombre', 'required|trim|max_length[50]');
 		$this->form_validation->set_rules('Direccion', 'Dirección', 'trim|max_length[50]');
-		$this->form_validation->set_rules('Telefono', 'Teléfono', 'required|trim|min_length[7]|max_length[11]');
+		$this->form_validation->set_rules('Telefono', 'Teléfono', 'required|trim|min_length[7]|max_length[11]|numeric');
 		$this->form_validation->set_rules('Correo', 'Correo', 'trim|valid_email|max_length[50]');
 		$this->form_validation->set_rules('Contacto', 'Contacto', 'trim|max_length[30]');
 
@@ -187,6 +207,7 @@ class Catalogos extends CI_Controller {
         $this->form_validation->set_message('min_length', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>El campo %s debe ser menor a %d carácteres</div>');
         $this->form_validation->set_message('max_length', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button> El campo %s no debe ser mayor a %d carácteres</div>');
         $this->form_validation->set_message('valid_email', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button> El %s no es válido</div>');
+        $this->form_validation->set_message('numeric', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>El campo %s debe contener sólo números</div>');
 
         if ($this->form_validation->run() == TRUE) 
         {
@@ -210,6 +231,10 @@ class Catalogos extends CI_Controller {
 
 	/* Agrega una funcion para insertar los datos en la tabla de UDM */
 	public function insertPresentacion($tabla) {
+$this->form_validation->set_rules('Nombre', 'Nombre', 'required|trim|max_length[50]');
+		$this->form_validation->set_message('required', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>El campo %s no debe estar vacío</div>');
+		$this->form_validation->set_message('max_length', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button> El campo %s no debe ser mayor a %d carácteres</div>');
+
 		$datos['nombre'] = $this->input->post("nombre");
 		$valor = $this->input->post("udm_pres");
 		$query =  $this->db->get("udm");
@@ -241,6 +266,9 @@ class Catalogos extends CI_Controller {
 		$this->form_validation->set_rules('Apellido1', 'Apellido Paterno', 'required|max_length[15]');
 		$this->form_validation->set_rules('Apellido2', 'Apellido Materno', 'max_length[15]');
 		$this->form_validation->set_rules('Correo', 'Correo', 'required|valid_email|max_length[45]');
+		$this->form_validation->set_rules('Puesto', 'Puesto', 'required');
+		$this->form_validation->set_rules('Departamento', 'Departamento', 'required');
+		$this->form_validation->set_rules('Tipo', 'Tipo', 'required');
 
         $this->form_validation->set_message('required', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>El campo %s no puede estar vacío</div>');
         $this->form_validation->set_message('min_length', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>El campo %s debe tener al menos %d carácteres</div>');
@@ -290,26 +318,8 @@ class Catalogos extends CI_Controller {
 				$datos['tipo_usr'] = $this->input->post('Tipo');
 				$datos['imagen'] = $file_info['file_name'];
 				$datos['estado'] = 1;
-				$valor = $this->input->post("Departamento");
-				$query =  $this->db->get("departamento");
-				$registros = $query->result();
-				foreach ($registros as $registro ) {
-					if($registro->nombre == $valor)
-					{
-						$datos['depto_usr'] = $registro->id_depto;
-						break;
-					}
-				}
-				$valor = $this->input->post("Puesto");
-				$query =  $this->db->get("puesto");
-				$registros = $query->result();
-				foreach ($registros as $registro ) {
-					if($registro->nombre == $valor)
-					{
-						$datos['id_puesto'] = $registro->id_puesto;
-						break;
-					}
-				}
+				$datos['depto_usr'] = $this->input->post("Departamento");
+				$datos['id_puesto'] = $this->input->post("Puesto");
 				if($this->registros_model->insertar($datos, "usuario")) 
 				{
 					redirect('catalogos/index/usuario');

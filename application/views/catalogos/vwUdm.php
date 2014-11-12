@@ -2,8 +2,8 @@
         <h1>UDM</h1>
     </div>
     <div class="container">
+        <span><?php echo validation_errors(); ?></span>
         <h3>Agregar registro</h3>
-        <form action="<?php echo base_url();?>index.php/catalogos/insertUdm/<?php echo $catalogo?>" method="post">
             <table class="table table-bordered table-hover">
                 <thead>
                     <tr>
@@ -14,30 +14,30 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td><input class="form-control" value="" type="text" name="Nombre"></td>
-                        <td>
-                            <select class="form-control" name ="Tipo">
-                                <option>Seleccione una opción</option>
-                                <option>Longitud</option>
-                                <option>Área</option>
-                                <option>Volúmen</option>
-                                <option>Cuantitativo</option>
-                                <option>Distancia</option>
-                                <option>Fuerza</option>
-                                <option>Energía</option>
-                                <option>Peso</option>
-                                <option>Tiempo</option>
-                                <option>Velocidad</option>
-                            </select>
-                        </td>
-                        <td>
-                            <input type="submit" value="Guardar" class="btn btn-info btn-sm" >
-                            <input type="submit" value="Cancelar" class="btn btn-danger btn-sm">
-                        </td>
+                        <?php echo form_open_multipart(base_url()."index.php/catalogos/insertUdm/udm")?>
+                            <td><input class="form-control" value="" type="text" name="Nombre"></td>
+                            <td>
+                                <select class="form-control" name ="Tipo">
+                                    <option>Longitud</option>
+                                    <option>Área</option>
+                                    <option>Volúmen</option>
+                                    <option>Cuantitativo</option>
+                                    <option>Distancia</option>
+                                    <option>Fuerza</option>
+                                    <option>Energía</option>
+                                    <option>Peso</option>
+                                    <option>Tiempo</option>
+                                    <option>Velocidad</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input type="submit" value="Guardar" class="btn btn-info btn-sm" >
+                                <a href="<?php echo base_url(). 'index.php/catalogos/index/udm'; ?>" class="btn btn-danger btn-sm" >Cancelar</a>
+                            </td>
+                        <?php echo form_close();?>
                     </tr>
                 </tbody>
             </table>
-        </form>
     </div>
     <div class="container">
         <table class="table table-bordered table-hover">
@@ -82,5 +82,7 @@
 
         </table>
     </div>
+        <script src="https://code.jquery.com/jquery.js"></script>
+    <script src="<?php echo base_url(); ?>js/bootstrap.min.js"></script>
 </body>
 </html>

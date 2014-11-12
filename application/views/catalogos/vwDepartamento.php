@@ -3,24 +3,27 @@
         <h1>Departamento</h1>
 </div>
     <div class="container table-responsive">
+        <span><?php echo validation_errors(); ?></span>
         <h3>Agregar nuevo Departamento</h3>
-        <form action="<?php echo base_url();?>index.php/catalogos/insertDepartamento/<?php echo $catalogo?>" method="post">
         <table class="table table-bordered table-hover">
-        <thead>
-            <tr>
-                <th>Nombre</th>                
-                <th>Acciones</th>
-            </tr>
-        </thead>
-            <tr>
-                <td><input class="form-control" value="" type="text" name="nombre"></td>                    
-                <td>
-                    <input type="submit" value="Guardar" class="btn btn-info btn-sm">
-                    <input type="button" value="Cancelar" class="btn btn-danger btn-sm">
-                </td>
-            </tr>
+            <thead>
+                <tr>
+                    <th>Nombre</th>                
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <?php echo form_open_multipart(base_url()."index.php/catalogos/insertDepartamento/departamento")?>
+                    <td><input class="form-control" value="" type="text" name="Nombre"></td>                    
+                    <td>
+                        <input type="submit" value="Guardar" class="btn btn-info btn-sm">
+                        <a href="<?php echo base_url(). 'index.php/catalogos/index/departamento'; ?>" class="btn btn-danger btn-sm" >Cancelar</a>
+                    </td>
+                    <?php echo form_close();?>
+                </tr>
+            </tbody>
         </table>
-    </form>
     </div>
 
 <div class="container table-responsive">
