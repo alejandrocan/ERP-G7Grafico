@@ -1,7 +1,20 @@
+<script type="text/javascript">
+$(document).ready(function(){
+
+ $('tr:odd').css('background', '#e3e3e3');
+ var url = '<?php echo base_url();?>index.php/autocompletar/get_data'; 
+
+ $('#buscar').autocomplete({
+    source: url+'?item=nombre'
+  });
+
+});    
+</script>
+
 <div class="container">
 	<form class="navbar-form navbar-left" role="search">
     	<div class="form-group">
-        	<input type="text" class="form-control" placeholder="Producto/Material">
+        	<input type="text" class="form-control" placeholder="Producto/Material" id="buscar">
       	</div>
       	<button type="submit" class="btn btn-default">Agregar</button>
     </form>

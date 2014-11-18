@@ -23,6 +23,6 @@ class Admin extends CI_Controller {
         $data['tables'] =  $this->tabla_model->mostrar_tabla();
         $this->load->view('vwHeader',$data);
         $this->load->view('vwInterface');
-        $this->load->view('vwFooter');
+        
     }
 }

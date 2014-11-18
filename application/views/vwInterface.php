@@ -103,19 +103,59 @@
 
 		<div class="tab-pane fade" id="explosion">
 			<h4>Explosión</h4>
-			<input type="text" placeholder="Buscador" class="form-control">
-			<a href="#"><span class="glyphicon glyphicon-plus-sign"></span></a>
-			<a href="#"><span class="glyphicon glyphicon-minus-sign"></span></a>
-			<a href="#"><span class="glyphicon glyphicon-pencil"></span></a>
-			<a href="#"><span class="glyphicon glyphicon-retweet"></span></a>
+			<!--JavaScript funcion del autocompletado -->
+			<script type="text/javascript">
+				$(document).ready(function(){
+
+					 var url = '<?php echo base_url();?>index.php/autocompletar/get_data'; 
+
+					$('#resources').autocomplete({
+					    source: url+'?item=nombre'
+					});
+
+				});  
+			</script>	
+			<!--JavaScript End-->	
+			<div class="container">
+				<!--Formulario de busqueda-->
+				<form class="navbar-form navbar-left" role="search">
+			    	<div class="form-group">
+			        	<input type="text" class="form-control" placeholder="Producto/Material" id="resources">
+			      	</div>
+			      	<button type="submit" class="btn btn-success">Agregar</button>
+			      	<button type="submit" class="btn btn-danger">Cancelar</button>
+			    </form>			
+			    <!--Formulario End-->
+
+			    <!--Tabla de materiales agregados-->
+			    <table class="table table-bordered table-hover">
+			    	<thead>
+			    		<tr>
+			    			<th>Descripcion</th>
+			    			<th>Cantidad</th>
+			    			<th>UDM</th>
+			    		</tr>
+			    	</thead>
+			    	<tbody>
+			    		<tr>
+			    			<td>Material</td>
+			    			<td>2</td>
+			    			<td>Metro</td>
+			    		</tr>
+			    	</tbody>
+			    </table>
+			    <!--Table End-->
+			</div>
 		</div>
 
 		<div class="tab-pane fade" id="reportes">
 			<h4>Reportes</h4>
+			<h2>Cooming soon!</h2>
 		</div>
 
 		<div class="tab-pane fade" id="kardex">
 			<h4>Kardex</h4>
+			<h2>Cooming soon!</h2>
 		</div>
 	</div>
 </div>
