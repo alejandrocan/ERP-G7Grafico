@@ -2,9 +2,9 @@
         <h1>USUARIO</h1>
     </div>
     <div id="formulario_usuario">
-        <?=$error?>
+        <?=@$error?>
         <span><?php echo validation_errors(); ?></span>
-        
+        <h3>Agregar registro </h3>
         <table class="table table-bordered table-hover">
                 <thead>
                     <tr>
@@ -15,7 +15,7 @@
                         <th>Apellido Paterno</th>
                         <th>Apellido Materno</th>
                         <th>Correo</th>
-                        <th>Tipo</th> 
+                        <th>Tipo</th>
                         <th>Departamento</th>
                         <th>Puesto</th>
                         <th>Imagen de Perfil</th>
@@ -25,37 +25,39 @@
                 <tbody>
                     <tr>
                         <?php echo form_open_multipart(base_url()."index.php/catalogos/insertUsuario/")?>
-                        <td><input class="form-control" value="" type="text" name="Nombre"></td>
+                        <td><input class="form-control" value="<?php echo set_value('Nombre'); ?>" type="text" name="Nombre"></td>
                         <td><input class="form-control" type="password" name="Contrasena" ></td>
-                        <td><input class="form-control" value="" type="text" name="Nombre1"></td>
-                        <td><input class="form-control" value="" type="text" name="Nombre2"></td>
-                        <td><input class="form-control" value="" type="text" name="Apellido1"></td>
-                        <td><input class="form-control" value="" type="text" name="Apellido2"></td>
-                        <td><input class="form-control" value="" type="text" name="Correo"></td>
+                        <td><input class="form-control" value="<?php echo set_value('Nombre1'); ?>" type="text" name="Nombre1"></td>
+                        <td><input class="form-control" value="<?php echo set_value('Nombre2'); ?>" type="text" name="Nombre2"></td>
+                        <td><input class="form-control" value="<?php echo set_value('Apellido1'); ?>" type="text" name="Apellido1"></td>
+                        <td><input class="form-control" value="<?php echo set_value('Apellido2'); ?>" type="text" name="Apellido2"></td>
+                        <td><input class="form-control" value="<?php echo set_value('Correo'); ?>" type="text" name="Correo"></td>
                         <td>
                             <select class="form-control" name ="Tipo">
-                                <option>Administrador</option>
-                                <option>Usuario</option>
+                                <?php 
+                                    echo '<option value="Administrador" ' . set_select('Tipo','Administrador') . '>' . 'Administrador</option>';
+                                    echo '<option value="Usuario" ' . set_select('Tipo','Usuario') . '>' . 'Usuario</option>';
+                                ?>
                             </select>
                         </td>
                         <td>
                             <select class="form-control" name ="Departamento">
                                 <?php 
-                                $query = $this->db->get("departamento");
-                                $valores = $query->result(); ?>
-                                <?php foreach ($valores as $valor): ?>
-                                <option><?php echo $valor->nombre; ?></option>
-                                <?php endforeach; ?>
+                                    $query = $this->db->get("departamento");
+                                    $valores = $query->result(); 
+                                    foreach ($valores as $valor)
+                                        echo '<option value="' . $valor->id_depto . '" ' . set_select('Departamento',$valor->id_depto) . '>' . $valor->nombre . '</option>';
+                                ?>
                             </select>
                         </td>
                         <td>
                             <select class="form-control" name ="Puesto">
                                 <?php 
-                                $query = $this->db->get("puesto");
-                                $valores = $query->result(); ?>
-                                <?php foreach ($valores as $valor): ?>
-                                <option><?php echo $valor->nombre; ?></option>
-                                <?php endforeach; ?>
+                                    $query = $this->db->get("puesto");
+                                    $valores = $query->result(); 
+                                    foreach ($valores as $valor)
+                                        echo '<option value="' . $valor->id_puesto . '" ' . set_select('Puesto',$valor->id_puesto) . '>' . $valor->nombre . '</option>';
+                                ?>
                             </select>
                         </td>
                         <td><input class="form-control" type="file" name="Imagen"></td>
@@ -71,7 +73,11 @@
 
         
     </div>
-    
+    <?php if(@$error2){?>
+        <div class="container alert alert-danger alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button><?php echo @$error2;?></div>
+    <?php }?>
+
+
     <div class="">
         <h3>Registros</h3>
         <table class="table table-bordered table-hover">

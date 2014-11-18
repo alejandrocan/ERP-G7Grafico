@@ -13,8 +13,6 @@ class Catalogos extends CI_Controller {
 
 	function __construct() {
         parent::__construct();
-        $this->load->library('form_validation');
-        $this->load->helper('form');
     }
 
 	public function insertarRegistro($tabla)
@@ -33,7 +31,7 @@ class Catalogos extends CI_Controller {
 		$this->load->model('registros_model');
 		if($this->registros_model->insertar($datos,$tabla))
 		{
-			redirect('catalogos/index/'.$tabla);
+			$this->index($tabla,null);
 		}
 		else
 		{
@@ -41,7 +39,7 @@ class Catalogos extends CI_Controller {
 		}
 	}
 
-	public function index($catal) 
+	public function index($catal,$erro2) 
 	{
 		if($this->session->userdata('is_logued_in') )
 		{
@@ -50,13 +48,39 @@ class Catalogos extends CI_Controller {
 			$this->load->model("registros_model");		
 			$data['registros']= $this->registros_model->mostrar($catal);
 
-			if($this->uri->segment(4) != ''){
-				$id = $this->uri->segment(4);
-				if($this->registros_model->disabledRegister($catal, $id)) {
-					redirect('catalogos/index/'. $catal);
+			$data['user']=$this->session->userdata('user');
+			$data['title'] = "Sistema G7 Grafico";
+			$this->load->view("vwHeader", $data);
+
+			if($this->uri->segment(4) != 'registros'){
+				if($catal == "udm"){
+				$this->load->view("catalogos/vwUdm",$erro2);
 				}
-				else{
-					echo "error";
+				if($catal == "presentacion") {
+					$this->load->view("catalogos/vwPresentacion",$erro2);
+				}
+				if($catal == "proveedor"){
+					$this->load->view("catalogos/vwProveedor",$erro2);
+				}
+				if($catal == "producto") {
+					$this->load->view("catalogos/vwProductos",$erro2);
+				}
+				if($catal == "puesto") {
+					$this->load->view("catalogos/vwPuesto",$erro2);
+				}
+				if($catal == "familia") {
+					$this->load->view("catalogos/vwFamilia",$erro2);
+				}
+				if($catal == "departamento") {
+					$this->load->view("catalogos/vwDepartamento",$erro2);
+				}
+				if($catal == "usuario"){
+					$this->load->view("catalogos/vwUsuario",$erro2);
+					$this->load->library('form_validation');
+		        	$this->load->helper('form');
+				}
+				if($catal == "material") {
+					$this->load->view("catalogos/vwMaterial",$erro2);
 				}
 			}
 			#$data['registros']= $this->registros_model->mostrar($catal);
@@ -64,9 +88,7 @@ class Catalogos extends CI_Controller {
 			#$data['foraneas'] = $this->registros_model->get_foreignColumns($catal);
 			#$data['tablasF'] = $this->registros_model->get_referencedTables($catal);
 			#$data['referencias'] = $this->registros_model->get_referencedColumns($catal);
-			$data['user']=$this->session->userdata('user');
-			$data['title'] = "Sistema G7 Grafico";
-			$this->load->view("vwHeader", $data);
+			else{
 			if($catal == "udm"){
 				$this->load->view("catalogos/vwUdm");
 			}
@@ -95,7 +117,7 @@ class Catalogos extends CI_Controller {
 			}
 			if($catal == "material") {
 				$this->load->view("catalogos/vwMaterial");
-			}
+			}}
 		}
 		else{
 			redirect(login2);
@@ -106,7 +128,8 @@ class Catalogos extends CI_Controller {
 	public function enabled($tabla, $id){
 		$this->load->model("registros_model");
 		if($this->registros_model->enabledRegister($tabla, $id) ){
-			redirect('catalogos/index/'. $tabla);
+			$this->index($tabla,null);
+			
 		}
 		else{
 			return false;
@@ -116,10 +139,12 @@ class Catalogos extends CI_Controller {
 		public function disabled($tabla, $id){
 		$this->load->model("registros_model");
 		if($this->registros_model->disabledRegister($tabla, $id) ){
-			redirect('catalogos/index/'. $tabla);
+			$this->index($tabla,null);
+			
 		}
 		else{
-			return false;
+			$error2['error2'] = "El resgistro esta en uso, no puede ser deshabilitado";
+			$this->index($tabla,$error2);
 		}
 	}
 
@@ -127,6 +152,7 @@ class Catalogos extends CI_Controller {
 	public function insertPuesto($tabla) {
 		$this->form_validation->set_rules('Nombre', 'Nombre', 'required|trim|max_length[50]');
 		$this->form_validation->set_message('required', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>El campo %s no debe estar vacío</div>');
+		$this->form_validation->set_message('max_length', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button> El campo %s no debe ser mayor a %d carácteres</div>');
 
 		if ($this->form_validation->run() == TRUE) 
         {
@@ -134,34 +160,56 @@ class Catalogos extends CI_Controller {
 			$datos['estado'] = 1;
 			$this->load->model('registros_model');
 			if($this->registros_model->insertar($datos,$tabla)) {
-				redirect('catalogos/index/'. $tabla);
+			$this->index($tabla,null);
+				
 			}
 		}
 		else
 		{
-			$this->index("puesto");
+			$this->index($tabla,null);
 		}
 	}
 
 	public function insertUdm($tabla) {
 
-		$datos['nombre'] = $this->input->post('Nombre');
-		$datos['tipo_udm'] = $this->input->post('Tipo');
-		$datos['estado'] = 1;
-		$this->load->model('registros_model');
-		if($this->registros_model->insertar($datos,$tabla)) {
-			redirect('catalogos/index/'. $tabla);
+		$this->form_validation->set_rules('Nombre', 'Nombre', 'required|trim|max_length[50]');
+		$this->form_validation->set_message('required', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>El campo %s no debe estar vacío</div>');
+		$this->form_validation->set_message('max_length', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button> El campo %s no debe ser mayor a %d carácteres</div>');
+		if ($this->form_validation->run() == TRUE) 
+        {
+			$datos['nombre'] = $this->input->post('Nombre');
+			$datos['tipo_udm'] = $this->input->post('Tipo');
+			$datos['estado'] = 1;
+			$this->load->model('registros_model');
+			if($this->registros_model->insertar($datos,$tabla)) {
+				$this->index($tabla,null);
+			}
+		}
+		else
+		{
+			$this->index("udm",null);
 		}
 	}
 
 	/* Agrega una funcion para insertar los datos en la tabla de departamento */
 	public function insertDepartamento($tabla) {
-		$datos['nombre_depto'] = $this->input->post("nombre");
-		$datos['estado'] = 1;
+		$this->form_validation->set_rules('Nombre', 'Nombre', 'required|trim|max_length[50]');
+		$this->form_validation->set_message('required', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>El campo %s no debe estar vacío</div>');
+		$this->form_validation->set_message('max_length', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button> El campo %s no debe ser mayor a %d carácteres</div>');
 
-		$this->load->model('registros_model');
-		if($this->registros_model->insertar($datos,$tabla)) {
-			redirect('catalogos/index/'. $tabla);
+
+		if ($this->form_validation->run() == TRUE) 
+        {
+			$datos['nombre'] = $this->input->post("Nombre");
+			$datos['estado'] = 1;
+			$this->load->model('registros_model');
+			if($this->registros_model->insertar($datos,$tabla)) {
+				$this->index($tabla,null);
+			}
+		}
+		else
+		{
+			$this->index("departamento",null);
 		}
 	}
 
@@ -172,14 +220,14 @@ class Catalogos extends CI_Controller {
 
 		$this->load->model('registros_model');
 		if($this->registros_model->insertar($datos,$tabla)) {
-			redirect('catalogos/index/'. $tabla);
+			$this->index($tabla,null);
 		}
 	}
 
 	public function insertProveedor($tabla) {
 		$this->form_validation->set_rules('Nombre', 'Nombre', 'required|trim|max_length[50]');
 		$this->form_validation->set_rules('Direccion', 'Dirección', 'trim|max_length[50]');
-		$this->form_validation->set_rules('Telefono', 'Teléfono', 'required|trim|min_length[7]|max_length[11]');
+		$this->form_validation->set_rules('Telefono', 'Teléfono', 'required|trim|min_length[7]|max_length[11]|numeric');
 		$this->form_validation->set_rules('Correo', 'Correo', 'trim|valid_email|max_length[50]');
 		$this->form_validation->set_rules('Contacto', 'Contacto', 'trim|max_length[30]');
 
@@ -187,6 +235,7 @@ class Catalogos extends CI_Controller {
         $this->form_validation->set_message('min_length', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>El campo %s debe ser menor a %d carácteres</div>');
         $this->form_validation->set_message('max_length', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button> El campo %s no debe ser mayor a %d carácteres</div>');
         $this->form_validation->set_message('valid_email', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button> El %s no es válido</div>');
+        $this->form_validation->set_message('numeric', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>El campo %s debe contener sólo números</div>');
 
         if ($this->form_validation->run() == TRUE) 
         {
@@ -199,17 +248,21 @@ class Catalogos extends CI_Controller {
 
 			$this->load->model('registros_model');
 			if($this->registros_model->insertar($datos,$tabla)) {
-				redirect('catalogos/index/'. $tabla);
+				$this->index($tabla,null);
 			}
 		}
 		else
 		{
-			$this->index("proveedor");
+			$this->index($tabla,null);
 		}
 	}
 
 	/* Agrega una funcion para insertar los datos en la tabla de UDM */
 	public function insertPresentacion($tabla) {
+$this->form_validation->set_rules('Nombre', 'Nombre', 'required|trim|max_length[50]');
+		$this->form_validation->set_message('required', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>El campo %s no debe estar vacío</div>');
+		$this->form_validation->set_message('max_length', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button> El campo %s no debe ser mayor a %d carácteres</div>');
+
 		$datos['nombre'] = $this->input->post("nombre");
 		$valor = $this->input->post("udm_pres");
 		$query =  $this->db->get("udm");
@@ -226,7 +279,7 @@ class Catalogos extends CI_Controller {
 
 		$this->load->model('registros_model');
 		if($this->registros_model->insertar($datos,$tabla)) {
-			redirect('catalogos/index/'. $tabla);
+			$this->index($tabla,null);
 		}
 	}
 
@@ -241,6 +294,9 @@ class Catalogos extends CI_Controller {
 		$this->form_validation->set_rules('Apellido1', 'Apellido Paterno', 'required|max_length[15]');
 		$this->form_validation->set_rules('Apellido2', 'Apellido Materno', 'max_length[15]');
 		$this->form_validation->set_rules('Correo', 'Correo', 'required|valid_email|max_length[45]');
+		$this->form_validation->set_rules('Puesto', 'Puesto', 'required');
+		$this->form_validation->set_rules('Departamento', 'Departamento', 'required');
+		$this->form_validation->set_rules('Tipo', 'Tipo', 'required');
 
         $this->form_validation->set_message('required', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>El campo %s no puede estar vacío</div>');
         $this->form_validation->set_message('min_length', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>El campo %s debe tener al menos %d carácteres</div>');
@@ -262,19 +318,7 @@ class Catalogos extends CI_Controller {
             {
             	$error = array('error' => $this->upload->display_errors());
 
-            	$this->load->model("registros_model");		
-            	$data['registros']= $this->registros_model->mostrar("usuario");
-				$data['columnas'] = $this->registros_model->get_columns("usuario");
-				$data['foraneas'] = $this->registros_model->get_foreignColumns("usuario");
-				$data['tablasF'] = $this->registros_model->get_referencedTables("usuario");
-				$data['referencias'] = $this->registros_model->get_referencedColumns("usuario");
-				$data['user']=$this->session->userdata('user');
-				$data['title'] = "Sistema G7 Grafico";
-				$data['catalogo'] = "usuario";
-				$this->load->library('form_validation');
-	        	$this->load->helper('form');
-				$this->load->view("vwHeader", $data);
-				$this->load->view("catalogos/vwUsuario",$error);
+				$this->index("usuario",$error);
 				
 				
             }
@@ -290,35 +334,17 @@ class Catalogos extends CI_Controller {
 				$datos['tipo_usr'] = $this->input->post('Tipo');
 				$datos['imagen'] = $file_info['file_name'];
 				$datos['estado'] = 1;
-				$valor = $this->input->post("Departamento");
-				$query =  $this->db->get("departamento");
-				$registros = $query->result();
-				foreach ($registros as $registro ) {
-					if($registro->nombre == $valor)
-					{
-						$datos['depto_usr'] = $registro->id_depto;
-						break;
-					}
-				}
-				$valor = $this->input->post("Puesto");
-				$query =  $this->db->get("puesto");
-				$registros = $query->result();
-				foreach ($registros as $registro ) {
-					if($registro->nombre == $valor)
-					{
-						$datos['id_puesto'] = $registro->id_puesto;
-						break;
-					}
-				}
+				$datos['depto_usr'] = $this->input->post("Departamento");
+				$datos['id_puesto'] = $this->input->post("Puesto");
 				if($this->registros_model->insertar($datos, "usuario")) 
 				{
-					redirect('catalogos/index/usuario');
+					$this->index("usuario",null);
 				}
 			
 		}
 		else
 		{
-			$this->index("usuario");
+			$this->index("usuario",null);
 		}
 	}
 
@@ -366,7 +392,7 @@ class Catalogos extends CI_Controller {
 		$query =  $this->db->get("departamento");
 		$registros = $query->result();
 		foreach ($registros as $registro ) {
-			if($registro->nombre_depto == $valor)
+			if($registro->nombre == $valor)
 			{
 				$datos['depto_produc'] = $registro->id_depto;
 				break;
@@ -380,7 +406,6 @@ class Catalogos extends CI_Controller {
 			$this->load->view("vwHeader", $data);
 			$this->load->view("catalogos/vwAddMaterial");
 		}
-
 	}
 
 	public function insertMaterial($tabla){
@@ -391,29 +416,31 @@ class Catalogos extends CI_Controller {
 		$query =  $this->db->get("udm");
 		$registros = $query->result();
 		foreach ($registros as $registro ) {
-			if($registro->nombre == $valor)
+			if($registro->nombre == $valor){
 				$datos['udm_material'] = $registro->id_udm;
 				break;
+			}
 		}
-
 		/*Busca el id de la familia seleccionada*/
 		$valor = $this->input->post("proveedor_material");
 		$query =  $this->db->get("proveedor");
 		$registros = $query->result();
 		foreach ($registros as $registro ) {
-			if($registro->nombre == $valor)
+			if($registro->nombre == $valor){
 				$datos['proveedor_material'] = $registro->id_proveedor;
 				break;
+			}
 		}
 
-		/*Busca el id del departamento seleccionado*/
+		/*Busca el id de la presentacion seleccionada*/
 		$valor = $this->input->post("presentacion");
 		$query =  $this->db->get("presentacion");
 		$registros = $query->result();
 		foreach ($registros as $registro ) {
-			if($registro->nombre == $valor)
+			if($registro->nombre == $valor){
 				$datos['presentacion'] = $registro->id_pres;
 				break;
+			}
 		}
 
 
@@ -434,7 +461,7 @@ class Catalogos extends CI_Controller {
 
 		$this->load->model('registros_model');
 		if($this->registros_model->insertar($datos, $tabla)) {
-			redirect('catalogos/index/'. $tabla);
+			$this->index($tabla,null);
 		}
 	}
 
@@ -447,9 +474,10 @@ class Catalogos extends CI_Controller {
 		$query =  $this->db->get("udm");
 		$registros = $query->result();
 		foreach ($registros as $registro ) {
-			if($registro->nombre == $valor)
+			if($registro->nombre == $valor){
 				$datos['udm_material'] = $registro->id_udm;
 				break;
+			}
 		}
 
 		/*Busca el id de la familia seleccionada*/
@@ -457,9 +485,10 @@ class Catalogos extends CI_Controller {
 		$query =  $this->db->get("proveedor");
 		$registros = $query->result();
 		foreach ($registros as $registro ) {
-			if($registro->nombre == $valor)
+			if($registro->nombre == $valor){
 				$datos['proveedor_material'] = $registro->id_proveedor;
 				break;
+			}
 		}
 
 		/*Busca el id del departamento seleccionado*/
@@ -467,9 +496,10 @@ class Catalogos extends CI_Controller {
 		$query =  $this->db->get("presentacion");
 		$registros = $query->result();
 		foreach ($registros as $registro ) {
-			if($registro->nombre == $valor)
+			if($registro->nombre == $valor){
 				$datos['presentacion'] = $registro->id_pres;
 				break;
+			}
 		}
 
 
@@ -490,7 +520,7 @@ class Catalogos extends CI_Controller {
 
 		$this->load->model('registros_model');
 		if($this->registros_model->editar($datos, $tabla)) {
-			redirect('catalogos/index/'. $tabla);
+			$this->index($tabla,null);
 		}
 	}
 }

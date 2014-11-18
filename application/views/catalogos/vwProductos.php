@@ -65,6 +65,7 @@
     </form>
     </div>
 
+
 <?php if(count($registros) > 0): ?>
 	<!--Muestra los regitros en caso de existir-->
 	<div class="panelgroup container" id="accordion" role="tablist" aria-multiselectable="true">

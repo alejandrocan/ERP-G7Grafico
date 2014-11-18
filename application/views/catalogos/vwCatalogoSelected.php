@@ -3,7 +3,7 @@
     </div>
     <div class="container">
         <h3>Editar/Agregar registro</h3>
-        <form action="<?php echo base_url();?>index.php/catalogos/insertarRegistro/<?php echo $catalogo?>" method="post">
+        <form action="<?php echo base_url();?>index.php/catalogos/insertarRegistro/<?php echo $catalogo?>//" method="post">
         <table class="table table-bordered table-hover">
         <thead>
             <tr>
