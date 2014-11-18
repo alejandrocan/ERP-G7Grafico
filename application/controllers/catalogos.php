@@ -392,7 +392,7 @@ $this->form_validation->set_rules('Nombre', 'Nombre', 'required|trim|max_length[
 		$query =  $this->db->get("departamento");
 		$registros = $query->result();
 		foreach ($registros as $registro ) {
-			if($registro->nombre_depto == $valor)
+			if($registro->nombre == $valor)
 			{
 				$datos['depto_produc'] = $registro->id_depto;
 				break;
@@ -406,7 +406,6 @@ $this->form_validation->set_rules('Nombre', 'Nombre', 'required|trim|max_length[
 			$this->load->view("vwHeader", $data);
 			$this->load->view("catalogos/vwAddMaterial");
 		}
-
 	}
 
 	public function insertMaterial($tabla){
@@ -417,29 +416,31 @@ $this->form_validation->set_rules('Nombre', 'Nombre', 'required|trim|max_length[
 		$query =  $this->db->get("udm");
 		$registros = $query->result();
 		foreach ($registros as $registro ) {
-			if($registro->nombre == $valor)
+			if($registro->nombre == $valor){
 				$datos['udm_material'] = $registro->id_udm;
 				break;
+			}
 		}
-
 		/*Busca el id de la familia seleccionada*/
 		$valor = $this->input->post("proveedor_material");
 		$query =  $this->db->get("proveedor");
 		$registros = $query->result();
 		foreach ($registros as $registro ) {
-			if($registro->nombre == $valor)
+			if($registro->nombre == $valor){
 				$datos['proveedor_material'] = $registro->id_proveedor;
 				break;
+			}
 		}
 
-		/*Busca el id del departamento seleccionado*/
+		/*Busca el id de la presentacion seleccionada*/
 		$valor = $this->input->post("presentacion");
 		$query =  $this->db->get("presentacion");
 		$registros = $query->result();
 		foreach ($registros as $registro ) {
-			if($registro->nombre == $valor)
+			if($registro->nombre == $valor){
 				$datos['presentacion'] = $registro->id_pres;
 				break;
+			}
 		}
 
 
@@ -473,9 +474,10 @@ $this->form_validation->set_rules('Nombre', 'Nombre', 'required|trim|max_length[
 		$query =  $this->db->get("udm");
 		$registros = $query->result();
 		foreach ($registros as $registro ) {
-			if($registro->nombre == $valor)
+			if($registro->nombre == $valor){
 				$datos['udm_material'] = $registro->id_udm;
 				break;
+			}
 		}
 
 		/*Busca el id de la familia seleccionada*/
@@ -483,9 +485,10 @@ $this->form_validation->set_rules('Nombre', 'Nombre', 'required|trim|max_length[
 		$query =  $this->db->get("proveedor");
 		$registros = $query->result();
 		foreach ($registros as $registro ) {
-			if($registro->nombre == $valor)
+			if($registro->nombre == $valor){
 				$datos['proveedor_material'] = $registro->id_proveedor;
 				break;
+			}
 		}
 
 		/*Busca el id del departamento seleccionado*/
@@ -493,9 +496,10 @@ $this->form_validation->set_rules('Nombre', 'Nombre', 'required|trim|max_length[
 		$query =  $this->db->get("presentacion");
 		$registros = $query->result();
 		foreach ($registros as $registro ) {
-			if($registro->nombre == $valor)
+			if($registro->nombre == $valor){
 				$datos['presentacion'] = $registro->id_pres;
 				break;
+			}
 		}
 
 
