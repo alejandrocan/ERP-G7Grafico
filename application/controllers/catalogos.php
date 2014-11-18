@@ -227,15 +227,15 @@ class Catalogos extends CI_Controller {
 	public function insertProveedor($tabla) {
 		$this->form_validation->set_rules('Nombre', 'Nombre', 'required|trim|max_length[50]');
 		$this->form_validation->set_rules('Direccion', 'Dirección', 'trim|max_length[50]');
-		$this->form_validation->set_rules('Telefono', 'Teléfono', 'required|trim|min_length[7]|max_length[11]|numeric');
+		$this->form_validation->set_rules('Telefono', 'Teléfono', 'required|trim|min_length[7]|max_length[11]|integer');
 		$this->form_validation->set_rules('Correo', 'Correo', 'trim|valid_email|max_length[50]');
 		$this->form_validation->set_rules('Contacto', 'Contacto', 'trim|max_length[30]');
 
 		$this->form_validation->set_message('required', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>El campo %s no debe estar vacío</div>');
-        $this->form_validation->set_message('min_length', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>El campo %s debe ser menor a %d carácteres</div>');
+        $this->form_validation->set_message('min_length', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>El campo %s no debe ser menor a %d carácteres</div>');
         $this->form_validation->set_message('max_length', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button> El campo %s no debe ser mayor a %d carácteres</div>');
         $this->form_validation->set_message('valid_email', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button> El %s no es válido</div>');
-        $this->form_validation->set_message('numeric', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>El campo %s debe contener sólo números</div>');
+        $this->form_validation->set_message('integer', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>El campo %s debe contener sólo números</div>');
 
         if ($this->form_validation->run() == TRUE) 
         {
@@ -245,7 +245,6 @@ class Catalogos extends CI_Controller {
 			$datos['correo_prove'] = $this->input->post('Correo');
 			$datos['contacto'] = $this->input->post('Contacto');
 			$datos['estado'] = 1;
-
 			$this->load->model('registros_model');
 			if($this->registros_model->insertar($datos,$tabla)) {
 				$this->index($tabla,null);
@@ -287,13 +286,13 @@ $this->form_validation->set_rules('Nombre', 'Nombre', 'required|trim|max_length[
 	public function insertUsuario()
 	{
 
-		$this->form_validation->set_rules('Nombre', 'Nombre', 'required|max_length[15]|trim|callback_espacio['.$this->input->post('Nombre').']');
+		$this->form_validation->set_rules('Nombre', 'Nombre', 'required|max_length[15]|trim|callback_espacio['.$this->input->post('Nombre').']|callback_isUniqueNU[' . $this->input->post('Nombre') . ']');
 		$this->form_validation->set_rules('Contrasena', 'Contraseña', 'required|min_length[6]|max_length[50]');
 		$this->form_validation->set_rules('Nombre1', 'Primer Nombre', 'required|max_length[15]');
 		$this->form_validation->set_rules('Nombre2', 'Segundo Nombre', 'max_length[15]');
 		$this->form_validation->set_rules('Apellido1', 'Apellido Paterno', 'required|max_length[15]');
 		$this->form_validation->set_rules('Apellido2', 'Apellido Materno', 'max_length[15]');
-		$this->form_validation->set_rules('Correo', 'Correo', 'required|valid_email|max_length[45]');
+		$this->form_validation->set_rules('Correo', 'Correo', 'required|valid_email|max_length[45]|callback_isUniqueCU[' . $this->input->post('Correo') . ']');
 		$this->form_validation->set_rules('Puesto', 'Puesto', 'required');
 		$this->form_validation->set_rules('Departamento', 'Departamento', 'required');
 		$this->form_validation->set_rules('Tipo', 'Tipo', 'required');
@@ -303,44 +302,51 @@ $this->form_validation->set_rules('Nombre', 'Nombre', 'required|trim|max_length[
         $this->form_validation->set_message('max_length', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button> El campo %s no puede tener más de %d carácteres</div>');
         $this->form_validation->set_message('valid_email', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button> El campo %s no es correo válido</div>');
         $this->form_validation->set_message('espacio', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button> El campo Nombre no debe contener espacios en blanco</div>');
+        $this->form_validation->set_message('isUniqueNU', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>El valor del campo %s, ya se ha utilizado por otro usuario. Ingrese uno diferente.</div>');
+        $this->form_validation->set_message('isUniqueCU', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>El valor del campo %s, ya se ha utilizado por otro usuario. Ingrese uno diferente.</div>');
 
         if ($this->form_validation->run() == TRUE) 
         {
-        	$this->load->helper('file');
-			$config['upload_path'] = './uploads/';
-            $config['allowed_types'] = 'gif|jpg|png';
-            $config['max_size'] = '4000';
-            $config['max_width'] = '4024';
-            $config['max_height'] = '4008';
-            $this->load->library('upload', $config);
+        	$datos['imagen'] = "";
+        	if($this->input->post("Imagen")!="")
+        	{
+	        	$this->load->helper('file');
+				$config['upload_path'] = './uploads/';
+	            $config['allowed_types'] = 'gif|jpg|png';
+	            $config['max_size'] = '4000';
+	            $config['max_width'] = '4024';
+	            $config['max_height'] = '4008';
+	            $this->load->library('upload', $config);
+	            if(!$this->upload->do_upload('Imagen'))
+	            {
+	            	$error = array('error' => $this->upload->display_errors());
 
-            if(!$this->upload->do_upload('Imagen'))
-            {
-            	$error = array('error' => $this->upload->display_errors());
+					$this->index("usuario",$error);
+	            }
+	            $file_info = $this->upload->data();
+	            $datos['imagen'] = $file_info['file_name'];
+	        }
 
+			$this->load->model('registros_model');
+           	$datos['nombre'] = $this->input->post('Nombre');
+			$datos['contra_usr'] = MD5($this->input->post('Contrasena'));
+			$datos['nombre_usr'] = $this->input->post('Nombre1');
+			$datos['nombre2_usr'] = $this->input->post('Nombre2');
+			$datos['apellidop_usr'] = $this->input->post('Apellido1');
+			$datos['apellidom_usr'] = $this->input->post('Apellido2');
+			$datos['correo_usr'] = $this->input->post('Correo');
+			$datos['tipo_usr'] = $this->input->post('Tipo');
+			$datos['estado'] = 1;
+			$datos['depto_usr'] = $this->input->post("Departamento");
+			$datos['id_puesto'] = $this->input->post("Puesto");
+			if($this->registros_model->insertar($datos, "usuario")) 
+
+			{
+				$error['mensaje'] = '<div class="container alert alert-success alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Se ha agregado un nuevo usuario.</div>';
 				$this->index("usuario",$error);
-				
-				
-            }
-				$this->load->model('registros_model');
-            	$file_info = $this->upload->data();
-            	$datos['nombre'] = $this->input->post('Nombre');
-				$datos['contra_usr'] = MD5($this->input->post('Contrasena'));
-				$datos['nombre_usr'] = $this->input->post('Nombre1');
-				$datos['nombre2_usr'] = $this->input->post('Nombre2');
-				$datos['apellidop_usr'] = $this->input->post('Apellido1');
-				$datos['apellidom_usr'] = $this->input->post('Apellido2');
-				$datos['correo_usr'] = $this->input->post('Correo');
-				$datos['tipo_usr'] = $this->input->post('Tipo');
-				$datos['imagen'] = $file_info['file_name'];
-				$datos['estado'] = 1;
-				$datos['depto_usr'] = $this->input->post("Departamento");
-				$datos['id_puesto'] = $this->input->post("Puesto");
-				if($this->registros_model->insertar($datos, "usuario")) 
-				{
-					$this->index("usuario",null);
-				}
-			
+
+				header('Refresh:2;url="' . base_url() . '/index.php/catalogos/index/usuario/registros');
+			}
 		}
 		else
 		{
@@ -357,6 +363,42 @@ $this->form_validation->set_rules('Nombre', 'Nombre', 'required|trim|max_length[
 		}
 		return TRUE;
  	}
+
+ 	public function isUniqueNU($texto)
+	{
+        $query = null; //emptying in case 
+        $query = $this->db->get_where('usuario', array(//making selection
+            'nombre' => $texto
+        ));
+
+        $count = $query->num_rows(); //counting result from query
+
+        if ($count === 0) {
+			return TRUE;
+        }
+        else
+        {
+        	return FALSE;
+        }
+	}
+
+	 	public function isUniqueCU($texto)
+	{
+        $query = null; //emptying in case 
+        $query = $this->db->get_where('usuario', array(//making selection
+            'correo_usr' => $texto
+        ));
+
+        $count = $query->num_rows(); //counting result from query
+
+        if ($count === 0) {
+			return TRUE;
+        }
+        else
+        {
+        	return FALSE;
+        }
+	}
 
 	/* Agrega una funcion para insertar los datos en la tabla de producto*/
 	public function insertProducto($tabla){

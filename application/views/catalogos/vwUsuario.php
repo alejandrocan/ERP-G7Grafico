@@ -3,6 +3,7 @@
     </div>
     <div id="formulario_usuario">
         <?=@$error?>
+        <?=@$mensaje?>
         <span><?php echo validation_errors(); ?></span>
         <h3>Agregar registro </h3>
         <table class="table table-bordered table-hover">
@@ -25,17 +26,17 @@
                 <tbody>
                     <tr>
                         <?php echo form_open_multipart(base_url()."index.php/catalogos/insertUsuario/")?>
-                        <td><input class="form-control" value="<?php echo set_value('Nombre'); ?>" type="text" name="Nombre"></td>
+                        <td><input class="form-control" value="<?php echo set_value('Nombre',''); ?>" type="text" name="Nombre"></td>
                         <td><input class="form-control" type="password" name="Contrasena" ></td>
-                        <td><input class="form-control" value="<?php echo set_value('Nombre1'); ?>" type="text" name="Nombre1"></td>
-                        <td><input class="form-control" value="<?php echo set_value('Nombre2'); ?>" type="text" name="Nombre2"></td>
-                        <td><input class="form-control" value="<?php echo set_value('Apellido1'); ?>" type="text" name="Apellido1"></td>
-                        <td><input class="form-control" value="<?php echo set_value('Apellido2'); ?>" type="text" name="Apellido2"></td>
-                        <td><input class="form-control" value="<?php echo set_value('Correo'); ?>" type="text" name="Correo"></td>
+                        <td><input class="form-control" value="<?php echo set_value('Nombre1',''); ?>" type="text" name="Nombre1"></td>
+                        <td><input class="form-control" value="<?php echo set_value('Nombre2',''); ?>" type="text" name="Nombre2"></td>
+                        <td><input class="form-control" value="<?php echo set_value('Apellido1',''); ?>" type="text" name="Apellido1"></td>
+                        <td><input class="form-control" value="<?php echo set_value('Apellido2',''); ?>" type="text" name="Apellido2"></td>
+                        <td><input class="form-control" value="<?php echo set_value('Correo',''); ?>" type="text" name="Correo"></td>
                         <td>
                             <select class="form-control" name ="Tipo">
                                 <?php 
-                                    echo '<option value="Administrador" ' . set_select('Tipo','Administrador') . '>' . 'Administrador</option>';
+                                    echo '<option value="Administrador" ' . set_select('Tipo','Administrador','TRUE') . '>' . 'Administrador</option>';
                                     echo '<option value="Usuario" ' . set_select('Tipo','Usuario') . '>' . 'Usuario</option>';
                                 ?>
                             </select>
@@ -46,7 +47,7 @@
                                     $query = $this->db->get("departamento");
                                     $valores = $query->result(); 
                                     foreach ($valores as $valor)
-                                        echo '<option value="' . $valor->id_depto . '" ' . set_select('Departamento',$valor->id_depto) . '>' . $valor->nombre . '</option>';
+                                        echo '<option value="' . $valor->id_depto . '" ' . set_select('Departamento',$valor->id_depto,'TRUE') . '>' . $valor->nombre . '</option>';
                                 ?>
                             </select>
                         </td>
@@ -56,14 +57,14 @@
                                     $query = $this->db->get("puesto");
                                     $valores = $query->result(); 
                                     foreach ($valores as $valor)
-                                        echo '<option value="' . $valor->id_puesto . '" ' . set_select('Puesto',$valor->id_puesto) . '>' . $valor->nombre . '</option>';
+                                        echo '<option value="' . $valor->id_puesto . '" ' . set_select('Puesto',$valor->id_puesto,'TRUE') . '>' . $valor->nombre . '</option>';
                                 ?>
                             </select>
                         </td>
                         <td><input class="form-control" type="file" name="Imagen"></td>
                         <td>
                             <input type="submit" value="Guardar" class="btn btn-info btn-sm">
-                            <a href="<?php echo base_url(). 'index.php/catalogos/index/usuario'; ?>" class="btn btn-danger btn-sm" >Cancelar</a>
+                            <a href="<?php echo base_url(). 'index.php/catalogos/index/usuario/registros'; ?>" class="btn btn-danger btn-sm" >Cancelar</a>
                         </td>
                         <?php echo form_close();?>
                     </tr>
