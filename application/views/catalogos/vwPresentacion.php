@@ -3,8 +3,10 @@
         <h1>Presentación</h1>
 </div>
     <div class="container table-responsive">
+        <?=@$mensaje?>
+        <span><?php echo validation_errors(); ?></span>
         <h3>Agregar nueva presentación</h3>
-        <form action="<?php echo base_url();?>index.php/catalogos/insertPresentacion/<?php echo $catalogo?>" method="post">
+        
         <table class="table table-bordered table-hover">
         <thead>
             <tr>
@@ -15,21 +17,23 @@
             </tr>
         </thead>
             <tr>
-                <td><input class="form-control" value="" type="text" name="nombre"></td>    
-                <td><select class="form-control" name ="udm_pres">
-                    <?php 
-                        $query = $this->db->get("udm");
-                        $valores = $query->result(); ?>
-                    <?php foreach ($valores as $valor): ?>
-                        <option><?php echo $valor->nombre; ?></option>
-                    <?php endforeach; ?>
-                    </select>
-                </td>
-                <td><input class="form-control" value="" type="text" name="contenido_pres"></td>
-                <td>
-                    <input type="submit" value="Guardar" class="btn btn-info btn-xs">
-                    <input type="button" value="Cancelar" class="btn btn-danger btn-xs" action="" method="post" >
-                </td>
+                <?php echo form_open_multipart(base_url()."index.php/catalogos/insertPresentacion/presentacion")?>
+                    <td><input class="form-control" value="<?php echo set_value('Nombre',''); ?>" type="text" name="Nombre"></td>    
+                    <td><select class="form-control" name ="UDM">
+                            <?php 
+                            $query = $this->db->get("udm");
+                            $valores = $query->result(); 
+                            foreach ($valores as $valor)
+                                echo '<option value="' . $valor->id_udm . '" ' . set_select('UDM',$valor->id_udm,'TRUE') . '>' . $valor->nombre . '</option>';
+                            ?>
+                        </select>
+                    </td>
+                    <td><input class="form-control" value="<?php echo set_value('Contenido',''); ?>" type="text" name="Contenido"></td>
+                    <td>
+                        <input type="submit" value="Guardar" class="btn btn-info btn-sm">
+                        <a href="<?php echo base_url(). 'index.php/catalogos/index/presentacion/registros'; ?>" class="btn btn-danger btn-sm" >Cancelar</a>
+                    </td>
+                <?php echo form_close();?>
             </tr>
         </table>
     </form>

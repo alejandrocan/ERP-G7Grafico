@@ -161,7 +161,7 @@ class Catalogos extends CI_Controller {
 			$datos['estado'] = 1;
 			$this->load->model('registros_model');
 			if($this->registros_model->insertar($datos,$tabla)) {
-				$error['mensaje'] = '<div class="container alert alert-success alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Se ha agregado un nuevo usuario. Espere mientras es redirigido :) </div>';
+				$error['mensaje'] = '<div class="container alert alert-success alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Se ha agregado un nuevo Puesto. Espere mientras es redirigido :) </div>';
 				$this->index("puesto",$error);
 				header('Refresh:2;url="' . base_url() . '/index.php/catalogos/index/puesto/registros');
 			}
@@ -187,9 +187,11 @@ class Catalogos extends CI_Controller {
 
 	public function insertUdm($tabla) {
 
-		$this->form_validation->set_rules('Nombre', 'Nombre', 'required|trim|max_length[50]');
+		$this->form_validation->set_rules('Nombre', 'Nombre', 'required|trim|max_length[50]|callback_isUniqueNUDM[' . $this->input->post('Nombre') . ']');
+		$this->form_validation->set_rules('Tipo', 'Tipo', 'required');
 		$this->form_validation->set_message('required', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>El campo %s no debe estar vacío</div>');
 		$this->form_validation->set_message('max_length', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button> El campo %s no debe ser mayor a %d carácteres</div>');
+		$this->form_validation->set_message('isUniqueNUDM', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button> El valor del campo %s ya ha sido usado. Ingrese uno diferente.</div>');
 		if ($this->form_validation->run() == TRUE) 
         {
 			$datos['nombre'] = $this->input->post('Nombre');
@@ -206,6 +208,19 @@ class Catalogos extends CI_Controller {
 		}
 	}
 
+	public function isUniqueNUDM($texto)
+	{
+        $query = null; //emptying in case 
+        $query = $this->db->get_where('udm', array(//making selection
+            'nombre' => $texto
+        ));
+        $count = $query->num_rows(); //counting result from query
+        if ($count === 0)
+			return TRUE;
+        else
+        	return FALSE;
+	}
+
 	/* Agrega una funcion para insertar los datos en la tabla de departamento */
 	public function insertDepartamento($tabla) {
 		$this->form_validation->set_rules('Nombre', 'Nombre', 'required|trim|max_length[50]|callback_isUniqueND[' . $this->input->post('Nombre') . ']');
@@ -219,7 +234,7 @@ class Catalogos extends CI_Controller {
 			$datos['estado'] = 1;
 			$this->load->model('registros_model');
 			if($this->registros_model->insertar($datos,$tabla)) {
-				$error['mensaje'] = '<div class="container alert alert-success alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Se ha agregado un nuevo usuario. Espere mientras es redirigido :) </div>';
+				$error['mensaje'] = '<div class="container alert alert-success alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Se ha agregado un nuevo Departamento. Espere mientras es redirigido :) </div>';
 				$this->index("departamento",$error);
 				header('Refresh:2;url="' . base_url() . '/index.php/catalogos/index/departamento/registros');
 			}
@@ -256,7 +271,7 @@ class Catalogos extends CI_Controller {
 			$datos['estado'] = 1;
 			$this->load->model('registros_model');
 			if($this->registros_model->insertar($datos,$tabla)) {
-				$error['mensaje'] = '<div class="container alert alert-success alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Se ha agregado un nuevo usuario. Espere mientras es redirigido :) </div>';
+				$error['mensaje'] = '<div class="container alert alert-success alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Se ha agregado una nueva Familia. Espere mientras es redirigido :) </div>';
 				$this->index("familia",$error);
 				header('Refresh:2;url="' . base_url() . '/index.php/catalogos/index/familia/registros');
 			}
@@ -303,7 +318,9 @@ class Catalogos extends CI_Controller {
 			$datos['estado'] = 1;
 			$this->load->model('registros_model');
 			if($this->registros_model->insertar($datos,$tabla)) {
-				$this->index($tabla,null);
+				$error['mensaje'] = '<div class="container alert alert-success alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Se ha agregado un nuevo Proveedor. Espere mientras es redirigido :) </div>';
+				$this->index("proveedor",$error);
+				header('Refresh:2;url="' . base_url() . '/index.php/catalogos/index/familia/proveedor');
 			}
 		}
 		else
@@ -314,28 +331,45 @@ class Catalogos extends CI_Controller {
 
 	/* Agrega una funcion para insertar los datos en la tabla de UDM */
 	public function insertPresentacion($tabla) {
-$this->form_validation->set_rules('Nombre', 'Nombre', 'required|trim|max_length[50]');
+		$this->form_validation->set_rules('Nombre', 'Nombre', 'required|trim|max_length[50]|callback_isUniqueNPre[' . $this->input->post('Nombre') . ']');
+		$this->form_validation->set_rules('UDM', 'UDM', 'required');
+		$this->form_validation->set_rules('Contenido', 'Contenido', 'required|trim|max_length[4]|decimal');
 		$this->form_validation->set_message('required', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>El campo %s no debe estar vacío</div>');
 		$this->form_validation->set_message('max_length', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button> El campo %s no debe ser mayor a %d carácteres</div>');
+		$this->form_validation->set_message('decimal', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button> El campo %s debe contener únicamente números</div>');
+		$this->form_validation->set_message('isUniqueNPre', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button> El campo %s ya ha sido usado en otra Presentación. Ingrese una diferente.</div>');
 
-		$datos['nombre'] = $this->input->post("nombre");
-		$valor = $this->input->post("udm_pres");
-		$query =  $this->db->get("udm");
-		$registros = $query->result();
-		foreach ($registros as $registro ) {
-			if($registro->nombre == $valor)
-			{
-				$datos['udm_pres'] = $registro->id_udm;
-				break;
+		if ($this->form_validation->run() == TRUE) 
+        {
+			$datos['nombre'] = $this->input->post("Nombre");
+			$datos['udm_pres'] = $this->db->get("UDM");
+			$datos['contenido_pres'] = $this->input->post("Contenido");
+			$datos['estado'] = 1;
+
+			$this->load->model('registros_model');
+			if($this->registros_model->insertar($datos,$tabla)) {
+				$error['mensaje'] = '<div class="container alert alert-success alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Se ha agregado un nuevo Proveedor. Espere mientras es redirigido :) </div>';
+				$this->index("proveedor",$error);
+				header('Refresh:2;url="' . base_url() . '/index.php/catalogos/index/familia/proveedor');
 			}
 		}
-		$datos['contenido_pres'] = $this->input->post("contenido_pres");
-		$datos['estado'] = 1;
-
-		$this->load->model('registros_model');
-		if($this->registros_model->insertar($datos,$tabla)) {
+		else
+		{
 			$this->index($tabla,null);
 		}
+	}
+
+	public function isUniqueNPre($texto)
+	{
+        $query = null; //emptying in case 
+        $query = $this->db->get_where('presentacion', array(//making selection
+            'nombre' => $texto
+        ));
+        $count = $query->num_rows(); //counting result from query
+        if ($count === 0)
+			return TRUE;
+        else
+        	return FALSE;
 	}
 
 		/* Agrega una funcion para insertar los datos en la tabla de usuario */
@@ -398,9 +432,8 @@ $this->form_validation->set_rules('Nombre', 'Nombre', 'required|trim|max_length[
 			if($this->registros_model->insertar($datos, "usuario")) 
 
 			{
-				$error['mensaje'] = '<div class="container alert alert-success alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Se ha agregado un nuevo usuario.</div>';
+				$error['mensaje'] = '<div class="container alert alert-success alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Se ha agregado un nuevo Usuario. Espere mientras es redireccionado :)</div>';
 				$this->index("usuario",$error);
-
 				header('Refresh:2;url="' . base_url() . '/index.php/catalogos/index/usuario/registros');
 			}
 		}

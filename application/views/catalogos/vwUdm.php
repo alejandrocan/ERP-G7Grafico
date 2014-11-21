@@ -2,6 +2,7 @@
         <h1>UDM</h1>
     </div>
     <div class="container">
+        <?=@$mensaje?>
         <span><?php echo validation_errors(); ?></span>
         <h3>Agregar registro</h3>
             <table class="table table-bordered table-hover">
@@ -15,24 +16,26 @@
                 <tbody>
                     <tr>
                         <?php echo form_open_multipart(base_url()."index.php/catalogos/insertUdm/udm")?>
-                            <td><input class="form-control" value="" type="text" name="Nombre"></td>
+                            <td><input class="form-control" value="<?php echo set_value('Nombre',''); ?>" type="text" name="Nombre"></td>
                             <td>
                                 <select class="form-control" name ="Tipo">
-                                    <option>Longitud</option>
-                                    <option>Área</option>
-                                    <option>Volúmen</option>
-                                    <option>Cuantitativo</option>
-                                    <option>Distancia</option>
-                                    <option>Fuerza</option>
-                                    <option>Energía</option>
-                                    <option>Peso</option>
-                                    <option>Tiempo</option>
-                                    <option>Velocidad</option>
+                                    <?php 
+                                    echo '<option value="Longitud" ' . set_select('Tipo','Longitud','TRUE') . '>' . 'Longitud</option>';
+                                    echo '<option value="Área" ' . set_select('Tipo','Área') . '>' . 'Área</option>';
+                                    echo '<option value="Volúmen" ' . set_select('Tipo','Volúmen') . '>' . 'Volúmen</option>';
+                                    echo '<option value="Cuantitativo" ' . set_select('Tipo','Cuantitativo') . '>' . 'Cuantitativo</option>';
+                                    echo '<option value="Distancia" ' . set_select('Tipo','Distancia') . '>' . 'Distancia</option>';
+                                    echo '<option value="Fuerza" ' . set_select('Tipo','Fuerza') . '>' . 'Fuerza</option>';
+                                    echo '<option value="Energía" ' . set_select('Tipo','Energía') . '>' . 'Energía</option>';
+                                    echo '<option value="Peso" ' . set_select('Tipo','Peso') . '>' . 'Peso</option>';
+                                    echo '<option value="Tiempo" ' . set_select('Tipo','Tiempo') . '>' . 'Tiempo</option>';
+                                    echo '<option value="Velocidad" ' . set_select('Tipo','Velocidad') . '>' . 'Velocidad</option>';
+                                    ?>
                                 </select>
                             </td>
                             <td>
-                                <input type="submit" value="Guardar" class="btn btn-info btn-sm" >
-                                <a href="<?php echo base_url(). 'index.php/catalogos/index/udm'; ?>" class="btn btn-danger btn-sm" >Cancelar</a>
+                                <input type="submit" value="Guardar" class="btn btn-info btn-sm">
+                                <a href="<?php echo base_url(). 'index.php/catalogos/index/udm/registros'; ?>" class="btn btn-danger btn-sm" >Cancelar</a>
                             </td>
                         <?php echo form_close();?>
                     </tr>
