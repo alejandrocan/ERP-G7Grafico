@@ -3,6 +3,7 @@
         <h1>Puesto</h1>
 </div>
     <div class="container table-responsive">
+        <?=@$mensaje?>
         <span><?php echo validation_errors(); ?></span>
         <h3>Agregar nuevo Puesto</h3>
         <table class="table table-bordered table-hover">
@@ -15,10 +16,10 @@
         <tbody>
             <tr>
                 <?php echo form_open_multipart(base_url()."index.php/catalogos/insertPuesto/puesto")?>
-                <td><input class="form-control" value="" type="text" name="Nombre"></td>                    
+                <td><input class="form-control" value="<?php echo set_value('Nombre',''); ?>" type="text" name="Nombre"></td>                    
                 <td>
                     <input type="submit" value="Guardar" class="btn btn-info btn-sm">
-                    <a href="<?php echo base_url(). 'index.php/catalogos/index/proveedor'; ?>" class="btn btn-danger btn-sm" >Cancelar</a>
+                    <a href="<?php echo base_url(). 'index.php/catalogos/index/proveedor/registros'; ?>" class="btn btn-danger btn-sm" >Cancelar</a>
                 </td>
                 <?php echo form_close();?>
             </tr>

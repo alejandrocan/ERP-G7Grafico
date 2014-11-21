@@ -150,9 +150,10 @@ class Catalogos extends CI_Controller {
 
 	/* Agrega una funcion para insertar los datos en la tabla de puesto */
 	public function insertPuesto($tabla) {
-		$this->form_validation->set_rules('Nombre', 'Nombre', 'required|trim|max_length[50]');
+		$this->form_validation->set_rules('Nombre', 'Nombre', 'required|trim|max_length[50]|callback_isUniqueNP[' . $this->input->post('Nombre') . ']');
 		$this->form_validation->set_message('required', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>El campo %s no debe estar vacío</div>');
 		$this->form_validation->set_message('max_length', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button> El campo %s no debe ser mayor a %d carácteres</div>');
+		$this->form_validation->set_message('isUniqueNP', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button> El valor del campo %s ya ha sido usado. Ingrese uno diferente.</div>');
 
 		if ($this->form_validation->run() == TRUE) 
         {
@@ -160,14 +161,28 @@ class Catalogos extends CI_Controller {
 			$datos['estado'] = 1;
 			$this->load->model('registros_model');
 			if($this->registros_model->insertar($datos,$tabla)) {
-			$this->index($tabla,null);
-				
+				$error['mensaje'] = '<div class="container alert alert-success alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Se ha agregado un nuevo usuario. Espere mientras es redirigido :) </div>';
+				$this->index("puesto",$error);
+				header('Refresh:2;url="' . base_url() . '/index.php/catalogos/index/puesto/registros');
 			}
 		}
 		else
 		{
 			$this->index($tabla,null);
 		}
+	}
+
+	public function isUniqueNP($texto)
+	{
+        $query = null; //emptying in case 
+        $query = $this->db->get_where('puesto', array(//making selection
+            'nombre' => $texto
+        ));
+        $count = $query->num_rows(); //counting result from query
+        if ($count === 0)
+			return TRUE;
+        else
+        	return FALSE;
 	}
 
 	public function insertUdm($tabla) {
@@ -193,10 +208,10 @@ class Catalogos extends CI_Controller {
 
 	/* Agrega una funcion para insertar los datos en la tabla de departamento */
 	public function insertDepartamento($tabla) {
-		$this->form_validation->set_rules('Nombre', 'Nombre', 'required|trim|max_length[50]');
+		$this->form_validation->set_rules('Nombre', 'Nombre', 'required|trim|max_length[50]|callback_isUniqueND[' . $this->input->post('Nombre') . ']');
 		$this->form_validation->set_message('required', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>El campo %s no debe estar vacío</div>');
 		$this->form_validation->set_message('max_length', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button> El campo %s no debe ser mayor a %d carácteres</div>');
-
+		$this->form_validation->set_message('isUniqueND', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button> El valor del campo %s ya ha sido usado. Ingrese uno diferente.</div>');
 
 		if ($this->form_validation->run() == TRUE) 
         {
@@ -204,7 +219,9 @@ class Catalogos extends CI_Controller {
 			$datos['estado'] = 1;
 			$this->load->model('registros_model');
 			if($this->registros_model->insertar($datos,$tabla)) {
-				$this->index($tabla,null);
+				$error['mensaje'] = '<div class="container alert alert-success alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Se ha agregado un nuevo usuario. Espere mientras es redirigido :) </div>';
+				$this->index("departamento",$error);
+				header('Refresh:2;url="' . base_url() . '/index.php/catalogos/index/departamento/registros');
 			}
 		}
 		else
@@ -213,15 +230,54 @@ class Catalogos extends CI_Controller {
 		}
 	}
 
+	public function isUniqueND($texto)
+	{
+        $query = null; //emptying in case 
+        $query = $this->db->get_where('departamento', array(//making selection
+            'nombre' => $texto
+        ));
+        $count = $query->num_rows(); //counting result from query
+        if ($count === 0)
+			return TRUE;
+        else
+        	return FALSE;
+	}
+
 /* Agrega una funcion para insertar los datos en la tabla de familia */
 	public function insertFamilia($tabla) {
-		$datos['nombre'] = $this->input->post("nombre");
-		$datos['estado'] = 1;
 
-		$this->load->model('registros_model');
-		if($this->registros_model->insertar($datos,$tabla)) {
-			$this->index($tabla,null);
+		$this->form_validation->set_rules('Nombre', 'Nombre', 'required|trim|max_length[50]|callback_isUniqueNF[' . $this->input->post('Nombre') . ']');
+		$this->form_validation->set_message('required', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>El campo %s no debe estar vacío</div>');
+		$this->form_validation->set_message('max_length', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button> El campo %s no debe ser mayor a %d carácteres</div>');
+		$this->form_validation->set_message('isUniqueNF', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button> El valor del campo %s ya ha sido usado. Ingrese uno diferente.</div>');
+		if ($this->form_validation->run() == TRUE) 
+        {
+			$datos['nombre'] = $this->input->post("Nombre");
+			$datos['estado'] = 1;
+			$this->load->model('registros_model');
+			if($this->registros_model->insertar($datos,$tabla)) {
+				$error['mensaje'] = '<div class="container alert alert-success alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Se ha agregado un nuevo usuario. Espere mientras es redirigido :) </div>';
+				$this->index("familia",$error);
+				header('Refresh:2;url="' . base_url() . '/index.php/catalogos/index/familia/registros');
+			}
 		}
+		else
+		{
+			$this->index("departamento",null);
+		}
+	}
+
+	public function isUniqueNF($texto)
+	{
+        $query = null; //emptying in case 
+        $query = $this->db->get_where('familia', array(//making selection
+            'nombre' => $texto
+        ));
+        $count = $query->num_rows(); //counting result from query
+        if ($count === 0)
+			return TRUE;
+        else
+        	return FALSE;
 	}
 
 	public function insertProveedor($tabla) {
@@ -358,9 +414,7 @@ $this->form_validation->set_rules('Nombre', 'Nombre', 'required|trim|max_length[
 	{
 		$res = strpos($nombre," ");
 		if($res !== FALSE)
-		{
 			return FALSE;
-		}
 		return TRUE;
  	}
 
@@ -370,34 +424,24 @@ $this->form_validation->set_rules('Nombre', 'Nombre', 'required|trim|max_length[
         $query = $this->db->get_where('usuario', array(//making selection
             'nombre' => $texto
         ));
-
         $count = $query->num_rows(); //counting result from query
-
-        if ($count === 0) {
+        if ($count === 0)
 			return TRUE;
-        }
         else
-        {
         	return FALSE;
-        }
 	}
 
-	 	public function isUniqueCU($texto)
+	 public function isUniqueCU($texto)
 	{
         $query = null; //emptying in case 
         $query = $this->db->get_where('usuario', array(//making selection
             'correo_usr' => $texto
         ));
-
         $count = $query->num_rows(); //counting result from query
-
-        if ($count === 0) {
+        if ($count === 0)
 			return TRUE;
-        }
         else
-        {
         	return FALSE;
-        }
 	}
 
 	/* Agrega una funcion para insertar los datos en la tabla de producto*/

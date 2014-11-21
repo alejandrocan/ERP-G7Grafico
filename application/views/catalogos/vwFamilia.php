@@ -3,6 +3,7 @@
         <h1>Familia</h1>
 </div>
     <div class="container table-responsive">
+        <?=@$mensaje?>
         <h3>Agregar nueva Familia</h3>
         <form action="<?php echo base_url();?>index.php/catalogos/insertFamilia/<?php echo $catalogo?>" method="post">
         <table class="table table-bordered table-hover">
@@ -13,7 +14,7 @@
             </tr>
         </thead>
             <tr>
-                <td><input class="form-control" value="" type="text" name="nombre"></td>                    
+                <td><input class="form-control" value="<?php echo set_value('Nombre',''); ?>" type="text" name="Nombre"></td>                    
                 <td>
                     <input type="submit" value="Guardar" class="btn btn-info btn-sm">
                     <input type="button" value="Cancelar" class="btn btn-danger btn-sm" action="" method="post" >
