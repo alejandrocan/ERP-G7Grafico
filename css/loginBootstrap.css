@@ -10,6 +10,17 @@
 
 /*! normalize.css v2.1.0 | MIT License | git.io/normalize */
 
+/*Estilo para imagen de fondo en dispositivos moviles*/
+
+
+
+
+/*fin del estilo*/
+
+
+
+
+
 article,
 aside,
 details,
@@ -44,11 +55,6 @@ html {
   font-family: "Dungeon", sans-serif;/*sans-serif;*/
   -webkit-text-size-adjust: 100%;
       -ms-text-size-adjust: 100%;
-  background: url(http://1.bp.blogspot.com/-24Clxhfmpsk/Uv6ghm_8mPI/AAAAAAAAeNA/5iH1x-nD6PM/s1600/Fondos+de+Pantalla+Gratis+Abstractos+%2528211%2529.jpg) no-repeat center center fixed; 
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
 }
 
 body {
@@ -4946,6 +4952,133 @@ a.list-group-item.active > .badge,
 
 .container .jumbotron {
   border-radius: 6px;
+}
+
+@media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
+html {
+  background: url(http://1.bp.blogspot.com/-24Clxhfmpsk/Uv6ghm_8mPI/AAAAAAAAeNA/5iH1x-nD6PM/s1600/Fondos+de+Pantalla+Gratis+Abstractos+%2528211%2529.jpg) no-repeat center center fixed; 
+  -webkit-background-size: auto;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: auto;}
+/* Styles */
+
+}
+
+ 
+
+/* Smartphones (landscape) ----------- */
+
+@media only screen and (min-width : 321px) {
+html {
+  background: url(http://1.bp.blogspot.com/-24Clxhfmpsk/Uv6ghm_8mPI/AAAAAAAAeNA/5iH1x-nD6PM/s1600/Fondos+de+Pantalla+Gratis+Abstractos+%2528211%2529.jpg) no-repeat center center fixed; 
+  -webkit-background-size: auto;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: auto;}
+/* Styles */
+
+}
+
+ 
+
+/* Smartphones (portrait) ----------- */
+
+@media only screen and (max-width : 320px) {
+html {
+  background: url(http://1.bp.blogspot.com/-24Clxhfmpsk/Uv6ghm_8mPI/AAAAAAAAeNA/5iH1x-nD6PM/s1600/Fondos+de+Pantalla+Gratis+Abstractos+%2528211%2529.jpg) no-repeat center center fixed; 
+  -webkit-background-size: auto;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: auto;}
+/* Styles */
+
+}
+
+ 
+
+/* iPads (portrait and landscape) ----------- */
+
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) {
+html {
+  background: url(http://1.bp.blogspot.com/-24Clxhfmpsk/Uv6ghm_8mPI/AAAAAAAAeNA/5iH1x-nD6PM/s1600/Fondos+de+Pantalla+Gratis+Abstractos+%2528211%2529.jpg) no-repeat center center fixed; 
+  -webkit-background-size: auto;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: auto;}
+/* Styles */
+
+}
+
+ 
+
+/* iPads (landscape) ----------- */
+
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : landscape) {
+html {
+  background: url(http://1.bp.blogspot.com/-24Clxhfmpsk/Uv6ghm_8mPI/AAAAAAAAeNA/5iH1x-nD6PM/s1600/Fondos+de+Pantalla+Gratis+Abstractos+%2528211%2529.jpg) no-repeat center center fixed; 
+  -webkit-background-size: auto;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: auto;}
+/* Styles */
+
+}
+
+ 
+
+/* iPads (portrait) ----------- */
+
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : portrait) {
+html {
+  background: url(http://1.bp.blogspot.com/-24Clxhfmpsk/Uv6ghm_8mPI/AAAAAAAAeNA/5iH1x-nD6PM/s1600/Fondos+de+Pantalla+Gratis+Abstractos+%2528211%2529.jpg) no-repeat center center fixed; 
+  -webkit-background-size: auto;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: auto;}
+/* Styles */
+
+}
+
+ 
+
+/* Desktops and laptops ----------- */
+
+@media only screen and (min-width : 1224px) {
+html {
+  background: url(http://1.bp.blogspot.com/-24Clxhfmpsk/Uv6ghm_8mPI/AAAAAAAAeNA/5iH1x-nD6PM/s1600/Fondos+de+Pantalla+Gratis+Abstractos+%2528211%2529.jpg) no-repeat center center fixed; 
+  -webkit-background-size: auto;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: auto;}
+
+}
+
+ 
+
+/* Large screens ----------- */
+
+@media only screen and (min-width : 1824px) {
+html {
+  background: url(http://1.bp.blogspot.com/-24Clxhfmpsk/Uv6ghm_8mPI/AAAAAAAAeNA/5iH1x-nD6PM/s1600/Fondos+de+Pantalla+Gratis+Abstractos+%2528211%2529.jpg) no-repeat center center fixed; 
+  -webkit-background-size: auto;
+  -moz-background-size: auto;
+  -o-background-size: auto;
+  background-size: auto;}
+
+}
+
+ 
+
+/* iPhone 4 ----------- */
+
+@media only screen and (-webkit-min-device-pixel-ratio : 1.5), only screen and (min-device-pixel-ratio : 1.5) {
+  html {
+    background: url(http://1.bp.blogspot.com/-24Clxhfmpsk/Uv6ghm_8mPI/AAAAAAAAeNA/5iH1x-nD6PM/s1600/Fondos+de+Pantalla+Gratis+Abstractos+%2528211%2529.jpg) no-repeat center center fixed; 
+    -webkit-background-size: auto;
+    -moz-background-size: auto;
+    -o-background-size: auto;
+    background-size: auto;}
 }
 
 @media screen and (min-width: 768px) {
