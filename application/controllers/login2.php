@@ -31,10 +31,11 @@ class Login2 extends CI_Controller
                 redirect(base_url().'suscriptor');
                 break;
             default:        
-                $data['titulo'] = 'Login con roles de usuario en codeigniter';
+                $data['token'] = $this->token();
+                $data['title'] = 'Sistema G7 Gráfico';
                 $this->load->view('login/vwLogin_header',$data);
                 $this->load->view('login_view');
-                break;        
+                break;       
         }
     }
  

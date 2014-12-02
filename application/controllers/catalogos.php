@@ -398,8 +398,6 @@ class Catalogos extends CI_Controller {
         if ($this->form_validation->run() == TRUE) 
         {
         	$datos['imagen'] = "";
-        	if($this->input->post("Imagen")!="")
-        	{
 	        	$this->load->helper('file');
 				$config['upload_path'] = './uploads/';
 	            $config['allowed_types'] = 'gif|jpg|png';
@@ -415,7 +413,7 @@ class Catalogos extends CI_Controller {
 	            }
 	            $file_info = $this->upload->data();
 	            $datos['imagen'] = $file_info['file_name'];
-	        }
+	        
 
 			$this->load->model('registros_model');
            	$datos['nombre'] = $this->input->post('Nombre');
