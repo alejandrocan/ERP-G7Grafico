@@ -282,6 +282,46 @@ class Catalogos extends CI_Controller {
 		}
 	}
 
+	public function updateFamilia($tabla){
+		$datos['id_fam'] = $this->input->post("id_fam");
+		$datos['nombre'] = $this->input->post("nombre");
+		$datos['estado'] = 1;
+		$this->load->model('registros_model');
+		if($this->registros_model->editar_familia($datos, $tabla)) {
+			redirect('catalogos/index/'. $tabla);
+
+		}
+	}
+		
+	public function duplicar_familia($tabla){
+		$datos['nombre']= $this->input->post('nombre');		
+		//$this->load->view("catalogos/vwPresentacion",$erro2);
+			$this->index('familia',$datos);
+	}	
+	public function duplicar_departamento($tabla){
+		$datos['nombre']= $this->input->post('nombre');		
+		//$this->load->view("catalogos/vwPresentacion",$erro2);
+			$this->index('departamento',$datos);
+	}
+	public function duplicar_proveedor($tabla){
+		$datos['nombre']= $this->input->post('nombre');	
+		$datos['direccion']= $this->input->post('direccion');	
+		$datos['telefono']= $this->input->post('telefono');	
+		$datos['correo']= $this->input->post('correo');	
+		$datos['contacto']= $this->input->post('contacto');	
+		//$this->load->view("catalogos/vwPresentacion",$erro2);
+			$this->index('proveedor',$datos);
+	}	
+	/*
+
+	public function duplicar_udm($tabla){
+		$datos['nombre']= $this->input->post('nombre');						
+		$datos['tipo']= $this->input->post('tipo');	
+		//$this->load->view("catalogos/vwPresentacion",$erro2);
+			$this->index('Udm',$datos);
+	}
+	*/
+
 	public function isUniqueNF($texto)
 	{
         $query = null; //emptying in case 

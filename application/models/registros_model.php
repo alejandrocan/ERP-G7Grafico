@@ -31,6 +31,14 @@ class Registros_model extends  CI_Model {
 			$registro = $this->db->get($tabla);
 			return $registro->result();
 		}
+		public function editar_familia($datos,$tabla)
+		{
+        	$this->db->where('id_fam', $datos['id_fam']);
+			if($this->db->update($tabla, $datos))	
+				return true;
+			else
+				return false;
+		}
 
 
 
