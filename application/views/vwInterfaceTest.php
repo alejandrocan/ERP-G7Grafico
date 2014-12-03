@@ -7,12 +7,12 @@
 	<ul class="nav nav-tabs">
 		<li class="<?php echo $catalogos; ?>"><a href="#catalogos" data-toggle="tab">Catalogos</a></li>
 		<li class="<?php echo $explosion; ?>"><a href="#explosion" data-toggle="tab">Explosión de Insumos</a></li>
-		<li><a href="#reportes" data-toggle="tab">Reportes</a></li>
-		<li><a href="#kardex" data-toggle="tab">Kardex</a></li>
+		<li class="<?php echo $reportes; ?>"><a href="#reportes" data-toggle="tab">Reportes</a></li>
+		<li class="<?php echo $kardex; ?>"><a href="#kardex" data-toggle="tab">Kardex</a></li>
 	</ul>
 	<div class="tab-content">
 
-		<div class="<?php echo $licatalogos; ?>" id="catalogos">
+		<div class="tab-pane fade in active" id="catalogos">
 			<h4>Catálogos</h4>
 			<?php
 				
@@ -101,12 +101,14 @@
 			?>
 		</div>
 
-		<div class="<?php echo $liexplosion;?>" id="explosion">
+		<div class="tab-pane fade" id="explosion">
 			<h4>Explosión</h4>
 			<!--JavaScript funcion del autocompletado -->
 			<script type="text/javascript">
 				$(document).ready(function(){
+
 					 var url = '<?php echo base_url();?>index.php/autocompletar/get_data'; 
+
 					$('#resources').autocomplete({
 					    source: url+'?item=nombre'
 					});
@@ -114,26 +116,28 @@
 				});  
 			</script>	
 			<!--JavaScript End-->	
-			<!--Button group-->
-			<?php 
-				echo $buttonAdd;
-				echo $form_add_producto;
-			?>
 			
-			<!---->
-				<!--Formulario de busqueda
-				<form class="navbar-form navbar-left" role="search" action="" method="post">
+				<!--Formulario de busqueda-->
+				<form class="navbar-form navbar-left" role="search" action="<?php echo base_url(); ?>/index.php/explosion" method="post">
 			    	<div class="form-group">
 			        	<input type="text" class="form-control" placeholder="Producto/Material" id="resources">
 			        	<input type="text" class="form-control" placeholder="Cantidad" id="cantidad">
 			        	<input type="text" class="form-control" placeholder="UDM" id="medida">
 			      	</div>
-			      	
-			      	<button type="button" class="btn btn-success" onClick="AgregarValores()">Agregar</button>
+			      	<button type="button"  class="btm btn-default" onClick="newProduct()">Nuevo</button>
+			      	<button type="submit" class="btn btn-success" onClick="AgregarValores()">Agregar</button>
 			      	<button type="reset" class="btn btn-danger">Cancelar</button>
-			    </form>			-->
+			    </form>			
 			    <!--Formulario End-->
 			    <!--Agregar Funcion Script para agregar un producto en la tabla-->
+			    <script type="text/javascript">
+			    	var valor = document.getElementById("resources");
+			    	var cant = document.getElementById("cantidad");
+			    	function AgregarValores() {
+			    		document.getElementById("AddProduct").innerHTML += "<td> " + valor.value + "</td><td>" + cant.value + "</td><td>" + unidadmedida;
+			    	}
+			    </script>
+
 			    <!--Tabla de materiales agregados-->
 			    <table class="table table-bordered table-hover container">
 			    	<thead>
@@ -143,47 +147,15 @@
 			    			<th>UDM</th>
 			    		</tr>
 			    	</thead>
-			    	<tbody>
-			    		<?php 
-			    		$this->db->where('no_pedido', $id);
-			    		$query = $this->db->get('explosion');
-			    		$valores = $query->result();
-			    		foreach ($valores as $valor) {
-			    			echo '<tr>';
-			    			echo '<td>';
-			    			if($valor->tipo == 'producto'){
-			    				$this->db->where('id_produc', $valor->id_producto);
-			    				$query2 = $this->db->get('producto');
-			    				$valores2 = $query2->result();
-			    				foreach ($valores2 as $valor2) {
-			    					echo $valor2->nombre;
-			    				}
-			    			}else{
-			    				$this->db->where('id_material', $valor->id_producto);
-			    				$query2 = $this->db->get('material');
-			    				$valores2 = $query2->result();
-			    				foreach ($valores2 as $valor2) {
-			    					echo $valor2->nombre;
-			    				}
-			    			}
-			    			echo '</td>';
-			    			echo '<td>';
-			    			echo $valor->cantidad;
-			    			echo '</td>';
-			    			echo '<td>';
-			    			echo $valor->udm;
-			    			echo '</td>';
-			    			echo '</tr>';
-			    		}
+			    	<tbody id="AddProduct">
 
-			    		?>
 			    	</tbody>
 			    </table>
 			    <!--Table End-->
 				<!--Seccion de botones de resumen y global-->
-				<?php 
-					echo $buttonAditional;
-				?>
+				<button class="btn btn-default">Guardar</button>
+				<button class="btn btn-default">Vista Resumida</button>
+				<button class="btn btn-default">Vista Global</button>
 		</div>
 
 		<div class="tab-pane fade" id="reportes">

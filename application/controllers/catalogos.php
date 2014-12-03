@@ -628,7 +628,7 @@ class Catalogos extends CI_Controller {
 				break;
 			}
 		}
-
+		
 
 		$datos['clave'] = $this->input->post("clave");
 		$datos['smax'] = $this->input->post("smax");

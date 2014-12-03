@@ -1,19 +1,11 @@
-<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
- 
-/**
- * 
- */
-class Admin extends CI_Controller {
-    
-    public function __construct() {
-        parent::__construct();
-        $this->load->library(array('session'));
-        $this->load->helper(array('url'));
-    }
-    
-    public function index()
-    {
-        if($this->session->userdata('tipo_usr') == FALSE || $this->session->userdata('tipo_usr') != 'Administrador')
+<?php
+if(!defined("BASEPATH"))
+	exit("No direct script access allowed");
+
+Class TestController extends CI_Controller {
+
+	public function explosion() {
+		if($this->session->userdata('tipo_usr') == FALSE || $this->session->userdata('tipo_usr') != 'Administrador')
         {
             redirect(base_url().'index.php/login2');
         }
@@ -22,61 +14,37 @@ class Admin extends CI_Controller {
         $this->load->model('tabla_model');
         $data['tables'] =  $this->tabla_model->mostrar_tabla();
         ////////////////////////////////////////////
-        $data['catalogos'] = "active";
-        $data['licatalogos'] = "tab-pane fade in active";
-        $data['explosion'] = "null";
-        $data['liexplosion'] = "tab-pane fade";
+        $data['catalogos'] = "null";
+        $data['licatalogos'] = "tab-pane fade";
+        $data['explosion'] = "active";
+        $data['liexplosion'] = "tab-pane fade in active";
         $data['reportes'] = "null";
         $data['lireportes'] = "tab-pane fade";
         $data['kardex'] = "null";
         $data['likardex'] = "tab-pane fade";
+        
         ///////////////////////////////////////////
-        $data['buttonAdd'] = '<form action="'. base_url() .'/index.php/testController/createOrder">
-        <button type="submit" class="btn btn-default">Nuevo</button></form>';
-        $data['form_add_producto'] = '';
+        $data['buttonAdd'] = '<form>
+        <button type="button" class="btn btn-default">Nuevo</button></form>';
+        $data['form_add_producto'] = '<form class="navbar-form navbar-left" role="search" action="" method="post">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Producto/Material" id="resources">
+                        <input type="text" class="form-control" placeholder="Cantidad" id="cantidad">
+                        <input type="text" class="form-control" placeholder="UDM" id="medida">
+                    </div>
+                    
+                    <button type="button" class="btn btn-success" onClick="AgregarValores()">Agregar</button>
+                    <button type="reset" class="btn btn-danger">Cancelar</button>
+                </form>';
         ///////////////////////////////////////////
-        $data['buttonAditional'] = '';
-        $data['id'] = 0;
+        $data['buttonAditional'] = '<button class="btn btn-default">Guardar</button>
+                <button class="btn btn-default">Vista Resumida</button>
+                <button class="btn btn-default">Vista Global</button>';
         ///////////////////////////////////////////
         $this->load->view('vwHeader',$data);
         $this->load->view('vwInterface');
-        
-    }
-    public function addResources(){
-        $resources = $this->input->post('resources');
-        $cantidad = $this->input->post('cantidad');
-        ////////////////////////////////////////////77
-        $this->db->where('nombre', $resources);
-        $query = $this->db->get('producto');
-        $valores = $query->result();
-        if($valores == null){
-            $this->db->where('nombre', $resources);
-            $query = $this->db->get('material');
-            $valores = $query->result();
-            foreach ($valores as $valor) {
-                $id_producto = $valor->id_material;
-                $udm_material = $valor->udm_material;
-                $query = $this->db->get_where('udm',array('id_udm' => $udm_material));
-                $udm = $query->row();
-                $udm_value = $udm->nombre;
-                $tipo = "material";
-                break;
-            }
-        }else{
-            foreach ($valores as $valor) {
-                $id_producto =$valor->id_produc;
-                $udm_product = $valor->udm_produc;
-                $query = $this->db->get_where('udm',array('id_udm' => $udm_product));
-                $udm = $query->row();
-                $udm_value = $udm->nombre;
-                $tipo = "producto";
-            }
-        }
-        ///////////////////////////////////////777
-
-        $this->load->model('explosionModel');
-        $this->explosionModel->insertValues(7,$id_producto ,$tipo, $cantidad, $udm_value, 100);
-        //////////////////////
+	}
+    public function createOrder() {
         if($this->session->userdata('tipo_usr') == FALSE || $this->session->userdata('tipo_usr') != 'Administrador')
         {
             redirect(base_url().'index.php/login2');
@@ -110,9 +78,12 @@ class Admin extends CI_Controller {
         $data['buttonAditional'] = '<button class="btn btn-default">Guardar</button>
                 <button class="btn btn-default">Vista Resumida</button>
                 <button class="btn btn-default">Vista Global</button>';
-        //////////////////////////
-                $data['id'] = 7;
-       $this->load->view('vwHeader', $data);
-       $this->load->view('vwInterface');
+        ///////////////////////////////////////////
+        
+        //$this->load->model("ExplosionModel");
+        //$id = $this->ExplosionModel->newOrderGen();
+        $data['id'] = 7;
+        $this->load->view('vwHeader',$data);
+        $this->load->view('vwInterface');
     }
 }

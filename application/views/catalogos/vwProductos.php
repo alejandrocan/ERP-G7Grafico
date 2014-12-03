@@ -5,8 +5,7 @@
         <table class="table table-bordered table-hover">
         <thead>
             <tr>
-                <th>Nombre</th>
-                <th>Cantidad</th>
+                <th>Nombre</th>	
                 <th>Unidad_de_medida</th>
                 <th>Familia</th>
                 <th>Departamento</th>
@@ -15,7 +14,7 @@
         </thead>
             <tr>
                 <td><input class="form-control" value="" type="text" name="nombre"></td>    
-                <td><input class="form-control" value="" type="text" name="cantidad"></td>  
+                
                 <td><select class="form-control" name ="udm">
                     <?php 
                         $query = $this->db->get("udm");
@@ -47,7 +46,7 @@
                         $valores = $query->result(); ?>
                     <?php foreach ($valores as $valor): ?>
                     	<?php if ($valor->estado == 1): ?>
-                        	<option><?php echo $valor->nombre_depto; ?></option>
+                        	<option><?php echo $valor->nombre; ?></option>
                         <?php endif; ?>
                     <?php endforeach; ?>
                     </select>
@@ -137,7 +136,7 @@
 		                                
 		                            }
 		                        ?>
-								<td><?php echo $v->nombre_depto; ?></td>
+								<td><?php echo $v->nombre; ?></td>
 							</tr>
 
 						</thead>
