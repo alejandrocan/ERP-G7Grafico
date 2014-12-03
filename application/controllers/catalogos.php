@@ -311,6 +311,35 @@ class Catalogos extends CI_Controller {
 		$datos['contacto']= $this->input->post('contacto');	
 		//$this->load->view("catalogos/vwPresentacion",$erro2);
 			$this->index('proveedor',$datos);
+	}
+	public function duplicar_puesto($tabla){
+		$datos['nombre']= $this->input->post('nombre');		
+		//$this->load->view("catalogos/vwPresentacion",$erro2);
+			$this->index('puesto',$datos);
+	}
+	/*
+
+                <td><input class="form-control" value="<?php if(@$clave){echo $clave;}?>" type="text" name="clave"></td>
+                <td><input class="form-control" value="<?php if(@$smax){echo $udm;}?>" type="text" name="smax"></td>
+                <td><input class="form-control" value="<?php if(@$smin){echo $proveedor;}?>" type="text" name="smin"></td>
+                <td><input class="form-control" value="<?php if(@$factor){echo $factor;}?>" type="text" name="factor_redimiento"></td>
+                <td><input class="form-control" value="<?php if(@$cantidad){echo $cantidad;}?>" type="text" name="cantidad"></td>
+                <td><input class="form-control" value="<?php if(@$costo){echo $costo;}?>" type="text" name="ultimo_costo"></td>
+                <td><input class="form-control" value="<?php if(@$tiempo){echo $tiempo;}?>" type="text" name="tiempo_elaboracion"></td>
+                <td><input class="form-control" value="<?php if(@$orden){echo $orden;}?>" type="text" name="orden_cronologico"></td>
+	*/
+	public function duplicar_material($tabla){
+		$datos['nombre']= $this->input->post('nombre');	
+		$datos['clave']= $this->input->post('clave');				
+		$datos['smax']= $this->input->post('smax');	
+		$datos['smin']= $this->input->post('smin');	
+		$datos['factor']= $this->input->post('factor');	
+		$datos['cantidad']= $this->input->post('cantidad');	
+		$datos['costo']= $this->input->post('costo');	
+		$datos['tiempo']= $this->input->post('tiempo');	
+		$datos['orden']= $this->input->post('orden');	
+		//$this->load->view("catalogos/vwPresentacion",$erro2);
+			$this->index('material',$datos);
 	}	
 	/*
 

@@ -23,7 +23,7 @@
             </tr>
         </thead>
             <tr>
-                <td><input class="form-control" value="" type="text" name="nombre"></td>    
+                <td><input class="form-control" value="<?php if(@$nombre){echo $nombre;}?>" type="text" name="nombre"></td>    
                 <td><select class="form-control" name ="udm_material">
                     <?php 
                         $this->db->where('estado','1');
@@ -51,14 +51,14 @@
                         <option><?php echo $valor->nombre; ?></option>
                     <?php endforeach; ?>
                 </select></td>
-                <td><input class="form-control" value="" type="text" name="clave"></td>
-                <td><input class="form-control" value="" type="text" name="smax"></td>
-                <td><input class="form-control" value="" type="text" name="smin"></td>
-                <td><input class="form-control" value="" type="text" name="factor_redimiento"></td>
-                <td><input class="form-control" value="" type="text" name="cantidad"></td>
-                <td><input class="form-control" value="" type="text" name="ultimo_costo"></td>
-                <td><input class="form-control" value="" type="text" name="tiempo_elaboracion"></td>
-                <td><input class="form-control" value="" type="text" name="orden_cronologico"></td>
+                <td><input class="form-control" value="<?php if(@$clave){echo $clave;}?>" type="text" name="clave"></td>
+                <td><input class="form-control" value="<?php if(@$smax){echo $smax;}?>" type="text" name="smax"></td>
+                <td><input class="form-control" value="<?php if(@$smin){echo $smin;}?>" type="text" name="smin"></td>
+                <td><input class="form-control" value="<?php if(@$factor){echo $factor;}?>" type="text" name="factor_redimiento"></td>
+                <td><input class="form-control" value="<?php if(@$cantidad){echo $cantidad;}?>" type="text" name="cantidad"></td>
+                <td><input class="form-control" value="<?php if(@$costo){echo $costo;}?>" type="text" name="ultimo_costo"></td>
+                <td><input class="form-control" value="<?php if(@$tiempo){echo $tiempo;}?>" type="text" name="tiempo_elaboracion"></td>
+                <td><input class="form-control" value="<?php if(@$orden){echo $orden;}?>" type="text" name="orden_cronologico"></td>
                 <td>
                     <input type="submit" value="Guardar" class="btn btn-info btn-xs">
                     <input type="button" value="Cancelar" class="btn btn-danger btn-xs" action="" method="post" >
@@ -100,6 +100,7 @@
                 <?php foreach ($registros as $registro): ?>
                     <tr>
                     <?php $columnas = $this->db->list_fields($catalogo); ?>
+                    <form action="<?php echo base_url();?>index.php/catalogos/duplicar_material/<?php echo $catalogo?>" method="post">
                         <?php if($registro->estado=='1')
                         {
                             echo '<tr>';
@@ -112,6 +113,7 @@
                         }?>
                         <td id="id<?php echo $registro->id_material;?>"><?php echo $registro->id_material; ?></td>
                         <td id="nombre<?php echo $registro->id_material;?>"><?php echo $registro->nombre; ?></td>
+                        <input  class="hidden" name="nombre" value="<?php echo $registro->nombre;?>">                                            
                         <?php 
                             $udm = $this->db->get("udm");
                             $valor = $udm->result();
@@ -122,6 +124,7 @@
                             }
                         ?>
                         <td id="udm<?php echo $registro->id_material;?>"><?php echo $v->nombre; ?></td>
+                        <input  class="hidden" name="udm" value="<?php echo $v->nombre;?>">
                          <?php 
                             $proveedor = $this->db->get("proveedor");
                             $valor = $proveedor->result();
@@ -132,6 +135,7 @@
                             }
                         ?>
                         <td id="proveedor<?php echo $registro->id_material;?>"><?php echo $v->nombre; ?></td>
+                        <input  class="hidden" name="proveedor" value="<?php echo $v->nombre;?>">
                          <?php 
                             $presentacion = $this->db->get("presentacion");
                             $valor = $presentacion->result();
@@ -142,6 +146,7 @@
                             }
                         ?>
                         <td id="pres<?php echo $registro->id_material;?>"><?php echo $v->nombre; ?></td>
+                        
                         <td id="clave<?php echo $registro->id_material;?>"><?php echo $registro->clave; ?></td>
                         <td id="smax<?php echo $registro->id_material;?>"><?php echo $registro->smax; ?></td>
                         <td id="smin<?php echo $registro->id_material;?>"><?php echo $registro->smin; ?></td>
@@ -161,13 +166,25 @@
                         ?>
                         <td id="user_edit<?php echo $registro->id_material;?>"><?php echo $v->nombre; ?></td>
                         <td id="tiempo<?php echo $registro->id_material;?>"><?php echo $registro->tiempo_elaboracion; ?></td>
-                        <td id="<?php echo $registro->id_material;?>"><?php echo $registro->orden_cronologico; ?></td>
+                        <td id="<?php echo $registro->id_material;?>"><?php echo $registro->orden_cronologico; ?></td>                           
+
+                        <input  class="hidden" name="presentacion" value="<?php echo $v->nombre;?>">
+                        <input  class="hidden" name="clave" value="<?php echo $registro->clave;?>">                            
+                        <input  class="hidden" name="smax" value="<?php echo $registro->smax;?>">
+                        <input  class="hidden" name="smin" value="<?php echo $registro->smin;?>">
+                        <input  class="hidden" name="factor" value="<?php echo $registro->factor_redimiento;?>">
+                        <input  class="hidden" name="cantidad" value="<?php echo $registro->cantidad;?>">
+                        <input  class="hidden" name="costo" value="<?php echo $registro->ultimo_costo;?>">                                                                    
+                        <input  class="hidden" name="tiempo" value="<?php echo $registro->tiempo_elaboracion;?>">
+                        <input  class="hidden" name="orden" value="<?php echo $registro->orden_cronologico;?>">                            
+
                         <td>
-                            <?php echo '<a class="btn btn-info btn-xs" data-toggle= "modal" data-target="#' . $registro->id_material . '" role="button">Editar</a>';?>
-                            <a class="btn btn-primary btn-xs" href="#" role="button">Duplicar</a>
+                            <?php echo '<a class="btn btn-info btn-xs" data-toggle= "modal" data-target="#' . $registro->id_material . '" role="button">Editar</a>';?>                            
+                            <input type="submit" value="Duplicar" class="btn btn-primary btn-xs" method="post" name="enviar"> 
                             <?php echo $estado;?>
                         </td>
                     </tr>
+                </form>
                     <?php echo '<div class="modal fade" id="'.$registro->id_material.'" tabindex="-1" aria-hidden="true">';?>
                         <div class="modal-dialog">
                             <div class="modal-content">
