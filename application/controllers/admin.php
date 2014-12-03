@@ -73,9 +73,13 @@ class Admin extends CI_Controller {
             }
         }
         ///////////////////////////////////////777
-
+                $this->db->order_by('id_pedido', 'desc');
+                $pedido = $this->db->get('pedido');
+                $pedido = $pedido->row();
+                $id = $pedido->id_pedido;
+                $data['id'] = $id;
         $this->load->model('explosionModel');
-        $this->explosionModel->insertValues(7,$id_producto ,$tipo, $cantidad, $udm_value, 100);
+        $this->explosionModel->insertValues($id,$id_producto ,$tipo, $cantidad, $udm_value, 100);
         //////////////////////
         if($this->session->userdata('tipo_usr') == FALSE || $this->session->userdata('tipo_usr') != 'Administrador')
         {
@@ -111,7 +115,7 @@ class Admin extends CI_Controller {
                 <button class="btn btn-default">Vista Resumida</button>
                 <button class="btn btn-default">Vista Global</button>';
         //////////////////////////
-                $data['id'] = 7;
+                
        $this->load->view('vwHeader', $data);
        $this->load->view('vwInterface');
     }

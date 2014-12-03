@@ -80,9 +80,9 @@ Class TestController extends CI_Controller {
                 <button class="btn btn-default">Vista Global</button>';
         ///////////////////////////////////////////
         
-        //$this->load->model("ExplosionModel");
-        //$id = $this->ExplosionModel->newOrderGen();
-        $data['id'] = 7;
+        $this->load->model("ExplosionModel");
+        $data['id'] = $this->ExplosionModel->newOrderGen();
+        
         $this->load->view('vwHeader',$data);
         $this->load->view('vwInterface');
     }
