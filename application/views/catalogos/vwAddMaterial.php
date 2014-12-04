@@ -56,7 +56,7 @@ $(document).ready(function(){
 			<td>
                     <button type="submit" class="btn btn-info btn-sm">Agregar</button>
                     <input type="reset" value="Cancelar" class="btn btn-danger btn-sm" />
-                    <input type="reset" value="Terminar" class="btn btn-success btn-sm"/>
+                    <li class="btn btn-success btn-sm"><a href="<?php echo base_url();?>/index.php/catalogos/upProducto/<?php echo $producto. "/". $id_product; ?>">Terminar</li></a>
             </td>
 		</tr>
 	</table>

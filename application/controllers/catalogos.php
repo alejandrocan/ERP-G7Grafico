@@ -789,7 +789,7 @@ class Catalogos extends CI_Controller {
 			foreach ($query as $valor) {
 				if($valor->nombre == $elemento){
 					$data['id_elemento'] = $valor->id_produc;
-					$data['costo'] = $valor->costo_produc;
+					$data['costo'] = $valor->costo_produc * $cantidad;
 					$data['tipo_elemento'] = 'producto';
 				}
 			}
@@ -809,5 +809,27 @@ class Catalogos extends CI_Controller {
 		$data['producto'] = $this->input->post('elemento');
 		$data['registro'] = $producto;
 		header('Refresh:0;url="' . base_url() . '/index.php/catalogos/addMaterial/'.$producto);
+	}
+	public function upProducto($producto, $id) {
+		$data['estado'] = 1;
+		$data['costo_produc'] = 0;
+		//////////////////////////////////
+		$query2 = $this->db->get_where('producto_material', array('id_producto' => $id));
+		$query2 = $query2->result();
+		foreach ($query2 as $valor) {
+			$data['costo_produc'] = $data['costo_produc'] + $valor->costo;
+		}
+		//////////////////////////////////
+		$this->db->where('id_produc', $id);
+		$query = $this->db->get('producto');
+		$query = $query->result();
+		foreach ($query as $value) {
+			$producto = $value->nombre;
+			break;
+		}
+		//////////////////////////////////
+		$this->db->where('id_produc', $id);
+		$this->db->update('producto', $data);
+		header('Refresh:3;url="' . base_url() . '/index.php/catalogos/index/producto/registros');
 	}
 } 
