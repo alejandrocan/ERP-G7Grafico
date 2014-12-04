@@ -59,7 +59,7 @@ class VistaGlobal extends CI_Controller {
 	    		if($this->LISTAMATERIALES[$i][0]==$id)
 	    		{
 	    			$verif = 1;
-	    			$this->LISTAMATERIALES[$i][2] = $this->LISTAMATERIALES[$i][2]+$cant;
+	    			$this->LISTAMATERIALES[$i][2] = $this->LISTAMATERIALES[$i][2]+$cant*$lel->factor_redimiento;
 	    			$this->LISTAMATERIALES[$i][4] = ($lel->ultimo_costo*$lel->factor_redimiento*$cant)+$this->LISTAMATERIALES[$i][4];   	
 	    		}
 	    	}
@@ -67,7 +67,7 @@ class VistaGlobal extends CI_Controller {
 	    	{
 	    		$this->LISTAMATERIALES[$cuenta][0] = $lel->id_material;
 	    		$this->LISTAMATERIALES[$cuenta][1] = $lel->nombre;
-	    		$this->LISTAMATERIALES[$cuenta][2] = $cant;
+	    		$this->LISTAMATERIALES[$cuenta][2] = $cant*$lel->factor_redimiento;
 	    		$this->LISTAMATERIALES[$cuenta][3] = $lel->ultimo_costo;
 	    		$this->LISTAMATERIALES[$cuenta][4] = $lel->ultimo_costo*$lel->factor_redimiento*$cant; 
 	    	}
