@@ -754,7 +754,8 @@ class Catalogos extends CI_Controller {
 		
 		$this->load->model('registros_model');
 		if($this->registros_model->insertar($datos, $tabla)) {
-			header('Refresh:2;url="' . base_url() . '/index.php/catalogos/addMaterial/'.$this->PRODUCTO_NAME['registros']);
+			$this->addMaterial($this->PRODUCTO_NAME['registros']);
+			#header('Refresh:2;url="' . base_url() . '/index.php/catalogos/addMaterial/'.$this->PRODUCTO_NAME['registros']);
 		}
 	}
 	public function addMaterial($name){
