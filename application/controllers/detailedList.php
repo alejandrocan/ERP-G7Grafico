@@ -14,7 +14,7 @@ class DetailedList extends CI_Controller
     public function showList($id_pedido){
 	
 			$variable = $this->list_model->getPedido($id_pedido);
-			$this->variableGlobal .= '<table class="table table-bordered table-hover"><tr><td class="warning">Nombre</td><td class="warning">udm</td><td class="warning">Cantidad</td><td class="warning">Costo</td></tr><tr>';
+			$this->variableGlobal .= '<table class="table table-bordered table-hover"><tr><td class="danger">Nombre</td><td class="danger">udm</td><td class="danger">Cantidad</td><td class="danger">Costo</td></tr><tr>';
 			foreach ($variable as $var) {
 				$this->variableGlobal .= '<tr>';
 				if($var->tipo == 'producto'){
@@ -45,7 +45,7 @@ class DetailedList extends CI_Controller
 			$this->variableGlobal .= '<tr>';
 			for($i = 0; $i <= $veces; $i++)
 					$this->variableGlobal .= '<td style="border: inset 0pt"></td>';
-			$this->variableGlobal .='<td class="warning">Nombre</td><td class="warning">udm</td><td class="warning">Cantidad</td><td class="warning">Costo</td></tr><tr>';
+			$this->variableGlobal .='<td class="danger">Nombre</td><td class="danger">udm</td><td class="danger">Cantidad</td><td class="danger">Costo</td></tr><tr>';
 			foreach ($variable2 as $var2) {
 				for($i = 0; $i <= $veces; $i++)
 					$this->variableGlobal .= '<td style="border: inset 0pt"></td>';

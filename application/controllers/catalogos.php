@@ -290,8 +290,7 @@ class Catalogos extends CI_Controller {
 		$datos['estado'] = 1;
 		$this->load->model('registros_model');
 		if($this->registros_model->editar_familia($datos, $tabla)) {
-			redirect('catalogos/index/'. $tabla);
-
+			$this->index($tabla,null);
 		}
 	}
 		
