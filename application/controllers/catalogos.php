@@ -766,8 +766,8 @@ class Catalogos extends CI_Controller {
 		$this->load->view("catalogos/vwAddMaterial");
 
 	}
-	public function addNewMaterial($producto, $id) {
-		$data['id_producto'] = $id;
+	public function addNewMaterial() {
+		$data['id_producto'] = $this->input->post('idProducto');
 		$elemento = $this->input->post('elemento');
 		$cantidad = $this->input->post('cant_usada');
 		//////////////////////////////
@@ -808,8 +808,9 @@ class Catalogos extends CI_Controller {
 		$this->db->insert('producto_material', $data);
 		$data['udm'] = $this->input->post('udm');
 		$data['producto'] = $this->input->post('elemento');
-		$data['registro'] = $producto;
-		header('Refresh:0;url="' . base_url() . '/index.php/catalogos/addMaterial/'.$producto);
+		$data['registro'] = $this->input->post('nombreProducto');
+		$this->addMaterial($this->input->post('nombreProducto'));
+		#header('Refresh:0;url="' . base_url() . '/index.php/catalogos/addMaterial/'.$producto);
 	}
 	public function upProducto($producto, $id) {
 		$data['estado'] = 1;

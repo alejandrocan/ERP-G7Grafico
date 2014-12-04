@@ -17,7 +17,7 @@ $(document).ready(function(){
 		$query = $this->db->get_where('producto', array('nombre' => $producto));
 		$query = $query->result();
 		foreach ($query as $valor) {			
-			$id_product = $valor->id_produc;
+			$id_producto = $valor->id_produc;
 		}
 	?>
 	<form class="navbar-form navbar-left" role="search" action="<?php echo base_url();?>/index.php/catalogos/addNewMaterial" method="post">
@@ -27,7 +27,7 @@ $(document).ready(function(){
       	<button type="submit" class="btn btn-default">Agregar</button>
     </form>
 
-<form method="post" action="<?php echo base_url(); ?>/index.php/catalogos/addNewMaterial/<?php echo $producto . "/". $id_product;?>">
+<form method="post" action="<?php echo base_url(); ?>/index.php/catalogos/addNewMaterial/">
 	<table class="table table-bordered table-hover">
 		<thead>
 		<tr>		
@@ -40,6 +40,8 @@ $(document).ready(function(){
 		<tr>		
 			<td><input class="form-control" value="" type="text" name="elemento"></td>
 			<td><input class="form-control" value="" type="text" name="cant_usada"></td>
+			<input class="hidden" value= "<?php echo $producto;?>" type="text" name="nombreProducto">
+			<input class="hidden" value= "<?php echo $id_producto;?>" type="text" name="idProducto">
 			<td>
 				<select class="form-control" name="udm">
 					<?php $query = $this->db->get("udm");
@@ -56,7 +58,7 @@ $(document).ready(function(){
 			<td>
                     <button type="submit" class="btn btn-info btn-sm">Agregar</button>
                     <input type="reset" value="Cancelar" class="btn btn-danger btn-sm" />
-                    <li class="btn btn-success btn-sm"><a href="<?php echo base_url();?>/index.php/catalogos/upProducto/<?php echo $producto. "/". $id_product; ?>">Terminar</li></a>
+                    <li class="btn btn-success btn-sm"><a href="<?php echo base_url();?>/index.php/catalogos/upProducto/<?php echo $producto. "/". $id_producto; ?>">Terminar</li></a>
             </td>
 		</tr>
 	</table>
@@ -69,7 +71,7 @@ $(document).ready(function(){
 			<td>Costo</td>
 		</tr>
 			<?php
-				$query = $this->db->get_where('producto_material', array('id_producto' => $id_product));
+				$query = $this->db->get_where('producto_material', array('id_producto' => $id_producto));
 				$query = $query->result();
 				foreach ($query as $valor) {
 					echo '<tr>';
