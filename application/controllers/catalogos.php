@@ -11,6 +11,8 @@ if ( ! defined('BASEPATH'))
 
 class Catalogos extends CI_Controller {
 
+	public $PRODUCTO_NAME = array();
+
 	function __construct() {
         parent::__construct();
     }
@@ -584,7 +586,7 @@ class Catalogos extends CI_Controller {
 				break;
 			}
 		}
-		$datos['estado'] = 1;
+		$datos['estado'] = 0;
 		$data['user']=$this->session->userdata('user');
 		$data['title'] = "Sistema G7 Grafico";
 		$this->load->model('registros_model');
@@ -709,4 +711,104 @@ class Catalogos extends CI_Controller {
 			$this->index($tabla,null);
 		}
 	}
-}
+	public function newProduct($tabla) 
+	{
+		$datos['nombre'] = $this->input->post("nombre");
+		$this->PRODUCTO_NAME['registros'] = $datos['nombre'];
+
+		/*Busca el id de la unidad de medida seleccionada*/
+		$valor = $this->input->post("udm");
+		$query =  $this->db->get("udm");
+		$registros = $query->result();
+		foreach ($registros as $registro ) {
+			if($registro->nombre == $valor)
+			{
+				$datos['udm_produc'] = $registro->id_udm;
+				break;
+			}
+		}
+
+		/*Busca el id de la familia seleccionada*/
+		$valor = $this->input->post("familia");
+		$query =  $this->db->get("familia");
+		$registros = $query->result();
+		foreach ($registros as $registro ) {
+			if($registro->nombre == $valor)
+			{
+				$datos['familia_produc'] = $registro->id_fam;
+				break;
+			}
+		}
+
+		/*Busca el id del departamento seleccionado*/
+		$valor = $this->input->post("departamento");
+		$query =  $this->db->get("departamento");
+		$registros = $query->result();
+		foreach ($registros as $registro ) {
+			if($registro->nombre == $valor)
+			{
+				$datos['depto_produc'] = $registro->id_depto;
+				break;
+			}
+		}
+		$datos['estado'] = 0;
+		
+		$this->load->model('registros_model');
+		if($this->registros_model->insertar($datos, $tabla)) {
+			header('Refresh:2;url="' . base_url() . '/index.php/catalogos/addMaterial/'.$this->PRODUCTO_NAME['registros']);
+		}
+	}
+	public function addMaterial($name){
+		$data['producto'] = $name;
+		$data['user']=$this->session->userdata('user');
+		$data['title'] = "Sistema G7 Grafico";
+		$this->load->view("vwHeader", $data);
+		$this->load->view("catalogos/vwAddMaterial");
+
+	}
+	public function addNewMaterial($producto, $id) {
+		$data['id_producto'] = $id;
+		$elemento = $this->input->post('elemento');
+		$cantidad = $this->input->post('cant_usada');
+		//////////////////////////////
+		$query = $this->db->get_where('material', array('nombre' => $elemento));
+		$query = $query->result();
+		if($query != null){
+			echo "aqui";
+			foreach ($query as $valor) {
+				if($valor->nombre == $elemento){
+					$data['id_elemento'] = $valor->id_material;
+					$fr = $valor->factor_redimiento;
+					$ucosto = $valor->ultimo_costo;
+					$data['costo'] = $ucosto * $fr* $cantidad;
+					$data['tipo_elemento'] = 'material';
+				}
+			}
+		}else{
+			$query = $this->db->get('producto');
+			$query = $query->result();
+			foreach ($query as $valor) {
+				if($valor->nombre == $elemento){
+					$data['id_elemento'] = $valor->id_produc;
+					$data['costo'] = $valor->costo_produc;
+					$data['tipo_elemento'] = 'producto';
+				}
+			}
+		}
+		/////////////////////////////
+		$udm = $this->input->post('udm');
+		$query = $this->db->get_where('udm', array('nombre' => $udm ));
+		$query = $query->result();
+		foreach ($query as $valor) {
+			$data['udmid'] = $valor->id_udm;
+		}
+		////////////////////////////
+		$data['cantidadusada'] =  $this->input->post('cant_usada');
+		
+		$this->db->insert('producto_material', $data);
+		$data['udm'] = $this->input->post('udm');
+		$data['producto'] = $this->input->post('elemento');
+		$data['registro'] = $producto;
+		header('Refresh:0;url="' . base_url() . '/index.php/catalogos/addMaterial/'.$producto);
+	}
+} 

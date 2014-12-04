@@ -4,6 +4,9 @@ if (!defined('BASEPATH'))
 
 class Registros_model extends  CI_Model {
 		
+		public $MATERIALES = array();
+		public $PRODUCTO = array();
+
 		public function insertar($datos,$tabla)
 		{
 			if($this->db->insert($tabla, $datos))	
@@ -102,6 +105,9 @@ class Registros_model extends  CI_Model {
 		public function get_columns($tabla){
 			$columnas = $this->db->list_fields($tabla);
 			return $columnas;
+		}
+		public function createMaterial($data) {
+
 		}
 
 	}

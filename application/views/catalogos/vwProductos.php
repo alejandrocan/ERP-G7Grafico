@@ -1,7 +1,7 @@
 <!--Apartado de insertar-->
 <div class="container table-responsive">
         <h3>Agregar Nuevo producto</h3>
-        <form action="<?php echo base_url();?>index.php/catalogos/insertProducto/<?php echo $catalogo?>" method="post">
+        <form action="<?php echo base_url();?>index.php/catalogos/newProduct/<?php echo $catalogo?>" method="post">
         <table class="table table-bordered table-hover">
         <thead>
             <tr>
@@ -86,8 +86,7 @@
 						<thead>
 							<tr>
 								<th>ID</th>
-								<th>Nombre</th>
-								<th>Cantidad</th>
+								<th>Nombre</th>								
 								<th>UDM</th>
 								<th>Costo</th>
 								<th>Familia</th>
@@ -97,7 +96,7 @@
 							<tr>
 								<td><?php echo $registro->id_produc; ?></td>
 								<td><?php echo $registro->nombre; ?></td>
-								<td><?php echo $registro->cantidad_produc; ?></td>
+								<?php $id_produc = $registro->id_produc; ?>
 								<!--unida de medida-->
 								<?php 
 		                            $udm = $this->db->get("udm");
@@ -146,27 +145,47 @@
 					<table class="table table-bordered table-hover">
 						<thead>
 							<tr>
-								<th>Producto</th>
+								<th>Material</th>
 								<th>Cantidad usada</th>
 								<th>UDM</th>
 								<th>Costo</th>
 							</tr>
 
 							<tr>
-								<?php $query = $this->db->get("producto_material");
-									$materiales = $query->result();
-								?>
-								<!--Validacion si es un material o un producto-->
-								<?php foreach ($materiales as $material): ?>
-									<?php if($material != 0): ?>
-									<!--En case de ser material-->
-										<td><?php $material->materialid ?></td>
-									<?php else: ?>
-									<!--En case de ser producto-->
-									<?php endif; ?>
-										<td><?php $material->productoid ?></td>
-								<?php endforeach; ?>
-
+							<?php 
+								$query = $this->db->get_where('producto_material', array('id_producto' => $id_produc));
+								$query = $query->result();
+								foreach ($query as $value) {
+									echo '<tr>';
+									echo '<td>';
+									$id_element = $value->id_elemento;
+									if($value->tipo_elemento == 'material'){
+										$query2 = $this->db->get_where('material' , array('id_material' => $value->id_elemento));
+										$query2 = $query2->result();
+										foreach ($query2 as $value2) {
+											$nombre_material = $value2->nombre;
+										}
+									}else {
+										$query2 = $this->db->get_where('producto', array('id_produc' => $value->id_elemento));
+										$query2 = $query2->result();
+										foreach ($query2 as $value2) {
+											$nombre_material = $value2->nombre;
+										}
+									}
+									echo $nombre_material;
+									echo '</td>';
+									echo '<td>' . $value->cantidadusada. '</td>';
+									$unidaddemedida = $value->udmid;
+									$query2 = $this->db->get_where('udm', array('id_udm' =>$unidaddemedida ));
+									$query2 = $query2->result();
+									foreach ($query2 as $value3) {
+										$unidaddemedida = $value3->nombre;
+									}
+									echo '<td>' . $unidaddemedida. '</td>';
+									echo '<td>' . $value->costo. '</td>';
+									echo '</tr>';
+								}
+							?>
 							</tr>
 
 						</thead>
