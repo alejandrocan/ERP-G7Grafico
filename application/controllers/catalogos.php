@@ -390,7 +390,7 @@ class Catalogos extends CI_Controller {
 			if($this->registros_model->insertar($datos,$tabla)) {
 				$error['mensaje'] = '<div class="container alert alert-success alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Se ha agregado un nuevo Proveedor. Espere mientras es redirigido :) </div>';
 				$this->index("proveedor",$error);
-				header('Refresh:2;url="' . base_url() . '/index.php/catalogos/index/familia/proveedor');
+				header('Refresh:2;url="' . base_url() . '/index.php/catalogos/index/proveedor/registros');
 			}
 		}
 		else
@@ -420,7 +420,7 @@ class Catalogos extends CI_Controller {
 			if($this->registros_model->insertar($datos,$tabla)) {
 				$error['mensaje'] = '<div class="container alert alert-success alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Se ha agregado un nuevo Proveedor. Espere mientras es redirigido :) </div>';
 				$this->index("proveedor",$error);
-				header('Refresh:2;url="' . base_url() . '/index.php/catalogos/index/familia/proveedor');
+				header('Refresh:2;url="' . base_url() . '/index.php/catalogos/index/presentacion/registros');
 			}
 		}
 		else

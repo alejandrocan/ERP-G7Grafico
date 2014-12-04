@@ -20,7 +20,7 @@ $(document).ready(function(){
 			$id_product = $valor->id_produc;
 		}
 	?>
-	<form class="navbar-form navbar-left" role="search" action="<?php echo base_url();?>/index.php/catalogos/addNewMaterial" metho="post">
+	<form class="navbar-form navbar-left" role="search" action="<?php echo base_url();?>/index.php/catalogos/addNewMaterial" method="post">
     	<div class="form-group">
         	<input type="text" class="form-control" placeholder="Producto/Material" id="buscar">
       	</div>

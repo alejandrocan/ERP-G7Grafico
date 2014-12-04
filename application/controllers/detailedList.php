@@ -17,7 +17,7 @@ class DetailedList extends CI_Controller
 			$this->variableGlobal .= '<table class="table table-bordered table-hover"><tr><td class="danger">Nombre</td><td class="danger">udm</td><td class="danger">Cantidad</td><td class="danger">Costo</td></tr><tr>';
 			foreach ($variable as $var) {
 				$this->variableGlobal .= '<tr>';
-				if($var->tipo == 'producto'){
+				if($var->tipo == 'Producto'){
 					$this->variableGlobal .= '<td>';
 					$this->showProducto($var->id_producto,$var->cantidad,0);
 				}
@@ -50,7 +50,7 @@ class DetailedList extends CI_Controller
 				for($i = 0; $i <= $veces; $i++)
 					$this->variableGlobal .= '<td style="border: inset 0pt"></td>';
 				$this->variableGlobal .= '<td>';
-				if($var2->tipo_elemento == 'producto'){
+				if($var2->tipo_elemento == 'Producto'){
 					$this->showProducto($var2->id_elemento,$var2->cantidadusada,$veces+1);
 				}
 				else{
