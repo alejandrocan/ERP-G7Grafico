@@ -18,7 +18,7 @@ class VistaGlobal extends CI_Controller {
     	$query = $this->db->get('explosion');
     	$query = $query->result();
     	foreach ($query as $row) {
-    		if($row->tipo=='Material')
+    		if($row->tipo=='material')
     		{
     			$this->agregarMateriales($row->cantidad,$row->id_producto);
     		}
@@ -38,7 +38,7 @@ class VistaGlobal extends CI_Controller {
 		$queryproducto = $this->db->get('producto_material');
 	    $queryproducto = $queryproducto->result();
 	    foreach ($queryproducto as $material) {
-	    	if($material->tipo_elemento=='Material')
+	    	if($material->tipo_elemento=='material')
 	    		$this->agregarMateriales($cant*$material->cantidadusada,$material->id_elemento);
 	    	else
 	    		$this->obtenerMateriales($material->id_elemento,$cant);
