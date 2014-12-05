@@ -19,11 +19,11 @@
     <script type="text/javascript" src="<?php echo base_url(); ?>js/jquery.js"></script>
     <script type="text/javascript" src="<?php echo base_url(); ?>js/bootstrap.js"></script>
   
-		<link rel="stylesheet" type="text/css" href="http://localhost/ERP-G7Grafico//css/bootstrap.min.css">
-		<link rel="stylesheet" type="text/css" href="http://localhost/ERP-G7Grafico//css/jquery-ui.css">
-		<script type="text/javascript" src="http://localhost/ERP-G7Grafico/js/jquery-1.9.1.js"></script>
-		<script type="text/javascript" src="http://localhost/ERP-G7Grafico/js/jquery-ui.js"></script>
-		<script src="http://localhost/ERP-G7Grafico/js/bootstrap.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>/css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>/css/jquery-ui.css">
+		<script type="text/javascript" src="<?php echo base_url(); ?>/js/jquery-1.9.1.js"></script>
+		<script type="text/javascript" src="<?php echo base_url(); ?>/js/jquery-ui.js"></script>
+		<script src="<?php echo base_url(); ?>js/bootstrap.min.js"></script>
 		
 
 		
