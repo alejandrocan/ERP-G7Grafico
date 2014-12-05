@@ -17,7 +17,7 @@ class DetailedList extends CI_Controller
 			$this->variableGlobal .= '<table class="table table-bordered table-hover"><tr><td class="danger">Nombre</td><td class="danger">udm</td><td class="danger">Cantidad</td><td class="danger">Costo</td></tr><tr>';
 			foreach ($variable as $var) {
 				$this->variableGlobal .= '<tr>';
-				if($var->tipo == 'Producto'){
+				if($var->tipo == 'producto'){
 					$this->variableGlobal .= '<td>';
 					$this->showProducto($var->id_producto,$var->cantidad,0);
 				}
