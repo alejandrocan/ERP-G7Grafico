@@ -17,8 +17,7 @@
         </thead>
             <tr>
                 <?php echo form_open_multipart(base_url()."index.php/catalogos/insertPresentacion/presentacion")?>
-                    <td><input class="form-control" value="<?php if(@$nombre){echo $nombre;}else{echo set_value('Nombre','');}?>" type="text" name="Nombre"></td>    
-                    // if(@$nombre){echo $nombre;}else{echo set_value('Nombre','');}
+                    <td><input class="form-control" value="<?php if(@$nombre){echo $nombre;}else{echo set_value('Nombre','');}?>" type="text" name="Nombre"></td>                        
                     <td><select class="form-control" name ="UDM">
                             <?php 
                             $query = $this->db->get("udm");
