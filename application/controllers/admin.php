@@ -111,8 +111,8 @@ class Admin extends CI_Controller {
                     <button type="reset" class="btn btn-danger">Cancelar</button>
                 </form>';
         ///////////////////////////////////////////
-        $data['buttonAditional'] = '<a class="btn btn-default" href="'.base_url().'index.php/vistaGlobal/index/'.$id.'">Vista Global</a>
-                <a class="btn btn-default" href="'.base_url().'index.php/detailedList/showList/'.$id.'">Vista Detallada</a>';
+        $data['buttonAditional'] = '<a target="_blank" class="btn btn-default" href="'.base_url().'index.php/vistaGlobal/index/'.$id.'">Vista Global</a>
+                <a class="btn btn-default" target="_blank" href="'.base_url().'index.php/detailedList/showList/'.$id.'">Vista Detallada</a>';
         //////////////////////////
                 
        $this->load->view('vwHeader', $data);
