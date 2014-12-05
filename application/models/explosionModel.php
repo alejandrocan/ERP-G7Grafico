@@ -20,5 +20,12 @@ class ExplosionModel extends CI_Model {
 		return $newid;
 	}
 	public function insertvalues($no_pedido, $id_producto, $tipo, $cantidad, $udm, $costo){
-		$this->db->query("insert into explosion values(null,".$no_pedido.",".$id_producto.",'".$tipo."',".$cantidad.",'".$udm."', ".$costo.", ".$costo*$cantidad.")");	}
+		$data['no_pedido'] = $no_pedido;
+		$data['id_producto'] = $id_producto;
+		$data['tipo'] = $tipo;
+		$data['cantidad'] = $cantidad;
+		$data['udm'] = $udm;
+		$data['costo'] = $costo;
+		$this->db->insert('explosion', $data);
+	}
 }
