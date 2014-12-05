@@ -2,25 +2,29 @@
         <h1>Puesto</h1>
 </div>
     <div class="container table-responsive">
+        <?=@$mensaje?>
+        <span><?php echo validation_errors(); ?></span>
         <h3>Agregar nuevo Puesto</h3>                
-        <form action=" <?php echo base_url();?>index.php/catalogos/insertPuesto/<?php echo $catalogo?>" method"post">
         <table class="table table-bordered table-hover">
-        <thead>
-            <tr>
-                <th>Nombre</th>                
-                <th>Acciones</th>
-            </tr>
-        </thead>
-            <tr>
-                <td><input class="form-control" value="<?php if(@$nombre){echo $nombre;}?>" type="text" name="nombre"></td>
-                <!-- <input class="form-control" value="<?php //echo $registro->nombre;?>" type="text" name="nombre"> -->
-                <td>
-                    <input type="submit" value="Guardar" class="btn btn-info btn-xs">                    
-                    <input type="button" value="Cancelar" class="btn btn-danger btn-xs" action="" method="post" >
-                </td>
-            </tr>
+            <thead>
+                <tr>
+                    <th>Nombre</th>                
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <?php echo form_open_multipart(base_url()."index.php/catalogos/insertPuesto/puesto")?>
+                    <td><input class="form-control" value="<?php if(@$nombre){echo $nombre;}else{echo set_value('Nombre','');}?>" type="text" name="Nombre"></td>
+                    <!-- <input class="form-control" value="<?php //echo $registro->nombre;?>" type="text" name="nombre"> -->
+                    <td>
+                        <input type="submit" value="Guardar" class="btn btn-info btn-sm">
+                    <a href="<?php echo base_url(). 'index.php/catalogos/index/proveedor/registros'; ?>" class="btn btn-danger btn-sm" >Cancelar</a>
+                    </td>
+                    <?php echo form_close();?>
+                </tr>
+            </tbody>
         </table>
-    </form>
     </div>
     <?php if(@$error2){?>
         <div class="container alert alert-danger alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button><?php echo @$error2;?></div>

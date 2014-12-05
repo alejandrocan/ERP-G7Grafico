@@ -3,9 +3,9 @@
         <h1>Departamento</h1>
 </div>
     <div class="container table-responsive">
+        <?=@$mensaje?>
+        <span><?php echo validation_errors(); ?></span>
         <h3>Agregar nuevo Departamento</h3>    
-            
-        <form action=" <?php echo base_url();?>index.php/catalogos/insertDepartamento/<?php echo $catalogo?>" method"post">
         <table class="table table-bordered table-hover">
         <thead>
             <tr>
@@ -14,15 +14,16 @@
             </tr>
         </thead>
             <tr>
-                <td><input class="form-control" value="<?php if(@$nombre){echo $nombre;}?>" type="text" name="nombre"></td>
+                <?php echo form_open_multipart(base_url()."index.php/catalogos/insertDepartamento/departamento")?>
+                <td><input class="form-control" value="<?php if(@$nombre){echo $nombre;}else {echo set_value('Nombre','');}?>" type="text" name="Nombre"></td>
                 <!-- <input class="form-control" value="<?php //echo $registro->nombre;?>" type="text" name="nombre"> -->
                 <td>
-                    <input type="submit" value="Guardar" class="btn btn-info btn-xs">                    
-                    <input type="button" value="Cancelar" class="btn btn-danger btn-xs" action="" method="post" >
+                    <input type="submit" value="Guardar" class="btn btn-info btn-sm">
+                    <a href="<?php echo base_url(). 'index.php/catalogos/index/departamento/registros'; ?>" class="btn btn-danger btn-sm" >Cancelar</a>
                 </td>
+                <?php echo form_close();?>
             </tr>
         </table>
-    </form>
     </div>
 
 <?php if(@$error2){?>

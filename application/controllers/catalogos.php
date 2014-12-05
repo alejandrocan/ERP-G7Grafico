@@ -280,7 +280,7 @@ class Catalogos extends CI_Controller {
 		}
 		else
 		{
-			$this->index("departamento",null);
+			$this->index("familia",null);
 		}
 	}
 
@@ -648,7 +648,9 @@ class Catalogos extends CI_Controller {
 
 		$this->load->model('registros_model');
 		if($this->registros_model->insertar($datos, $tabla)) {
-			$this->index($tabla,null);
+			$error['mensaje'] = '<div class="container alert alert-success alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Se ha agregado un nuevo Material. Espere mientras es redireccionado :)</div>';
+				$this->index("material",$error);
+				header('Refresh:2;url="' . base_url() . '/index.php/catalogos/index/material/registros');
 		}
 	}
 
