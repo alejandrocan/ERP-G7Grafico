@@ -318,6 +318,17 @@ class Catalogos extends CI_Controller {
 		//$this->load->view("catalogos/vwPresentacion",$erro2);
 			$this->index('puesto',$datos);
 	}
+	public function duplicar_presentacion($tabla){
+		$datos['nombre']= $this->input->post('nombre');		
+		$datos['udm']= $this->input->post('udm');
+		$datos['contenido']= $this->input->post('contenido');		
+			$this->index('presentacion',$datos);
+	}		
+	public function duplicar_UDM($tabla){
+		$datos['nombre']= $this->input->post('nombre');		
+		$datos['tipo']= $this->input->post('tipo');			
+			$this->index('udm',$datos);
+	}
 	/*
 
                 <td><input class="form-control" value="<?php if(@$clave){echo $clave;}?>" type="text" name="clave"></td>
