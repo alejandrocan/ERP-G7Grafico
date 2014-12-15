@@ -8,7 +8,7 @@
 
 <body>
 	<div class="container">
-        <h1>Vista Global</h1>
+        <h1>Compras <small> Folio <?php  echo $this->LISTAMATERIALES[0][0];?></small></h1>
 	</div>
 	<div class="container table-responsive">
 		<table class="table table-bordered table-hover">
@@ -22,14 +22,14 @@
 			<tbody>
 				<?php
 					$cuenta = count($this->LISTAMATERIALES);
-					if($cuenta>0)
+					if($cuenta>1)
 					{
-						for($i=0;$i<$cuenta;$i++)
+						for($i=1;$i<$cuenta;$i++)
 						{
 							echo '			<tr>';
 							echo '				<td>'.$this->LISTAMATERIALES[$i][0].'</td>';
 							echo '				<td>'.$this->LISTAMATERIALES[$i][1].'</td>';
-							echo '				<td>'.$this->LISTAMATERIALES[$i][2].'</td>';
+							echo '				<td>'.$this->LISTAMATERIALES[$i][2].' '.$this->LISTAMATERIALES[$i][5].'</td>';
 							echo '				<td>'.$this->LISTAMATERIALES[$i][3].'</td>';
 							echo '				<td>'.$this->LISTAMATERIALES[$i][4].'</td>';
 							echo '			</tr>';

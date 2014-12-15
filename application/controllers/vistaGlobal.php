@@ -17,8 +17,9 @@ class VistaGlobal extends CI_Controller {
     	$this->db->where('no_pedido',$folio);
     	$query = $this->db->get('explosion');
     	$query = $query->result();
+        $this->LISTAMATERIALES[0][0] = $folio;
     	foreach ($query as $row) {
-    		if($row->tipo=='material')
+    		if(strtoupper($row->tipo)=='MATERIAL')
     		{
     			$this->agregarMateriales($row->cantidad,$row->id_producto);
     		}
@@ -28,7 +29,8 @@ class VistaGlobal extends CI_Controller {
     		}
     		
     	}
-    	$this->load->view('explosion/vwGlobal',$this->LISTAMATERIALES);
+        
+        $this->load->view('explosion/vwGlobal',$this->LISTAMATERIALES);
 	    
     }
 
@@ -38,7 +40,7 @@ class VistaGlobal extends CI_Controller {
 		$queryproducto = $this->db->get('producto_material');
 	    $queryproducto = $queryproducto->result();
 	    foreach ($queryproducto as $material) {
-	    	if($material->tipo_elemento=='material')
+	    	if(strtoupper($material->tipo_elemento)=='MATERIAL')
 	    		$this->agregarMateriales($cant*$material->cantidadusada,$material->id_elemento);
 	    	else
 	    		$this->obtenerMateriales($material->id_elemento,$cant);
@@ -54,7 +56,7 @@ class VistaGlobal extends CI_Controller {
     	$querymaterial = $querymaterial->result();
     	foreach ($querymaterial as $lel) {
 	    	$cuenta = count($this->LISTAMATERIALES);
-	    	for($i=0;$i<$cuenta;$i++)
+	    	for($i=1;$i<$cuenta;$i++)
 	    	{
 	    		if($this->LISTAMATERIALES[$i][0]==$id)
 	    		{
@@ -69,11 +71,15 @@ class VistaGlobal extends CI_Controller {
 	    		$this->LISTAMATERIALES[$cuenta][1] = $lel->nombre;
 	    		$this->LISTAMATERIALES[$cuenta][2] = $cant*$lel->factor_redimiento;
 	    		$this->LISTAMATERIALES[$cuenta][3] = $lel->ultimo_costo;
-	    		$this->LISTAMATERIALES[$cuenta][4] = $lel->ultimo_costo*$lel->factor_redimiento*$cant; 
+	    		$this->LISTAMATERIALES[$cuenta][4] = $lel->ultimo_costo*$lel->factor_redimiento*$cant;
+                $this->db->where('id_udm',$lel->udm_material);
+                $querymaterialudm = $this->db->get('udm');
+                $querymaterialudm = $querymaterialudm->result();
+                foreach ($querymaterialudm as $udm) {
+                    $this->LISTAMATERIALES[$cuenta][5] = $udm->nombre;
+                }
+                
 	    	}
-    		# code...
     	}
-
-
     }
 }
