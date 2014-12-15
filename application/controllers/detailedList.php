@@ -28,7 +28,10 @@ class DetailedList extends CI_Controller
 				#$this->variableGlobal .= '</li>';
 			}
 			$this->variableGlobal .= '</tr></table>';
-			$this->load->view('vwDetailedList',$this->variableGlobal);
+			$vista = array();
+			$vista["id"] = $id_pedido;
+			$vista["html"] = $this->variableGlobal;
+			$this->load->view('vwDetailedList',$vista);
     }
 
     public function showProducto($id,$cantidad,$veces){
@@ -36,7 +39,10 @@ class DetailedList extends CI_Controller
     	foreach ($variable as $var) {
 			$this->variableGlobal .= $var->nombre;
 			$this->variableGlobal .= '</td><td>';
-			$this->variableGlobal .= $var->udm_produc;
+			$udm = $this->list_model->getUdm($var->udm_produc);
+			foreach ($udm as $u) {
+				$this->variableGlobal .= $u->nombre;
+			}
 			$this->variableGlobal .= '</td><td>';
 			$this->variableGlobal .= $cantidad;
 			$this->variableGlobal .= '</td></tr>';
@@ -69,7 +75,10 @@ class DetailedList extends CI_Controller
 			#$this->variableGlobal .= '<td>';
 			$this->variableGlobal .= $var->nombre;
 			$this->variableGlobal .= '</td><td>';
-			$this->variableGlobal .= $var->udm_material;
+			$udm = $this->list_model->getUdm($var->udm_material);
+			foreach ($udm as $u) {
+				$this->variableGlobal .= $u->nombre;
+			}
 			$this->variableGlobal .= '</td><td>';
 			$this->variableGlobal .= $cantidad;
 			$this->variableGlobal .= '</td><td>';

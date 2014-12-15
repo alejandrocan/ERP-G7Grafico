@@ -27,4 +27,10 @@ class List_model extends  CI_Model {
 		$variable = $this->db->get('material');
 		return $variable->result();
 	}
+
+	public function getUdm($id_udm){
+		$this->db->where('id_udm',$id_udm);
+		$variable = $this->db->get('udm');
+		return $variable->result();
+	}
 }
