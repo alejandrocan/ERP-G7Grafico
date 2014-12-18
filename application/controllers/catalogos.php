@@ -293,7 +293,72 @@ class Catalogos extends CI_Controller {
 			$this->index($tabla,null);
 		}
 	}
-		
+	public function updatePuesto($tabla){
+		$datos['id_puesto'] = $this->input->post("id_puesto");
+		$datos['nombre'] = $this->input->post("nombre");
+		$datos['estado'] = 1;
+		$this->load->model('registros_model');
+		if($this->registros_model->editar_puesto($datos, $tabla)) {
+			$this->index($tabla,null);
+		}
+	}
+	
+	public function updateDepartamento($tabla){
+		$datos['id_depto'] = $this->input->post("id_depto");
+		$datos['nombre'] = $this->input->post("nombre");
+		$datos['estado'] = 1;
+		$this->load->model('registros_model');
+		if($this->registros_model->editar_departamento($datos, $tabla)) {
+			$this->index($tabla,null);
+		}
+	}
+
+	public function updateProveedor($tabla){
+		$datos['id_proveedor'] = $this->input->post("id_proveedor");
+		$datos['nombre'] = $this->input->post("nombre");
+		$datos['dir_prove'] = $this->input->post("dir_prove");
+		$datos['tel_prove'] = $this->input->post("tel_prove");
+		$datos['correo_prove'] = $this->input->post("correo_prove");
+		$datos['contacto'] = $this->input->post("contacto");
+		$datos['estado'] = 1;
+		$this->load->model('registros_model');
+		if($this->registros_model->editar_proveedor($datos, $tabla)) {
+			$this->index($tabla,null);
+		}
+	}
+	public function updatePresentacion($tabla){
+		$datos['id_pres'] = $this->input->post("id_pres");
+		$datos['nombre']= $this->input->post('nombre');		
+		//$datos['udm']= $this->input->post('udm');
+		$valor = $this->input->post("udm_pres");
+		$query =  $this->db->get("udm");
+		$registros = $query->result();
+		foreach ($registros as $registro ) {
+			if($registro->nombre == $valor){
+				$datos['udm_pres'] = $registro->id_udm;
+				break;
+			}
+		}
+		$datos['contenido_pres']= $this->input->post('contenido');
+		$datos['estado'] = 1;
+		$this->load->model('registros_model');
+		if($this->registros_model->editar_presentacion($datos, $tabla)) {
+			$this->index($tabla,null);
+		}		
+	}	
+
+	public function updateUdm($tabla){
+		$datos['id_udm'] = $this->input->post("id_udm");
+		$datos['nombre'] = $this->input->post("nombre");
+		$datos['tipo_udm'] = $this->input->post("tipo_udm");
+		$datos['estado'] = 1;
+		$this->load->model('registros_model');
+		if($this->registros_model->editar_udm($datos, $tabla)) {
+			$this->index($tabla,null);
+		}
+	}
+
+
 	public function duplicar_familia($tabla){
 		$datos['nombre']= $this->input->post('nombre');		
 		//$this->load->view("catalogos/vwPresentacion",$erro2);
@@ -313,20 +378,22 @@ class Catalogos extends CI_Controller {
 		//$this->load->view("catalogos/vwPresentacion",$erro2);
 			$this->index('proveedor',$datos);
 	}
+	public function duplicar_presentacion($tabla){
+		$datos['nombre']= $this->input->post('nombre');	
+		$datos['udm']= $this->input->post('udm');	
+		$datos['contenido']= $this->input->post('contenido');					
+		//$this->load->view("catalogos/vwPresentacion",$erro2);
+			$this->index('presentacion',$datos);
+	}
 	public function duplicar_puesto($tabla){
 		$datos['nombre']= $this->input->post('nombre');		
 		//$this->load->view("catalogos/vwPresentacion",$erro2);
 			$this->index('puesto',$datos);
-	}
-	public function duplicar_presentacion($tabla){
-		$datos['nombre']= $this->input->post('nombre');		
-		$datos['udm']= $this->input->post('udm');
-		$datos['contenido']= $this->input->post('contenido');		
-			$this->index('presentacion',$datos);
-	}		
+	}	
+
 	public function duplicar_UDM($tabla){
 		$datos['nombre']= $this->input->post('nombre');		
-		$datos['tipo']= $this->input->post('tipo');			
+		$datos['tipo_udm']= $this->input->post('tipo_udm');
 			$this->index('udm',$datos);
 	}
 	/*
@@ -341,6 +408,9 @@ class Catalogos extends CI_Controller {
                 <td><input class="form-control" value="<?php if(@$orden){echo $orden;}?>" type="text" name="orden_cronologico"></td>
 	*/
 	public function duplicar_material($tabla){
+		$datos['proveedor_material']= $this->input->post('proveedor');	
+		$datos['udm_material']= $this->input->post('udm');	
+		$datos['presentacion_m']= $this->input->post('presentacion');	
 		$datos['nombre']= $this->input->post('nombre');	
 		$datos['clave']= $this->input->post('clave');				
 		$datos['smax']= $this->input->post('smax');	
@@ -349,7 +419,7 @@ class Catalogos extends CI_Controller {
 		$datos['cantidad']= $this->input->post('cantidad');	
 		$datos['costo']= $this->input->post('costo');	
 		$datos['tiempo']= $this->input->post('tiempo');	
-		$datos['orden']= $this->input->post('orden');	
+		$datos['orden_cronologico']= $this->input->post('orden');	
 		//$this->load->view("catalogos/vwPresentacion",$erro2);
 			$this->index('material',$datos);
 	}	

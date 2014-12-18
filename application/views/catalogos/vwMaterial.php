@@ -29,27 +29,70 @@
                         $this->db->where('estado','1');
                         $query = $this->db->get("udm");
                         $valores = $query->result(); ?>
-                    <?php foreach ($valores as $valor): ?>
-                        <option><?php echo $valor->nombre; ?></option>
-                    <?php endforeach; ?>
+                        <?php                     
+                        if(@$udm_material){
+                            foreach ($valores as $valor):
+                                if($valor->nombre == $udm_material){
+                                    echo "<option value=".$udm_material." selected>".$valor->nombre." </option>"; 
+                                }else{
+                                    echo "<option value=".$valor->nombre.">".$valor->nombre." </option>"; 
+                                }
+                            endforeach;
+                        }
+                        else{
+                            foreach ($valores as $valor): ?>
+                                <option><?php echo $valor->nombre; ?></option>
+                            <?php endforeach;                
+                            }                    
+                                            
+                    ?>
                 </select></td>
                 <td><select class="form-control" name ="proveedor_material">
                     <?php 
                         $this->db->where('estado','1');
                         $query = $this->db->get("proveedor");
                         $valores = $query->result(); ?>
-                    <?php foreach ($valores as $valor): ?>
-                        <option><?php echo $valor->nombre; ?></option>
-                    <?php endforeach; ?>
+                        <?php                     
+                    if(@$proveedor_material){
+                        foreach ($valores as $valor):
+                            if($valor->nombre == $proveedor_material){
+                                echo "<option value=".$proveedor_material." selected>".$valor->nombre." </option>"; 
+                            }else{
+                                echo "<option value=".$valor->nombre.">".$valor->nombre." </option>"; 
+                            }
+                        endforeach;
+                    }
+                    else{
+                        foreach ($valores as $valor): ?>
+                            <option><?php echo $valor->nombre; ?></option>
+                        <?php endforeach;                
+                        }                    
+                                            
+                    ?>                    
                 </select></td>
-                <td><select class="form-control" name ="presentacion">
+                <td><select class="form-control" name ="presentacion_p">
                     <?php 
                         $this->db->where('estado','1');
                         $query = $this->db->get("presentacion");
-                        $valores = $query->result(); ?>
-                    <?php foreach ($valores as $valor): ?>
-                        <option><?php echo $valor->nombre; ?></option>
-                    <?php endforeach; ?>
+                        $valores_p = $query->result(); ?>
+                    <?php
+                    if(@$presentacion_m){
+                        foreach ($valores_p as $valor_p):
+                            if($valor_p->nombre == $presentacion_m){
+                                echo "<option value=".$presentacion_m." selected>".$valor_p->nombre." </option>"; 
+                            }else{
+                                echo "<option value=".$valor_p->nombre.">".$valor_p->nombre." </option>"; 
+                            }                            
+                        endforeach;
+
+                    }
+                    else{
+                        foreach ($valores_p as $valor_p): ?>
+                            <option><?php echo $valor_p->nombre; ?></option>
+                        <?php endforeach;                
+                        }                    
+                                            
+                    ?>                 
                 </select></td>
                 <td><input class="form-control" value="<?php if(@$clave){echo $clave;}?>" type="text" name="clave"></td>
                 <td><input class="form-control" value="<?php if(@$smax){echo $smax;}?>" type="text" name="smax"></td>
@@ -58,7 +101,7 @@
                 <td><input class="form-control" value="<?php if(@$cantidad){echo $cantidad;}?>" type="text" name="cantidad"></td>
                 <td><input class="form-control" value="<?php if(@$costo){echo $costo;}?>" type="text" name="ultimo_costo"></td>
                 <td><input class="form-control" value="<?php if(@$tiempo){echo $tiempo;}?>" type="text" name="tiempo_elaboracion"></td>
-                <td><input class="form-control" value="<?php if(@$orden){echo $orden;}?>" type="text" name="orden_cronologico"></td>
+                <td><input class="form-control" value="<?php if(@$orden_cronologico){echo $orden_cronologico;}?>" type="text" name="orden_cronologico"></td>
                 <td>
                     <input type="submit" value="Guardar" class="btn btn-info btn-xs">
                     <input type="button" value="Cancelar" class="btn btn-danger btn-xs" action="" method="post" >
@@ -146,7 +189,8 @@
                             }
                         ?>
                         <td id="pres<?php echo $registro->id_material;?>"><?php echo $v->nombre; ?></td>
-                        
+                        <input  class="hidden" name="presentacion" value="<?php echo $v->nombre;?>">
+
                         <td id="clave<?php echo $registro->id_material;?>"><?php echo $registro->clave; ?></td>
                         <td id="smax<?php echo $registro->id_material;?>"><?php echo $registro->smax; ?></td>
                         <td id="smin<?php echo $registro->id_material;?>"><?php echo $registro->smin; ?></td>
@@ -167,20 +211,19 @@
                         <td id="user_edit<?php echo $registro->id_material;?>"><?php echo $v->nombre; ?></td>
                         <td id="tiempo<?php echo $registro->id_material;?>"><?php echo $registro->tiempo_elaboracion; ?></td>
                         <td id="<?php echo $registro->id_material;?>"><?php echo $registro->orden_cronologico; ?></td>                           
-
-                        <input  class="hidden" name="presentacion" value="<?php echo $v->nombre;?>">
+                        <input  class="hidden" name="orden" value="<?php echo $registro->orden_cronologico;?>">
+                        
                         <input  class="hidden" name="clave" value="<?php echo $registro->clave;?>">                            
                         <input  class="hidden" name="smax" value="<?php echo $registro->smax;?>">
                         <input  class="hidden" name="smin" value="<?php echo $registro->smin;?>">
                         <input  class="hidden" name="factor" value="<?php echo $registro->factor_redimiento;?>">
                         <input  class="hidden" name="cantidad" value="<?php echo $registro->cantidad;?>">
                         <input  class="hidden" name="costo" value="<?php echo $registro->ultimo_costo;?>">                                                                    
-                        <input  class="hidden" name="tiempo" value="<?php echo $registro->tiempo_elaboracion;?>">
-                        <input  class="hidden" name="orden" value="<?php echo $registro->orden_cronologico;?>">                            
+                        <input  class="hidden" name="tiempo" value="<?php echo $registro->tiempo_elaboracion;?>">                        
 
                         <td>
-                            <?php echo '<a class="btn btn-info btn-xs" data-toggle= "modal" data-target="#' . $registro->id_material . '" role="button">Editar</a>';?>                            
-                            <input type="submit" value="Duplicar" class="btn btn-primary btn-xs" method="post" name="enviar"> 
+                            <?php echo '<a class="btn btn-info btn-sm" data-toggle= "modal" data-target="#' . $registro->id_material . '" role="button">Editar</a>';?>
+                            <input type="submit" value="Duplicar" class="btn btn-primary btn-sm" method="post" name="enviar"> 
                             <?php echo $estado;?>
                         </td>
                     </tr>
@@ -200,7 +243,16 @@
                                             <?php 
                                                 $this->db->where('estado','1');
                                                 $query = $this->db->get("udm");
-                                                $valores = $query->result(); ?>
+                                                $valores = $query->result(); 
+                                                foreach ($valores as $valor):
+                                                    if($valor->nombre == $v->nombre){
+                                                        echo "<option value=".$v->nombre." selected>".$valor->nombre." </option>"; 
+                                                    }else{
+                                                        echo "<option value=".$valor->nombre.">".$valor->nombre." </option>"; 
+                                                    }
+                                                endforeach;          
+
+                                                ?>
                                             <?php foreach ($valores as $valor): ?>
                                                 <option><?php echo $valor->nombre; ?></option>
                                             <?php endforeach; ?>

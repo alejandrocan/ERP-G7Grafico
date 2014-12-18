@@ -43,6 +43,59 @@ class Registros_model extends  CI_Model {
 				return false;
 		}
 
+		public function editar_puesto($datos,$tabla)
+		{
+        	$this->db->where('id_puesto', $datos['id_puesto']);
+			if($this->db->update($tabla, $datos))	
+				return true;
+			else
+				return false;
+		}
+
+		public function editar_departamento($datos,$tabla)
+		{
+        	$this->db->where('id_depto', $datos['id_depto']);
+			if($this->db->update($tabla, $datos))	
+				return true;
+			else
+				return false;
+		}
+
+		public function editar_presentacion($datos,$tabla)
+		{
+        	$this->db->where('id_pres', $datos['id_pres']);
+			if($this->db->update($tabla, $datos))	
+				return true;
+			else
+				return false;
+		}
+
+		public function editar_proveedor($datos,$tabla)
+		{
+        	$this->db->where('id_proveedor', $datos['id_proveedor']);
+			if($this->db->update($tabla, $datos))	
+				return true;
+			else
+				return false;
+		}
+
+		public function editar_producto($datos,$tabla)
+		{
+        	$this->db->where('id_fam', $datos['id_fam']);
+			if($this->db->update($tabla, $datos))	
+				return true;
+			else
+				return false;
+		}
+		
+		public function editar_udm($datos,$tabla)
+		{
+        	$this->db->where('id_udm', $datos['id_udm']);
+			if($this->db->update($tabla, $datos))	
+				return true;
+			else
+				return false;
+		}
 
 
 		public function get_foreignColumns($tabla){

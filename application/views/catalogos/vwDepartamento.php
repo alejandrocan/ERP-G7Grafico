@@ -63,11 +63,11 @@
                             <td id="nombre<?php echo $registro->id_depto;?>"><?php echo $registro->nombre; ?></td>
                             <input  class="hidden" name="nombre" value="<?php echo $registro->nombre;?>">
                             <td>
-                                <?php echo '<a class="btn btn-info btn-xs" data-toggle= "modal" data-target="#' . $registro->id_depto . '" role="button">Editar</a>';?>
+                                <?php echo '<a class="btn btn-info btn-sm" data-toggle= "modal" data-target="#' . $registro->id_depto . '" role="button">Editar</a>';?>
                                 <!-- <?php // echo '<a class="btn btn-primary btn-xs"  data-target="#'. $registro->id_fam .'" role="button">Duplicar</a>';?> -->
                                 <!--<?php //echo '<a class="btn btn-primary btn-xs" href='.base_url().'index.php/catalogos/duplicar/'.$catalogo.'/' .$registro->nombre.' "role="button">Duplicar</a>';?>-->
                                 <!--<input type="text" name="prueba">-->
-                                <input type="submit" value="Duplicar" class="btn btn-primary btn-xs" method="post" name="enviar"> 
+                                <input type="submit" value="Duplicar" class="btn btn-primary btn-sm" method="post" name="enviar"> 
                                 <!--<a class="btn btn-danger btn-xs" href="'. base_url(). 'index.php/catalogos/index/'. $catalogo .'/   ' . $registro->$id .'" role="button">DesHabilitar</a>-->                                                             
                                 <?php echo $estado;?>
                             </td>

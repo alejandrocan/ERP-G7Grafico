@@ -81,11 +81,11 @@
                             <input  class="hidden" name="correo" value="<?php echo $registro->correo_prove;?>">
                             <input  class="hidden" name="contacto" value="<?php echo $registro->contacto;?>">                            
                             <td>
-                                <?php echo '<a class="btn btn-info btn-xs" data-toggle= "modal" data-target="#' . $registro->id_proveedor . '" role="button">Editar</a>';?>
+                                <?php echo '<a class="btn btn-info btn-sm" data-toggle= "modal" data-target="#' . $registro->id_proveedor . '" role="button">Editar</a>';?>
                                 <!-- <?php // echo '<a class="btn btn-primary btn-xs"  data-target="#'. $registro->id_fam .'" role="button">Duplicar</a>';?> -->
                                 <!--<?php //echo '<a class="btn btn-primary btn-xs" href='.base_url().'index.php/catalogos/duplicar/'.$catalogo.'/' .$registro->nombre.' "role="button">Duplicar</a>';?>-->
                                 <!--<input type="text" name="prueba">-->
-                                <input type="submit" value="Duplicar" class="btn btn-primary btn-xs" method="post" name="enviar"> 
+                                <input type="submit" value="Duplicar" class="btn btn-primary btn-sm" method="post" name="enviar"> 
                                 <?php echo $estado;?>                                
                             </td>
                         </tr>                                    
@@ -101,10 +101,10 @@
                                         <label>ID <?php echo $registro->id_proveedor;?></label></br>
                                         <input class="form-control hidden" value="<?php echo $registro->id_proveedor;?>" type="text" name="id_proveedor">
                                         <label>Nombre<input class="form-control" value="<?php echo $registro->nombre;?>" type="text" name="nombre"></label></br>
-                                        <label>Direccion<input class="form-control" value="<?php echo $registro->dir_prove;?>" type="text" name="direccion"></label></br>
-                                        <label>Telefono<input class="form-control" value="<?php echo $registro->tel_prove;?>" type="text" name="telefono"></label></br>
-                                        <label>Correo<input class="form-control" value="<?php echo $registro->correo_prove;?>" type="text" name="correo"></label></br>
-                                        <label>Contacto<input class="form-control" value="<?php echo $registro->contacto;?>" type="text" name="contacto"></label></br>                                        
+                                        <label>Direccion<input class="form-control" value="<?php echo $registro->dir_prove;?>" type="text" name="dir_prove"></label></br>
+                                        <label>Telefono<input class="form-control" value="<?php echo $registro->tel_prove;?>" type="text" name="tel_prove"></label></br>
+                                        <label>Correo<input class="form-control" value="<?php echo $registro->correo_prove;?>" type="text" name="correo_prove"></label></br>
+                                        <label>Contacto<input class="form-control" value="<?php echo $registro->contacto;?>" type="text" name="contacto"></label></br>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="submit" class="btn btn-primary" >Actualizar</button>
