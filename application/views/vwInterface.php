@@ -141,6 +141,7 @@
 			    			<th>Descripcion</th>
 			    			<th>Cantidad</th>
 			    			<th>UDM</th>
+			    			<th>Acciones</th>
 			    		</tr>
 			    	</thead>
 			    	<tbody>
@@ -167,8 +168,7 @@
 			    				}
 			    			}
 			    			echo '</td>';
-			    			echo '<td>';
-			    			echo $valor->cantidad;
+			    			echo '<td><input type="text" class="form-control" value="'.$valor->cantidad.'">';
 			    			echo '</td>';
 			    			echo '<td>';
 			    			echo $valor->udm;
