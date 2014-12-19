@@ -18,4 +18,14 @@ class Autocompletar extends CI_Controller {
 
 		$this->load->view('data', $data);
 	}
+	function get_data_producto() {
+		$match = $this->input->get('term', TRUE);
+		$item = $this->input->get('item', TRUE);
+
+		$data['item'] = $item;
+		$data['results'] = $this->Autocomplete_Model->get_data_producto($item,$match);
+		
+
+		$this->load->view('data', $data);
+	}
 }

@@ -22,7 +22,7 @@ $(document).ready(function(){
 	?>
 	<form class="navbar-form navbar-left" role="search" action="<?php echo base_url();?>/index.php/catalogos/addNewMaterial" method="post">
     	<div class="form-group">
-        	<input type="text" class="form-control" placeholder="Producto/Material" id="buscar">
+        	<input type="text" class="form-control" placeholder="Producto/Material" id="buscar" name="material">
       	</div>
       	<button type="submit" class="btn btn-default">Agregar</button>
     </form>
@@ -42,19 +42,7 @@ $(document).ready(function(){
 			<td><input class="form-control" value="" type="text" name="cant_usada"></td>
 			<input class="hidden" value= "<?php echo $producto;?>" type="text" name="nombreProducto">
 			<input class="hidden" value= "<?php echo $id_producto;?>" type="text" name="idProducto">
-			<td>
-				<select class="form-control" name="udm">
-					<?php $query = $this->db->get("udm");
-	                        $valores = $query->result(); 
-	                ?>
-                    <?php foreach ($valores as $valor): ?>
-                    	<?php if($valor->estado == 1): ?>
-                        	<option><?php echo $valor->nombre; ?></option>
-                        <?php endif; ?>
-                    <?php endforeach; ?>
-                    </select>					
-				</select>
-			</td>
+			<td><input type="text" class="form-control" name="udm"></td>
 			<td>
                     <button type="submit" class="btn btn-info btn-sm">Agregar</button>
                     <input type="reset" value="Cancelar" class="btn btn-danger btn-sm" />

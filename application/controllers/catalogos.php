@@ -850,7 +850,7 @@ class Catalogos extends CI_Controller {
 
 	}
 	public function addNewMaterial() {
-		$data['id_producto'] = $this->input->post('idProducto');
+		$data['id_producto'] = $this->input->post('material');
 		$elemento = $this->input->post('elemento');
 		$cantidad = $this->input->post('cant_usada');
 		//////////////////////////////

@@ -11,11 +11,12 @@ class Autocomplete_model extends CI_Model {
 		/*Hace un consulta con el valor en match*/
 		$this->db->like($item, $match);
 		$query = $this->db->get_where('material', array('estado' => '1'));
-		
 		$query = $query->result();
+
 		$this->db->like($item, $match);
 		$query2 = $this->db->get_where('producto', array('estado' => '1'));
 		$query2 = $query2->result();
+
 		$j = 0;
 		/*se guardan los registros en un arreglo*/
 		foreach ($query as $valor) {
@@ -34,8 +35,14 @@ class Autocomplete_model extends CI_Model {
 
 	function get_data_producto($item, $match) {
 		$this->db->like($item, $match);
-		$query = $this->db->get('producto');
+		$query = $this->db->get_where('producto', array('estado' => '1'));
+		$query = $query->result();
+		$j = 0;
+		foreach ($query as $valor) {
+			$registros[$j] = $valor->nombre;
+			$j++;
+		}
 
-		return $query->result();
+		return $registros;
 	}
 }
