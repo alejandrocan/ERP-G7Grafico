@@ -168,15 +168,37 @@
 			    				}
 			    			}
 			    			echo '</td>';
-			    			echo '<td><input type="text" class="form-control" value="'.$valor->cantidad.'">';
+			    			echo '<td>';
+			    			echo $valor->cantidad;
 			    			echo '</td>';
 			    			echo '<td>';
 			    			echo $valor->udm;
 			    			echo '</td>';
+			    			echo '<td>';
+			    			echo '<a class="btn btn-info btn-sm" data-toggle= "modal" data-target="#' . $valor->id . '" role="button">Editar</a>';
+			    			echo '<a class="btn btn-danger btn-sm" href="'.base_url().'index.php/testController/removeItem/'.$valor->id.'" role="button">Remover</a>';
+			    			echo '</td>';
 			    			echo '</tr>';
-			    		}
-
-			    		?>
+			    			echo '<div class="modal fade" id="'.$valor->id.'" tabindex="-1" aria-hidden="true">';
+			    			echo '	<div class="modal-dialog">';
+			    			echo '		<div class="modal-content">';
+			    			echo '			<div class="modal-header">';
+			    			echo '				<h2>Editar '.$valor2->nombre.'</h2>';
+			    			echo '			</div>';
+			    			echo '			<form id="form'.$valor->id.'" action="'.base_url().'index.php/testController/editItem" method="post">';
+			    			echo '			<div class="modal-body">';
+			    			echo '				<label>ID '.$valor->id.'</label></br>';
+			    			echo '				<input class="form-control hidden" value="'.$valor->id.'" type="text" name="id">';
+			    			echo '				<label>Cantidad<input class="form-control" value="'.$valor->cantidad.'" type="text" name="cantidad"></label></br>';
+                            echo '			</div>';
+                            echo '			<div class="modal-footer">';
+                            echo '				<button type="submit" class="btn btn-primary" >Actualizar</button>';
+                            echo '			</div>';
+                            echo '			</form>';
+                            echo '		</div>';
+                            echo '	</div>';
+                            echo '</div>';
+			    		}?>
 			    	</tbody>
 			    </table>
 			    <!--Table End-->
