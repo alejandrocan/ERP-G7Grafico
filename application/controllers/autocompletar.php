@@ -28,4 +28,16 @@ class Autocompletar extends CI_Controller {
 
 		$this->load->view('data', $data);
 	}
+	function get_udm() {
+		$elemento = $this->input->post('elemento');
+		$query = $this->db->get_where('material', array('nombre' => $elemento));
+		$query = $query->result();
+		
+		$respuesta = new stdClass();
+		foreach ($query as $valor) {
+			$respuesta->nombre = $valor->udm_material;
+		}
+
+		echo json_encode($respuesta); 
+	}
 }

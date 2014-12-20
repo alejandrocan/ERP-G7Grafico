@@ -19,7 +19,7 @@
 			?>
 			<td>
 				<a href="<?php echo base_url(); ?>/index.php/productos/disableProduct/<?php echo $id;?>" class="btn btn-danger">Deshabilitar</a>
-				<a href="#" class="btn btn-success">Agregar Materiales</a>
+				<a href="<?php echo base_url(); ?>/index.php/NewProducts/AddMateriales/<?php echo $id;?>" class="btn btn-info">Editar Materiales</a>
 			</td>
 		</tr>
 	</table>
@@ -29,7 +29,6 @@
 			<th>Unidad de medida</th>
 			<th>Cantidad</th>
 			<th>Costo</th>
-			<th>Acciones</th>
 		</tr>
 		
 		<?php 
@@ -40,7 +39,10 @@
 			echo '<td>'. $udm_material[$j] .'</td>';
 			echo '<td>'. $cantidad_material[$j] .'</td>';
 			echo '<td>'. $costo_material[$j] .'</td>';
-			echo '<td><input class ="btn btn-danger" type="button" value="Remover"></td>';
+			$idm = $this->db->get_where('material', array('nombre' => $material[$j]));
+			$idm = $idm->row();
+			$idm = $idm->id_material;
+			
 			echo '</tr>';
 			$j++;
 		}

@@ -845,14 +845,13 @@ class Catalogos extends CI_Controller {
 
 	}
 	public function addNewMaterial() {
-		$data['id_producto'] = $this->input->post('material');
+		$data['id_producto'] = $this->input->post('idProducto');
 		$elemento = $this->input->post('elemento');
 		$cantidad = $this->input->post('cant_usada');
 		//////////////////////////////
 		$query = $this->db->get_where('material', array('nombre' => $elemento));
 		$query = $query->result();
 		if($query != null){
-			echo "aqui";
 			foreach ($query as $valor) {
 				if($valor->nombre == $elemento){
 					$data['id_elemento'] = $valor->id_material;
@@ -888,7 +887,8 @@ class Catalogos extends CI_Controller {
 		$data['producto'] = $this->input->post('elemento');
 		$data['registro'] = $this->input->post('nombreProducto');
 		$this->addMaterial($this->input->post('nombreProducto'));
-		#header('Refresh:0;url="' . base_url() . '/index.php/catalogos/addMaterial/'.$producto);
+		redirect('/NewProducts/addMateriales/'. $data['id_producto']);
+		#header('Refresh:5;url="' . base_url() . '/index.php/NewProducts/addMateriales/'.$data['id_producto']);
 	}
 	public function upProducto($producto, $id) {
 		$data['estado'] = 1;

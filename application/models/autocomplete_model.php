@@ -45,4 +45,7 @@ class Autocomplete_model extends CI_Model {
 
 		return $registros;
 	}
+	function get_data_udm() {
+		
+	}
 }

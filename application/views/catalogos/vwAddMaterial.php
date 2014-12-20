@@ -20,7 +20,7 @@ $(document).ready(function(){
 			$id_producto = $valor->id_produc;
 		}
 	?>
-	<form class="navbar-form navbar-left" role="search" action="<?php echo base_url();?>/index.php/catalogos/addNewMaterial" method="post">
+	<form class="navbar-form navbar-left" role="search" action="<?php echo base_url();?>/index.php/newProducts/loadMaterial" method="post">
     	<div class="form-group">
         	<input type="text" class="form-control" placeholder="Producto/Material" id="buscar" name="material">
       	</div>
@@ -38,15 +38,15 @@ $(document).ready(function(){
 		</tr>
 		</thead>
 		<tr>		
-			<td><input class="form-control" value="" type="text" name="elemento"></td>
+			<td><input class="form-control" value="<?php echo $material?>" type="text" name="elemento" readonly></td>
 			<td><input class="form-control" value="" type="text" name="cant_usada"></td>
 			<input class="hidden" value= "<?php echo $producto;?>" type="text" name="nombreProducto">
 			<input class="hidden" value= "<?php echo $id_producto;?>" type="text" name="idProducto">
-			<td><input type="text" class="form-control" name="udm"></td>
+			<td><input type="text" class="form-control" name="udm" value="<?php echo $udm; ?>" readOnly></td>
 			<td>
                     <button type="submit" class="btn btn-info btn-sm">Agregar</button>
                     <input type="reset" value="Cancelar" class="btn btn-danger btn-sm" />
-                    <li class="btn btn-success btn-sm"><a href="<?php echo base_url();?>/index.php/catalogos/upProducto/<?php echo $producto. "/". $id_producto; ?>">Terminar</li></a>
+                    <a class="btn btn-success btn-sm" href="<?php echo base_url();?>/index.php/catalogos/upProducto/<?php echo $producto. "/". $id_producto; ?>">Terminar</a>
             </td>
 		</tr>
 	</table>
@@ -57,6 +57,7 @@ $(document).ready(function(){
 			<td>Cantidad Usada</td>
 			<td>UDM</td>
 			<td>Costo</td>
+			<td>Acciones</td>
 		</tr>
 			<?php
 				$query = $this->db->get_where('producto_material', array('id_producto' => $id_producto));
@@ -70,6 +71,7 @@ $(document).ready(function(){
 						foreach ($query2 as $registro) {
 							if($registro->id_material == $valor->id_elemento){ 
 								$nombre = $registro->nombre;
+								$idm = $valor->id_elemento;
 							}
 						}
 					}else{
@@ -78,14 +80,19 @@ $(document).ready(function(){
 						foreach ($query2 as $registro) {
 							if($registro->id_produc == $valor->id_elemento){
 								$nombre = $registro->nombre;
+								$idm = $valor->id_elemento;
 							}
 						}
 					}
+					$query = $this->db->get_where('udm', array('id_udm' => $valor->udmid));
+					$query = $query->row();
+					$unidadmediad = $query->nombre;
 					//////////////
 					echo '<td>'. $nombre . '</td>';
 					echo '<td>'. $valor->cantidadusada .'</td>';
-					echo '<td>'. $valor->udmid.'</td>';
+					echo '<td>'. $unidadmediad.'</td>';
 					echo '<td>'. $valor->costo.'</td>';
+					echo '<td><a class="btn btn-danger btn-sm" href="'.base_url().'/index.php/newProducts/deleteMaterial/'.$idm.'/'.$id_producto.'">Remove</a><a class="btn btn-info btn-sm" href="#">Modificar</a></td>';
 					echo '</tr>';
 				}
 			?>
