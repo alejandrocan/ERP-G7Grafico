@@ -23,6 +23,7 @@ $(document).ready(function(){
 	<form class="navbar-form navbar-left" role="search" action="<?php echo base_url();?>/index.php/newProducts/loadMaterial" method="post">
     	<div class="form-group">
         	<input type="text" class="form-control" placeholder="Producto/Material" id="buscar" name="material">
+        	<input class="hidden" value= "<?php echo $id_producto;?>" type="text" name="idProducto">
       	</div>
       	<button type="submit" class="btn btn-default">Agregar</button>
     </form>
@@ -92,8 +93,35 @@ $(document).ready(function(){
 					echo '<td>'. $valor->cantidadusada .'</td>';
 					echo '<td>'. $unidadmediad.'</td>';
 					echo '<td>'. $valor->costo.'</td>';
-					echo '<td><a class="btn btn-danger btn-sm" href="'.base_url().'/index.php/newProducts/deleteMaterial/'.$idm.'/'.$id_producto.'">Remove</a><a class="btn btn-info btn-sm" href="#">Modificar</a></td>';
+					$query = $this->db->get_where('producto_material', array('id_elemento' => $idm, 'id_producto' => $id_producto ));
+					$query = $query->row();
+					$idpm = $query->idproduct_mat;
+					echo '<td>
+							<a class="btn btn-danger btn-sm" href="'.base_url().'/index.php/newProducts/deleteMaterial/'.$idm.'/'.$id_producto.'">Remove</a>
+							<a class="btn btn-info btn-sm" data-toggle= "modal" data-target="#' . $idpm . '" role="button">Editar</a>
+						</td>';
 					echo '</tr>';
+
+					echo '<div class="modal fade" id="'.$idpm.'" tabindex="-1" aria-hidden="true">';
+			    			echo '	<div class="modal-dialog">';
+			    			echo '		<div class="modal-content">';
+			    			echo '			<div class="modal-header">';
+			    			echo '				<h2>Editar '.$nombre.'</h2>';
+			    			echo '			</div>';
+			    			echo '			<form id="form'.$idpm.'" action="'.base_url().'index.php/newProducts/editItem" method="post">';
+			    			echo '			<div class="modal-body">';
+			    			echo '				<label>ID '.$idpm.'</label></br>';
+			    			echo '				<input class="form-control hidden" value="'.$idpm.'" type="text" name="id">
+			    								<input class="hidden" value= "'.$id_producto.'" type="text" name="idProducto">';
+			    			echo '				<label>Cantidad<input class="form-control" value="'.$valor->cantidadusada.'" type="text" name="cantidad"></label></br>';
+                            echo '			</div>';
+                            echo '			<div class="modal-footer">';
+                            echo '				<button type="submit" class="btn btn-primary" >Actualizar</button>';
+                            echo '			</div>';
+                            echo '			</form>';
+                            echo '		</div>';
+                            echo '	</div>';
+                            echo '</div>';
 				}
 			?>
 	</table>

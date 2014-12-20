@@ -910,6 +910,6 @@ class Catalogos extends CI_Controller {
 		//////////////////////////////////
 		$this->db->where('id_produc', $id);
 		$this->db->update('producto', $data);
-		header('Refresh:3;url="' . base_url() . '/index.php/catalogos/index/producto/registros');
+		header('Refresh:0;url="' . base_url() . '/index.php/catalogos/index/producto/registros');
 	}
 } 

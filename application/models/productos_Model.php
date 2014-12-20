@@ -64,4 +64,13 @@ class Productos_Model extends CI_Model {
 		$this->db->where('id_produc', $id);
 		return $this->db->update('producto', $data);
 	}
+	public function editQuantity($datos){
+		$this->db->where('idproduct_mat',$datos["idproduct_mat"]);
+		if($this->db->update('producto_material',$datos)){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
 }

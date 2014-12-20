@@ -40,8 +40,18 @@
 			echo '<td>'. $cantidad_material[$j] .'</td>';
 			echo '<td>'. $costo_material[$j] .'</td>';
 			$idm = $this->db->get_where('material', array('nombre' => $material[$j]));
-			$idm = $idm->row();
-			$idm = $idm->id_material;
+			if($idm->num_rows() > 0){
+				$idm = $idm->row();
+				$idm = $idm->id_material;
+			}
+			else {
+				$idm = $this->db->get_where('producto', array('nombre' => $material[$j]));
+				$idm = $idm->row();
+				$idm = $idm->id_produc;
+			}
+			
+
+			
 			
 			echo '</tr>';
 			$j++;
