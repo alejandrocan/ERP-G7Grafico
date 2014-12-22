@@ -1,9 +1,10 @@
 <div class="container table-responsive">
         <h1>Material</h1>
 </div>
+        <?=@$mensaje?>
+        <span><?php echo validation_errors(); ?></span>
     <div class="container table-responsive">
         <h3>Agregar nuevo Material</h3>
-        <form action="<?php echo base_url();?>index.php/catalogos/insertMaterial/<?php echo $catalogo?>" method="post">
         <table class="table table-bordered table-hover">
         <thead>
             <tr>
@@ -23,31 +24,29 @@
             </tr>
         </thead>
             <tr>
-                <td><input class="form-control" value="<?php if(@$nombre){echo $nombre;}?>" type="text" name="nombre"></td>    
-                <td><select class="form-control" name ="udm_material">
+                <?php echo form_open_multipart(base_url()."index.php/catalogos/insertMaterial/material")?>
+                <td><input class="form-control" value="<?php if(@$nombre){echo $nombre;}else{echo set_value('Nombre','');}?>" type="text" name="Nombre"></td>    
+                <td><select class="form-control" name ="UDM">
                     <?php 
                         $this->db->where('estado','1');
                         $query = $this->db->get("udm");
-                        $valores = $query->result(); ?>
-                        <?php                     
+                        $valores = $query->result();            
                         if(@$udm_material){
                             foreach ($valores as $valor):
-                                if($valor->nombre == $udm_material){
-                                    echo "<option value=".$udm_material." selected>".$valor->nombre." </option>"; 
+                                if($valor->id_udm == $udm_material){
+                                    echo "<option value=".$valor->id_udm." selected>".$valor->nombre." </option>"; 
                                 }else{
-                                    echo "<option value=".$valor->nombre.">".$valor->nombre." </option>"; 
+                                    echo "<option value=".$valor->id_udm.">".$valor->nombre." </option>"; 
                                 }
                             endforeach;
                         }
                         else{
-                            foreach ($valores as $valor): ?>
-                                <option><?php echo $valor->nombre; ?></option>
-                            <?php endforeach;                
-                            }                    
-                                            
+                                foreach ($valores as $valor)
+                                echo '<option value="' . $valor->id_udm . '" ' . set_select('UDM',$valor->id_udm,'TRUE') . '>' . $valor->nombre . '</option>';               
+                        }                                        
                     ?>
                 </select></td>
-                <td><select class="form-control" name ="proveedor_material">
+                <td><select class="form-control" name ="Proveedor">
                     <?php 
                         $this->db->where('estado','1');
                         $query = $this->db->get("proveedor");
@@ -55,60 +54,57 @@
                         <?php                     
                     if(@$proveedor_material){
                         foreach ($valores as $valor):
-                            if($valor->nombre == $proveedor_material){
-                                echo "<option value=".$proveedor_material." selected>".$valor->nombre." </option>"; 
+                            if($valor->id_proveedor == $proveedor_material){
+                                echo "<option value=".$valor->id_proveedor." selected>".$valor->nombre." </option>"; 
                             }else{
-                                echo "<option value=".$valor->nombre.">".$valor->nombre." </option>"; 
+                                echo "<option value=".$valor->id_proveedor.">".$valor->nombre." </option>"; 
                             }
                         endforeach;
                     }
                     else{
-                        foreach ($valores as $valor): ?>
-                            <option><?php echo $valor->nombre; ?></option>
-                        <?php endforeach;                
-                        }                    
+                        foreach ($valores as $valor)
+                            echo '<option value="' . $valor->id_proveedor . '" ' . set_select('Proveedor',$valor->id_proveedor,'TRUE') . '>' . $valor->nombre . '</option>';                             
+                    }                    
                                             
                     ?>                    
                 </select></td>
-                <td><select class="form-control" name ="presentacion_p">
+                <td><select class="form-control" name ="Presentacion">
                     <?php 
                         $this->db->where('estado','1');
                         $query = $this->db->get("presentacion");
-                        $valores_p = $query->result(); ?>
-                    <?php
-                    if(@$presentacion_m){
-                        foreach ($valores_p as $valor_p):
-                            if($valor_p->nombre == $presentacion_m){
-                                echo "<option value=".$presentacion_m." selected>".$valor_p->nombre." </option>"; 
-                            }else{
-                                echo "<option value=".$valor_p->nombre.">".$valor_p->nombre." </option>"; 
-                            }                            
-                        endforeach;
+                        $valores = $query->result();
+                        if(@$presentacion_m){
+                            foreach ($valores as $valor):
+                                if($valor->id_pres == $presentacion_m){
+                                    echo "<option value=".$valor->id_pres." selected>".$valor->nombre." </option>"; 
+                                }else{
+                                    echo "<option value=".$valor->id_pres.">".$valor->nombre." </option>"; 
+                                }                            
+                            endforeach;
 
-                    }
-                    else{
-                        foreach ($valores_p as $valor_p): ?>
-                            <option><?php echo $valor_p->nombre; ?></option>
-                        <?php endforeach;                
+                        }
+                        else{
+                            foreach ($valores as $valor)
+                                echo '<option value="' . $valor->id_pres . '" ' . set_select('Presentacion',$valor->id_pres,'TRUE') . '>' . $valor->nombre . '</option>';                                          
                         }                    
                                             
                     ?>                 
                 </select></td>
-                <td><input class="form-control" value="<?php if(@$clave){echo $clave;}?>" type="text" name="clave"></td>
-                <td><input class="form-control" value="<?php if(@$smax){echo $smax;}?>" type="text" name="smax"></td>
-                <td><input class="form-control" value="<?php if(@$smin){echo $smin;}?>" type="text" name="smin"></td>
-                <td><input class="form-control" value="<?php if(@$factor){echo $factor;}?>" type="text" name="factor_redimiento"></td>
-                <td><input class="form-control" value="<?php if(@$cantidad){echo $cantidad;}?>" type="text" name="cantidad"></td>
-                <td><input class="form-control" value="<?php if(@$costo){echo $costo;}?>" type="text" name="ultimo_costo"></td>
-                <td><input class="form-control" value="<?php if(@$tiempo){echo $tiempo;}?>" type="text" name="tiempo_elaboracion"></td>
-                <td><input class="form-control" value="<?php if(@$orden_cronologico){echo $orden_cronologico;}?>" type="text" name="orden_cronologico"></td>
+                <td><input class="form-control" value="<?php if(@$clave){echo $clave;}else{echo set_value('Clave','');}?>" type="text" name="clave"></td>
+                <td><input class="form-control" value="<?php if(@$smax){echo $smax;}else{echo set_value('Stock_Maxima','');}?>" type="text" name="smax"></td>
+                <td><input class="form-control" value="<?php if(@$smin){echo $smin;}else{echo set_value('Stock_Minima','');}?>" type="text" name="smin"></td>
+                <td><input class="form-control" value="<?php if(@$factor){echo $factor;}else{echo set_value('Factor_Rendimiento','');}?>" type="text" name="factor_redimiento"></td>
+                <td><input class="form-control" value="<?php if(@$cantidad){echo $cantidad;}else{echo set_value('Cantidad','');}?>" type="text" name="cantidad"></td>
+                <td><input class="form-control" value="<?php if(@$costo){echo $costo;}else{echo set_value('Ultimo_Costo','');}?>" type="text" name="ultimo_costo"></td>
+                <td><input class="form-control" value="<?php if(@$tiempo){echo $tiempo;}else{echo set_value('Tiempo_Elaboracion','');}?>" type="text" name="tiempo_elaboracion"></td>
+                <td><input class="form-control" value="<?php if(@$orden_cronologico){echo $orden_cronologico;}else{echo set_value('Orden_Elaboracion','');}?>" type="text" name="orden_cronologico"></td>
                 <td>
                     <input type="submit" value="Guardar" class="btn btn-info btn-xs">
                     <input type="button" value="Cancelar" class="btn btn-danger btn-xs" action="" method="post" >
                 </td>
+                <?php echo form_close();?>
             </tr>
         </table>
-    </form>
     </div>
 <?php if(@$error2){?>
     <div class="container alert alert-danger alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button><?php echo @$error2;?></div>
@@ -234,7 +230,8 @@
                                 <div class="modal-header">
                                     <h2>Editar <?php echo $registro->id_material;?></h2>
                                 </div>
-                                <form id="form<?php echo $registro->id_material;?>"action="<?php echo base_url();?>index.php/catalogos/updateMaterial/<?php echo $catalogo?>" method="post">
+                                
+                                <?php echo form_open_multipart(base_url()."index.php/catalogos/updateMaterial/material")?>
                                 <div class="modal-body">
                                         <label>ID <?php echo $registro->id_material;?></label></br>
                                         <input class="form-control hidden" value="<?php echo $registro->id_material;?>" type="text" name="id_material">
@@ -244,36 +241,42 @@
                                                 $this->db->where('estado','1');
                                                 $query = $this->db->get("udm");
                                                 $valores = $query->result(); 
-                                                foreach ($valores as $valor):
-                                                    if($valor->nombre == $v->nombre){
-                                                        echo "<option value=".$v->nombre." selected>".$valor->nombre." </option>"; 
+                                                foreach ($valores as $valor){
+                                                    if($valor->id_udm == $registro->udm_material){
+                                                        echo "<option value=".$valor->id_udm." selected='selected'>".$valor->nombre." </option>"; 
                                                     }else{
-                                                        echo "<option value=".$valor->nombre.">".$valor->nombre." </option>"; 
+                                                        echo "<option value=".$valor->id_udm.">".$valor->nombre." </option>"; 
                                                     }
-                                                endforeach;          
-
-                                                ?>
-                                            <?php foreach ($valores as $valor): ?>
-                                                <option><?php echo $valor->nombre; ?></option>
-                                            <?php endforeach; ?>
+                                                }
+                                            ?>
                                         </select></label></br>
                                         <label>Proveedor<select class="form-control" name ="proveedor_material">
                                             <?php 
                                                 $this->db->where('estado','1');
                                                 $query = $this->db->get("proveedor");
-                                                $valores = $query->result(); ?>
-                                            <?php foreach ($valores as $valor): ?>
-                                                <option><?php echo $valor->nombre; ?></option>
-                                            <?php endforeach; ?>
+                                                $valores = $query->result();
+                                                 foreach ($valores as $valor){
+                                                    if($valor->id_proveedor == $registro->proveedor_material){
+                                                        echo "<option value=".$valor->id_proveedor." selected='selected'>".$valor->nombre." </option>"; 
+                                                    }else{
+                                                        echo "<option value=".$valor->id_proveedor.">".$valor->nombre." </option>"; 
+                                                    }
+                                                }
+                                            ?>
                                         </select></label></br>
                                         <label>Presentación<select class="form-control" name ="presentacion">
                                             <?php 
                                                 $this->db->where('estado','1');
                                                 $query = $this->db->get("presentacion");
-                                                $valores = $query->result(); ?>
-                                            <?php foreach ($valores as $valor): ?>
-                                                <option><?php echo $valor->nombre; ?></option>
-                                            <?php endforeach; ?>
+                                                $valores = $query->result();
+                                                foreach ($valores as $valor){
+                                                    if($valor->id_pres == $registro->presentacion){
+                                                        echo "<option value=".$valor->id_pres." selected='selected'>".$valor->nombre." </option>"; 
+                                                    }else{
+                                                        echo "<option value=".$valor->id_pres.">".$valor->nombre." </option>"; 
+                                                    }
+                                                }
+                                            ?>
                                         </select></label></br>
                                         <label>Clave<input class="form-control" value="<?php echo $registro->clave;?>" type="text" name="clave"></label></br>
                                         <label>Stock maximo<input class="form-control" value="<?php echo $registro->smax;?>" type="text" name="smax"></label></br>
@@ -287,7 +290,7 @@
                                 <div class="modal-footer">
                                     <button type="submit" class="btn btn-primary" >Actualizar</button>
                                 </div>
-                                </form>
+                                <?php echo form_close();?>
                             </div>
                         </div>
                 <?php endforeach; ?>

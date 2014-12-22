@@ -19,27 +19,23 @@
                 <?php echo form_open_multipart(base_url()."index.php/catalogos/insertPresentacion/presentacion")?>
                     <td><input  class="form-control" value="<?php if(@$nombre){echo $nombre;}else{echo set_value('Nombre','');}?>" type="text" name="Nombre"></td> 
                     <td><select class="form-control" name ="UDM">
-                        <?php                         
+                    <?php
+                        $this->db->where('estado','1');                         
                         $query = $this->db->get("udm");
-                        $valores = $query->result(); ?>
-                    <?php                     
-                    if(@$udm){
-                        foreach ($valores as $valor):
-                            if($valor->nombre == $udm){
-                                echo "<option value=".$udm." selected>".$valor->nombre." </option>"; 
-                            }else{
-                                echo "<option value=".$valor->nombre.">".$valor->nombre." </option>"; 
+                        $valores = $query->result(); 
+                        if(@$udm){
+                            foreach ($valores as $valor){
+                                if($valor->id_udm == $udm){
+                                    echo "<option value=".$valor->id_udm." selected>".$valor->nombre." </option>"; 
+                                }else{
+                                    echo "<option value=".$valor->id_udm.">".$valor->nombre." </option>"; 
+                                }
                             }
-                        endforeach;
-                    }
-                    else{
-                        foreach ($valores as $valor): ?>
-                            <option><?php echo $valor->nombre; ?></option>
-                        <?php endforeach;                
-                        }                    
-                                            
+                        }else{
+                            foreach ($valores as $valor)
+                                echo '<option value="' . $valor->id_udm . '" ' . set_select('UDM',$valor->id_udm,'TRUE') . '>' . $valor->nombre . '</option>';                 
+                        }                        
                     ?>
-
                         </select>
                     </td>
                     <td><input class="form-control" value="<?php if(@$contenido){echo $contenido;}else{ echo set_value('Contenido','');} ?>" type="text" name="Contenido"></td>
@@ -76,9 +72,7 @@
                     <tr>
                     <?php $columnas = $this->db->list_fields($catalogo); ?>
                         <td><?php echo $registro->id_pres; ?></td>
-
                         <td><?php echo $registro->nombre; ?></td>
-
                         <?php 
                             $udm = $this->db->get("udm");
                             $valor = $udm->result();
@@ -86,14 +80,12 @@
                                 if($v->id_udm == $registro->udm_pres){
                                     break;
                                 }
-                                
                             }
                         ?>
-
                         <td><?php echo $v->nombre; ?></td>
                         <td><?php echo $registro->contenido_pres; ?></td>                        
                         <input  class="hidden" name="nombre" value="<?php echo $registro->nombre;?>">  
-                        <input  class="hidden" name="udm" value="<?php echo $v->nombre;?>">                     
+                        <input  class="hidden" name="udm" value="<?php echo $v->id_udm;?>">                     
                         <input  class="hidden" name="contenido" value="<?php echo $registro->contenido_pres;?>">
                         <td>
                             <?php echo '<a class="btn btn-info btn-sm" data-toggle= "modal" data-target="#' . $registro->id_pres . '" role="button">Editar</a>';?>
@@ -101,7 +93,7 @@
                             <a class="btn btn-danger btn-sm" href="'. base_url(). 'index.php/catalogos/index/'. $catalogo .'/' . $registro->$id .'" role="button">DesHabilitar</a>
                         </td>
                     </tr>
-                    </form>
+                </form>
                         <?php echo '<div class="modal fade" id="'.$registro->id_pres.'" tabindex="-1" aria-hidden="true">';?>
                         <div class="modal-dialog">
                             <div class="modal-content">
@@ -118,13 +110,13 @@
                                             $this->db->where('estado','1');
                                             $query = $this->db->get("udm");
                                             $valores = $query->result();                                                                                                     
-                                                foreach ($valores as $valor):
-                                                    if($valor->nombre == $v->nombre){
-                                                        echo "<option value=".$v->nombre." selected>".$valor->nombre." </option>"; 
-                                                    }else{
-                                                        echo "<option value=".$valor->nombre.">".$valor->nombre." </option>"; 
-                                                    }
-                                                endforeach;                                                                                                                                            
+                                            foreach ($valores as $valor){
+                                                if($valor->id_udm == $v->id_udm){
+                                                    echo "<option value=".$valor->id_udm." selected>".$valor->nombre." </option>"; 
+                                                }else{
+                                                    echo "<option value=".$valor->id_udm.">".$valor->nombre." </option>";  
+                                                }
+                                            }                                                                                                                                        
                                             ?>
                                             </select></label></br>
                                         <label>Contenido<input class="form-control" value="<?php echo $registro->contenido_pres;?>" type="text" name="contenido"></label></br>                                        

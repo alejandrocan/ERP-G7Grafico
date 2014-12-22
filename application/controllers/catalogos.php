@@ -148,9 +148,9 @@ class Catalogos extends CI_Controller {
 	/* Agrega una funcion para insertar los datos en la tabla de puesto */
 	public function insertPuesto($tabla) {
 		$this->form_validation->set_rules('Nombre', 'Nombre', 'required|trim|max_length[50]|callback_isUniqueNP[' . $this->input->post('Nombre') . ']');
-		$this->form_validation->set_message('required', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>El campo %s no debe estar vacío</div>');
-		$this->form_validation->set_message('max_length', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button> El campo %s no debe ser mayor a %d carácteres</div>');
-		$this->form_validation->set_message('isUniqueNP', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button> El valor del campo %s ya ha sido usado. Ingrese uno diferente.</div>');
+		$this->form_validation->set_message('required', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El campo %s no debe estar vacío</div>');
+		$this->form_validation->set_message('max_length', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El campo %s no debe ser mayor a %d carácteres</div>');
+		$this->form_validation->set_message('isUniqueNP', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El valor del campo %s ya ha sido usado. Ingrese uno diferente.</div>');
 
 		if ($this->form_validation->run() == TRUE) 
         {
@@ -169,6 +169,7 @@ class Catalogos extends CI_Controller {
 		}
 	}
 
+	//Verifica si el nombre del Puesto es unico (Agregar)
 	public function isUniqueNP($texto)
 	{
         $query = null; //emptying in case 
@@ -182,13 +183,36 @@ class Catalogos extends CI_Controller {
         	return FALSE;
 	}
 
-	public function insertUdm($tabla) {
+	//Verifica si el nombre del Puesto es unico (Editar)
+	public function isUniqueNPE()
+	{
+		$id = $this->input->post('id_puesto');
+		$nombre = $this->input->post('nombre');
+        $query = null; //emptying in case 
+        $query = $this->db->get_where('puesto', array(//making selection
+            'nombre' => $nombre
+        ));
+        $count = $query->num_rows(); //counting result from query
+        if ($count === 0)
+			return TRUE;
+                else
+        {
+        	$query = $query->result();
+        	foreach ($query as $pre) {
+        	}
+        	if($pre->id_puesto == $id)
+        		return TRUE;
+        	else
+        		return FALSE;
+        }
+	}
 
+	public function insertUdm($tabla) {
 		$this->form_validation->set_rules('Nombre', 'Nombre', 'required|trim|max_length[50]|callback_isUniqueNUDM[' . $this->input->post('Nombre') . ']');
 		$this->form_validation->set_rules('Tipo', 'Tipo', 'required');
-		$this->form_validation->set_message('required', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>El campo %s no debe estar vacío</div>');
-		$this->form_validation->set_message('max_length', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button> El campo %s no debe ser mayor a %d carácteres</div>');
-		$this->form_validation->set_message('isUniqueNUDM', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button> El valor del campo %s ya ha sido usado. Ingrese uno diferente.</div>');
+		$this->form_validation->set_message('required', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El campo %s no debe estar vacío</div>');
+		$this->form_validation->set_message('max_length', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El campo %s no debe ser mayor a %d carácteres</div>');
+		$this->form_validation->set_message('isUniqueNUDM', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El valor del campo %s ya ha sido usado. Ingrese uno diferente.</div>');
 		if ($this->form_validation->run() == TRUE) 
         {
 			$datos['nombre'] = $this->input->post('Nombre');
@@ -196,7 +220,9 @@ class Catalogos extends CI_Controller {
 			$datos['estado'] = 1;
 			$this->load->model('registros_model');
 			if($this->registros_model->insertar($datos,$tabla)) {
-				$this->index($tabla,null);
+				$error['mensaje'] = '<div class="container alert alert-success alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Se ha agregado una nueva unidad de medida (UDM). Espere mientras es redirigido :) </div>';
+				$this->index("udm",$error);
+				header('Refresh:2;url="' . base_url() . '/index.php/catalogos/index/udm/registros');
 			}
 		}
 		else
@@ -205,6 +231,7 @@ class Catalogos extends CI_Controller {
 		}
 	}
 
+	//verifica que el nombre de la unidad de medida no esté ocupado (Agregar)
 	public function isUniqueNUDM($texto)
 	{
         $query = null; //emptying in case 
@@ -218,15 +245,38 @@ class Catalogos extends CI_Controller {
         	return FALSE;
 	}
 
+		//verifica que el nombre de la unidad de medida no esté ocupado (Editar)
+	public function isUniqueNUDME()
+	{
+		$id = $this->input->post('id_udm');
+		$nombre = $this->input->post('nombre');
+        $query = null; //emptying in case 
+        $query = $this->db->get_where('udm', array(//making selection
+            'nombre' => $nombre
+        ));
+        $count = $query->num_rows(); //counting result from query
+        if ($count === 0)
+			return TRUE;
+        else
+        {
+        	$query = $query->result();
+        	foreach ($query as $pre) {
+        	}
+        	if($pre->id_udm == $id)
+        		return TRUE;
+        	else
+        		return FALSE;
+        }
+	}
+
 	/* Agrega una funcion para insertar los datos en la tabla de departamento */
 	public function insertDepartamento($tabla) {
 		$this->form_validation->set_rules('Nombre', 'Nombre', 'required|trim|max_length[50]|callback_isUniqueND[' . $this->input->post('Nombre') . ']');
-		$this->form_validation->set_message('required', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>El campo %s no debe estar vacío</div>');
-		$this->form_validation->set_message('max_length', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button> El campo %s no debe ser mayor a %d carácteres</div>');
-		$this->form_validation->set_message('isUniqueND', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button> El valor del campo %s ya ha sido usado. Ingrese uno diferente.</div>');
-
+		$this->form_validation->set_message('required', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El campo %s no debe estar vacío</div>');
+		$this->form_validation->set_message('max_length', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El campo %s no debe ser mayor a %d carácteres</div>');
+		$this->form_validation->set_message('isUniqueND', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El valor del campo %s ya ha sido usado. Ingrese uno diferente.</div>');
 		if ($this->form_validation->run() == TRUE) 
-        {
+       	{
 			$datos['nombre'] = $this->input->post("Nombre");
 			$datos['estado'] = 1;
 			$this->load->model('registros_model');
@@ -242,6 +292,7 @@ class Catalogos extends CI_Controller {
 		}
 	}
 
+	//Verifica que el nombre del Departamento no esté repetido (Agregar)
 	public function isUniqueND($texto)
 	{
         $query = null; //emptying in case 
@@ -255,13 +306,37 @@ class Catalogos extends CI_Controller {
         	return FALSE;
 	}
 
+	//Verifica que el nombre del Departamento no esté repetido (Editar)
+	public function isUniqueNDE()
+	{
+		$id = $this->input->post('id_depto');
+		$nombre = $this->input->post('nombre');
+        $query = null; //emptying in case 
+        $query = $this->db->get_where('departamento', array(//making selection
+            'nombre' => $nombre
+        ));
+        $count = $query->num_rows(); //counting result from query
+        if ($count === 0)
+			return TRUE;
+        else
+        {
+        	$query = $query->result();
+        	foreach ($query as $pre) {
+        	}
+        	if($pre->id_depto == $id)
+        		return TRUE;
+        	else
+        		return FALSE;
+        }
+	}
+
 /* Agrega una funcion para insertar los datos en la tabla de familia */
 	public function insertFamilia($tabla) {
 
 		$this->form_validation->set_rules('Nombre', 'Nombre', 'required|trim|max_length[50]|callback_isUniqueNF[' . $this->input->post('Nombre') . ']');
-		$this->form_validation->set_message('required', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>El campo %s no debe estar vacío</div>');
-		$this->form_validation->set_message('max_length', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button> El campo %s no debe ser mayor a %d carácteres</div>');
-		$this->form_validation->set_message('isUniqueNF', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button> El valor del campo %s ya ha sido usado. Ingrese uno diferente.</div>');
+		$this->form_validation->set_message('required', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El campo %s no debe estar vacío</div>');
+		$this->form_validation->set_message('max_length', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El campo %s no debe ser mayor a %d carácteres</div>');
+		$this->form_validation->set_message('isUniqueNF', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El valor del campo %s ya ha sido usado. Ingrese uno diferente.</div>');
 		if ($this->form_validation->run() == TRUE) 
         {
 			$datos['nombre'] = $this->input->post("Nombre");
@@ -280,76 +355,159 @@ class Catalogos extends CI_Controller {
 	}
 
 	public function updateFamilia($tabla){
-		$datos['id_fam'] = $this->input->post("id_fam");
-		$datos['nombre'] = $this->input->post("nombre");
-		$datos['estado'] = 1;
-		$this->load->model('registros_model');
-		if($this->registros_model->editar_familia($datos, $tabla)) {
-			$this->index($tabla,null);
+		$this->form_validation->set_rules('nombre', 'Nombre', 'required|trim|max_length[50]|callback_isUniqueNFE');
+		$this->form_validation->set_message('required', '<div class="container alert alert-info alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Editar. El campo %s no debe estar vacío</div>');
+		$this->form_validation->set_message('max_length', '<div class="container alert alert-info alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Editar. El campo %s no debe ser mayor a %d carácteres</div>');
+		$this->form_validation->set_message('isUniqueNFE', '<div class="container alert alert-info alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Editar. El valor del campo %s ya ha sido usado. Ingrese uno diferente.</div>');
+		if ($this->form_validation->run() == TRUE) 
+        {
+			$datos['id_fam'] = $this->input->post("id_fam");
+			$datos['nombre'] = $this->input->post("nombre");
+			$datos['estado'] = 1;
+			$this->load->model('registros_model');
+			if($this->registros_model->editar_familia($datos, $tabla)) {
+				$error['mensaje'] = '<div class="container alert alert-success alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Se ha modificado el Registro. Espere mientras es redirigido :) </div>';
+				$this->index("familia",$error);
+				header('Refresh:2;url="' . base_url() . '/index.php/catalogos/index/familia/registros');
+			}
+		}
+		else
+		{
+			$this->index("familia",null);
 		}
 	}
 	public function updatePuesto($tabla){
-		$datos['id_puesto'] = $this->input->post("id_puesto");
-		$datos['nombre'] = $this->input->post("nombre");
-		$datos['estado'] = 1;
-		$this->load->model('registros_model');
-		if($this->registros_model->editar_puesto($datos, $tabla)) {
+		$this->form_validation->set_rules('nombre', 'Nombre', 'required|trim|max_length[50]|callback_isUniqueNPE');
+		$this->form_validation->set_message('required', '<div class="container alert alert-info alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Editar. El campo %s no debe estar vacío</div>');
+		$this->form_validation->set_message('max_length', '<div class="container alert alert-info alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Editar. El campo %s no debe ser mayor a %d carácteres</div>');
+		$this->form_validation->set_message('isUniqueNPE', '<div class="container alert alert-info alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Editar. El valor del campo %s ya ha sido usado. Ingrese uno diferente.</div>');
+		if ($this->form_validation->run() == TRUE) 
+        {
+			$datos['id_puesto'] = $this->input->post("id_puesto");
+			$datos['nombre'] = $this->input->post("nombre");
+			$datos['estado'] = 1;
+			$this->load->model('registros_model');
+			if($this->registros_model->editar_puesto($datos, $tabla)) {
+				$error['mensaje'] = '<div class="container alert alert-success alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Se ha modificado el Registro. Espere mientras es redirigido :) </div>';
+				$this->index($tabla,$error);
+				header('Refresh:2;url="' . base_url() . '/index.php/catalogos/index/puesto/registros');
+			}
+		}
+		else
+		{
 			$this->index($tabla,null);
 		}
 	}
 	
 	public function updateDepartamento($tabla){
-		$datos['id_depto'] = $this->input->post("id_depto");
-		$datos['nombre'] = $this->input->post("nombre");
-		$datos['estado'] = 1;
-		$this->load->model('registros_model');
-		if($this->registros_model->editar_departamento($datos, $tabla)) {
-			$this->index($tabla,null);
+		$this->form_validation->set_rules('nombre', 'Nombre', 'required|trim|max_length[50]|callback_isUniqueNDE');
+		$this->form_validation->set_message('required', '<div class="container alert alert-info alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Editar. El campo %s no debe estar vacío</div>');
+		$this->form_validation->set_message('max_length', '<div class="container alert alert-info alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Editar. El campo %s no debe ser mayor a %d carácteres</div>');
+		$this->form_validation->set_message('isUniqueNDE', '<div class="container alert alert-info alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Editar. El valor del campo %s ya ha sido usado. Ingrese uno diferente.</div>');
+
+		if ($this->form_validation->run() == TRUE) 
+        {
+			$datos['id_depto'] = $this->input->post("id_depto");
+			$datos['nombre'] = $this->input->post("nombre");
+			$datos['estado'] = 1;
+			$this->load->model('registros_model');
+			if($this->registros_model->editar_departamento($datos, $tabla)) {
+				$error['mensaje'] = '<div class="container alert alert-success alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Se ha modificado el registro. Espere mientras es redirigido :) </div>';
+				$this->index("departamento",$error);
+				header('Refresh:2;url="' . base_url() . '/index.php/catalogos/index/departamento/registros');
+			}
+		}
+		else
+		{
+			$this->index("departamento",null);
 		}
 	}
 
 	public function updateProveedor($tabla){
-		$datos['id_proveedor'] = $this->input->post("id_proveedor");
-		$datos['nombre'] = $this->input->post("nombre");
-		$datos['dir_prove'] = $this->input->post("dir_prove");
-		$datos['tel_prove'] = $this->input->post("tel_prove");
-		$datos['correo_prove'] = $this->input->post("correo_prove");
-		$datos['contacto'] = $this->input->post("contacto");
-		$datos['estado'] = 1;
-		$this->load->model('registros_model');
-		if($this->registros_model->editar_proveedor($datos, $tabla)) {
+		$this->form_validation->set_rules('nombre', 'Nombre', 'required|trim|max_length[50]');
+		$this->form_validation->set_rules('dir_prove', 'Dirección', 'trim|max_length[50]');
+		$this->form_validation->set_rules('tel_prove', 'Teléfono', 'required|trim|min_length[7]|max_length[11]|integer');
+		$this->form_validation->set_rules('correo_prove', 'Correo', 'trim|valid_email|max_length[50]');
+		$this->form_validation->set_rules('contacto', 'Contacto', 'trim|max_length[30]');
+
+		$this->form_validation->set_message('required', '<div class="container alert alert-info alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Modificar. El campo %s no debe estar vacío</div>');
+        $this->form_validation->set_message('min_length', '<div class="container alert alert-info alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Modificar. El campo %s no debe ser menor a %d carácteres</div>');
+        $this->form_validation->set_message('max_length', '<div class="container alert alert-info alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Modificar. El campo %s no debe ser mayor a %d carácteres</div>');
+        $this->form_validation->set_message('valid_email', '<div class="container alert alert-info alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Modificar. El %s no es válido</div>');
+        $this->form_validation->set_message('integer', '<div class="container alert alert-info alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Modificar. El campo %s debe contener sólo números</div>');
+
+        if ($this->form_validation->run() == TRUE) 
+        {
+			$datos['id_proveedor'] = $this->input->post("id_proveedor");
+			$datos['nombre'] = $this->input->post("nombre");
+			$datos['dir_prove'] = $this->input->post("dir_prove");
+			$datos['tel_prove'] = $this->input->post("tel_prove");
+			$datos['correo_prove'] = $this->input->post("correo_prove");
+			$datos['contacto'] = $this->input->post("contacto");
+			$datos['estado'] = 1;
+			$this->load->model('registros_model');
+			if($this->registros_model->editar_proveedor($datos, $tabla)) {
+				$error['mensaje'] = '<div class="container alert alert-success alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Se ha modificado el registro. Espere mientras es redirigido :) </div>';
+				$this->index("proveedor",$error);
+				header('Refresh:2;url="' . base_url() . '/index.php/catalogos/index/proveedor/registros');
+			}
+		}
+				else
+		{
 			$this->index($tabla,null);
 		}
 	}
+
 	public function updatePresentacion($tabla){
-		$datos['id_pres'] = $this->input->post("id_pres");
-		$datos['nombre']= $this->input->post('nombre');		
-		//$datos['udm']= $this->input->post('udm');
-		$valor = $this->input->post("udm_pres");
-		$query =  $this->db->get("udm");
-		$registros = $query->result();
-		foreach ($registros as $registro ) {
-			if($registro->nombre == $valor){
-				$datos['udm_pres'] = $registro->id_udm;
-				break;
+		$this->form_validation->set_rules('nombre', 'Nombre', 'required|trim|max_length[50]|callback_isUniqueNPreE');
+		$this->form_validation->set_rules('udm_pres', 'UDM', 'required');
+		$this->form_validation->set_rules('contenido', 'Contenido', 'required|trim|max_length[4]|integer');
+		$this->form_validation->set_message('required', '<div class="container alert alert-info alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Modificar. El campo %s no debe estar vacío</div>');
+		$this->form_validation->set_message('max_length', '<div class="container alert alert-info alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Modificar. El campo %s no debe ser mayor a %d carácteres</div>');
+		$this->form_validation->set_message('integer', '<div class="container alert alert-info alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Modificar. El campo %s debe contener únicamente números enteros</div>');
+		$this->form_validation->set_message('isUniqueNPreE', '<div class="container alert alert-info alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Modificar. El campo %s ya ha sido usado en otra Presentación. Ingrese una diferente.</div>');
+		if ($this->form_validation->run() == TRUE) 
+        {
+			$datos['id_pres'] = $this->input->post("id_pres");
+			$datos['nombre']= $this->input->post('nombre');		
+			$datos['udm_pres'] = $this->input->post('udm_pres');
+			$datos['contenido_pres']= $this->input->post('contenido');
+			$datos['estado'] = 1;
+			$this->load->model('registros_model');
+			if($this->registros_model->editar_presentacion($datos, $tabla)) {
+				$error['mensaje'] = '<div class="container alert alert-success alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Se ha modificado el Registro. Espere mientras es redirigido :) </div>';
+				$this->index("presentacion",$error);
+				header('Refresh:2;url="' . base_url() . '/index.php/catalogos/index/presentacion/registros');
 			}
 		}
-		$datos['contenido_pres']= $this->input->post('contenido');
-		$datos['estado'] = 1;
-		$this->load->model('registros_model');
-		if($this->registros_model->editar_presentacion($datos, $tabla)) {
+		else
+		{
 			$this->index($tabla,null);
-		}		
+		}	
 	}	
 
 	public function updateUdm($tabla){
-		$datos['id_udm'] = $this->input->post("id_udm");
-		$datos['nombre'] = $this->input->post("nombre");
-		$datos['tipo_udm'] = $this->input->post("tipo_udm");
-		$datos['estado'] = 1;
-		$this->load->model('registros_model');
-		if($this->registros_model->editar_udm($datos, $tabla)) {
-			$this->index($tabla,null);
+		$this->form_validation->set_rules('nombre', 'Nombre', 'required|trim|max_length[50]|callback_isUniqueNUDME');
+		$this->form_validation->set_rules('tipo_udm', 'Tipo', 'required');
+		$this->form_validation->set_message('required', '<div class="container alert alert-info alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Modificar. El campo %s no debe estar vacío</div>');
+		$this->form_validation->set_message('max_length', '<div class="container alert alert-info alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Modificar. El campo %s no debe ser mayor a %d carácteres</div>');
+		$this->form_validation->set_message('isUniqueNUDME', '<div class="container alert alert-info alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Modificar. El valor del campo %s ya ha sido usado. Ingrese uno diferente.</div>');
+		if ($this->form_validation->run() == TRUE) 
+        {
+			$datos['id_udm'] = $this->input->post("id_udm");
+			$datos['nombre'] = $this->input->post("nombre");
+			$datos['tipo_udm'] = $this->input->post("tipo_udm");
+			$datos['estado'] = 1;
+			$this->load->model('registros_model');
+			if($this->registros_model->editar_udm($datos, $tabla)) {
+				$error['mensaje'] = '<div class="container alert alert-success alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Se ha modificaado el Registro. Espere mientras es redirigido :) </div>';
+				$this->index("udm",$error);
+				header('Refresh:2;url="' . base_url() . '/index.php/catalogos/index/udm/registros');
+			}
+		}
+		else
+		{
+			$this->index("udm",null);
 		}
 	}
 
@@ -427,7 +585,7 @@ class Catalogos extends CI_Controller {
 			$this->index('Udm',$datos);
 	}
 	*/
-
+	//Verifica que el nombre de la Familia no esté ocupado (Agregar)
 	public function isUniqueNF($texto)
 	{
         $query = null; //emptying in case 
@@ -441,6 +599,29 @@ class Catalogos extends CI_Controller {
         	return FALSE;
 	}
 
+	public function isUniqueNFE()
+	{
+		$id = $this->input->post('id_fam');
+		$nombre = $this->input->post('nombre');
+        $query = null; //emptying in case 
+        $query = $this->db->get_where('familia', array(//making selection
+            'nombre' => $nombre
+        ));
+        $count = $query->num_rows(); //counting result from query
+        if ($count === 0)
+			return TRUE;
+        else
+        {
+        	$query = $query->result();
+        	foreach ($query as $pre) {
+        	}
+        	if($pre->id_fam == $id)
+        		return TRUE;
+        	else
+        		return FALSE;
+        }
+	}
+
 	public function insertProveedor($tabla) {
 		$this->form_validation->set_rules('Nombre', 'Nombre', 'required|trim|max_length[50]');
 		$this->form_validation->set_rules('Direccion', 'Dirección', 'trim|max_length[50]');
@@ -448,11 +629,11 @@ class Catalogos extends CI_Controller {
 		$this->form_validation->set_rules('Correo', 'Correo', 'trim|valid_email|max_length[50]');
 		$this->form_validation->set_rules('Contacto', 'Contacto', 'trim|max_length[30]');
 
-		$this->form_validation->set_message('required', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>El campo %s no debe estar vacío</div>');
-        $this->form_validation->set_message('min_length', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>El campo %s no debe ser menor a %d carácteres</div>');
-        $this->form_validation->set_message('max_length', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button> El campo %s no debe ser mayor a %d carácteres</div>');
-        $this->form_validation->set_message('valid_email', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button> El %s no es válido</div>');
-        $this->form_validation->set_message('integer', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>El campo %s debe contener sólo números</div>');
+		$this->form_validation->set_message('required', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El campo %s no debe estar vacío</div>');
+        $this->form_validation->set_message('min_length', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El campo %s no debe ser menor a %d carácteres</div>');
+        $this->form_validation->set_message('max_length', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El campo %s no debe ser mayor a %d carácteres</div>');
+        $this->form_validation->set_message('valid_email', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El %s no es válido</div>');
+        $this->form_validation->set_message('integer', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El campo %s debe contener sólo números</div>');
 
         if ($this->form_validation->run() == TRUE) 
         {
@@ -479,23 +660,23 @@ class Catalogos extends CI_Controller {
 	public function insertPresentacion($tabla) {
 		$this->form_validation->set_rules('Nombre', 'Nombre', 'required|trim|max_length[50]|callback_isUniqueNPre[' . $this->input->post('Nombre') . ']');
 		$this->form_validation->set_rules('UDM', 'UDM', 'required');
-		$this->form_validation->set_rules('Contenido', 'Contenido', 'required|trim|max_length[4]|decimal');
-		$this->form_validation->set_message('required', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>El campo %s no debe estar vacío</div>');
-		$this->form_validation->set_message('max_length', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button> El campo %s no debe ser mayor a %d carácteres</div>');
-		$this->form_validation->set_message('decimal', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button> El campo %s debe contener únicamente números</div>');
-		$this->form_validation->set_message('isUniqueNPre', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button> El campo %s ya ha sido usado en otra Presentación. Ingrese una diferente.</div>');
+		$this->form_validation->set_rules('Contenido', 'Contenido', 'required|trim|max_length[4]|integer');
+		$this->form_validation->set_message('required', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El campo %s no debe estar vacío</div>');
+		$this->form_validation->set_message('max_length', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El campo %s no debe ser mayor a %d carácteres</div>');
+		$this->form_validation->set_message('integer', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El campo %s debe contener únicamente números enteros</div>');
+		$this->form_validation->set_message('isUniqueNPre', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El campo %s ya ha sido usado en otra Presentación. Ingrese una diferente.</div>');
 
 		if ($this->form_validation->run() == TRUE) 
         {
 			$datos['nombre'] = $this->input->post("Nombre");
-			$datos['udm_pres'] = $this->db->get("UDM");
+			$datos['udm_pres'] = $this->input->post("UDM");
 			$datos['contenido_pres'] = $this->input->post("Contenido");
 			$datos['estado'] = 1;
 
 			$this->load->model('registros_model');
 			if($this->registros_model->insertar($datos,$tabla)) {
-				$error['mensaje'] = '<div class="container alert alert-success alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Se ha agregado un nuevo Proveedor. Espere mientras es redirigido :) </div>';
-				$this->index("proveedor",$error);
+				$error['mensaje'] = '<div class="container alert alert-success alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Se ha agregado una nueva Presentación. Espere mientras es redirigido :) </div>';
+				$this->index("presentacion",$error);
 				header('Refresh:2;url="' . base_url() . '/index.php/catalogos/index/presentacion/registros');
 			}
 		}
@@ -516,6 +697,28 @@ class Catalogos extends CI_Controller {
 			return TRUE;
         else
         	return FALSE;
+	}
+
+	public function isUniqueNPreE()
+	{
+		$id = $this->input->post("id_pres");
+		$nombre = $this->input->post("nombre");
+        $query = $this->db->get_where('presentacion', array(//making selection
+            'nombre' => $nombre
+        ));
+        $count = $query->num_rows(); //counting result from query
+        if ($count === 0)
+			return TRUE;
+        else
+        {
+        	$query = $query->result();
+        	foreach ($query as $pre) {
+        	}
+        	if($pre->id_pres == $id)
+        		return TRUE;
+        	else
+        		return FALSE;
+        }
 	}
 
 		/* Agrega una funcion para insertar los datos en la tabla de usuario */
@@ -672,120 +875,173 @@ class Catalogos extends CI_Controller {
 	}
 
 	public function insertMaterial($tabla){
-		$datos['nombre'] = $this->input->post("nombre");
+		$this->form_validation->set_rules('Nombre', 'Nombre', 'required|max_length[100]|trim|callback_isUniqueNM[' . $this->input->post('Nombre') . ']');
+		$this->form_validation->set_rules('UDM', 'UDM', 'required');
+		$this->form_validation->set_rules('Proveedor', 'Proveedor', 'required');
+		$this->form_validation->set_rules('Presentacion', 'Presentacion', 'required');
+		$this->form_validation->set_rules('clave', 'Clave', 'required|trim|max_length[100]');
+		$this->form_validation->set_rules('smax', 'Stock_Maxima', 'trim|integer|max_length[5]');
+		$this->form_validation->set_rules('smin', 'Stock_Minima', 'trim|integer|max_length[6]');
+		$this->form_validation->set_rules('factor_redimiento', 'Factor_Redimiento', 'required|trim|numeric|max_length[7]');
+		$this->form_validation->set_rules('cantidad', 'Cantidad', 'required|trim|integer|max_length[7]');
+		$this->form_validation->set_rules('ultimo_costo', 'Ultimo_Costo', 'required|trim|numeric|max_length[10]');
+		$this->form_validation->set_rules('tiempo_elaboracion', 'Tiempo_Elaboracion', 'trim|exact_length[8]|callback_FormatoTiempo');
+		$this->form_validation->set_rules('orden_cronologico', 'Orden_Elaboracion', 'trim|integer|max_length[5]');
 
-		/*Busca el id de la unidad de medida seleccionada*/
-		$valor = $this->input->post("udm_material");
-		$query =  $this->db->get("udm");
-		$registros = $query->result();
-		foreach ($registros as $registro ) {
-			if($registro->nombre == $valor){
-				$datos['udm_material'] = $registro->id_udm;
-				break;
-			}
-		}
-		/*Busca el id de la familia seleccionada*/
-		$valor = $this->input->post("proveedor_material");
-		$query =  $this->db->get("proveedor");
-		$registros = $query->result();
-		foreach ($registros as $registro ) {
-			if($registro->nombre == $valor){
-				$datos['proveedor_material'] = $registro->id_proveedor;
-				break;
-			}
-		}
+		$this->form_validation->set_message('required', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El campo %s no puede estar vacío</div>');
+        $this->form_validation->set_message('exact_length', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El campo %s debe contener %d carácteres exactamente</div>');
+        $this->form_validation->set_message('max_length', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El campo %s no debe no puede contener más de %d caracteres</div>');
+        $this->form_validation->set_message('isUniqueNM', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El valor del campo %s, ya se ha utilizado por otro usuario. Ingrese uno diferente.</div>');
+        $this->form_validation->set_message('espacio', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El campo Nombre no debe contener espacios en blanco</div>');
+        $this->form_validation->set_message('integer', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El campo %s debe contener sólo números</div>');
+        $this->form_validation->set_message('numeric', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El campo %s no es un número válido. Ej: 1, 1.6, 8.98</div>');
+        $this->form_validation->set_message('FormatoTiempo', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El campo %s no tiene el formato correcto. Ej: 12:59:59 (Horas:Minutos:Segundos)</div>');
 
-		/*Busca el id de la presentacion seleccionada*/
-		$valor = $this->input->post("presentacion");
-		$query =  $this->db->get("presentacion");
-		$registros = $query->result();
-		foreach ($registros as $registro ) {
-			if($registro->nombre == $valor){
-				$datos['presentacion'] = $registro->id_pres;
-				break;
-			}
-		}
-		
-
-		$datos['clave'] = $this->input->post("clave");
-		$datos['smax'] = $this->input->post("smax");
-		$datos['smin'] = $this->input->post("smin");
-		$datos['factor_redimiento'] = $this->input->post("factor_redimiento");
-		$datos['cantidad'] = $this->input->post("cantidad");
-		$datos['ultimo_costo'] = $this->input->post("ultimo_costo");
-		$datestring = "%Y-%m-%d %h:%i:00";
-		$time = time();
-		$datos['fecha_cotiza'] = mdate($datestring,$time);
-		$datos['ultima_edicion'] = mdate($datestring,$time);
-		$datos['usr_edicion'] = $this->session->userdata('id_usr');
-		$datos['tiempo_elaboracion'] = $this->input->post("tiempo_elaboracion");
-		$datos['orden_cronologico'] = $this->input->post("orden_cronologico");
-		$datos['estado'] = 1;
-
-		$this->load->model('registros_model');
-		if($this->registros_model->insertar($datos, $tabla)) {
-			$error['mensaje'] = '<div class="container alert alert-success alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Se ha agregado un nuevo Material. Espere mientras es redireccionado :)</div>';
+        if ($this->form_validation->run() == TRUE) 
+        {
+			$datos['nombre'] = $this->input->post("Nombre");
+			$datos['udm_material'] = $this->input->post("UDM");
+			$datos['proveedor_material'] = $this->input->post("Proveedor");
+			$datos['presentacion'] = $this->input->post("Presentacion");
+			$datos['clave'] = $this->input->post("clave");
+			$datos['smax'] = $this->input->post("smax");
+			$datos['smin'] = $this->input->post("smin");
+			$datos['factor_redimiento'] = $this->input->post("factor_redimiento");
+			$datos['cantidad'] = $this->input->post("cantidad");
+			$datos['ultimo_costo'] = $this->input->post("ultimo_costo");
+			$datestring = "%Y-%m-%d %h:%i:00";
+			$time = time();
+			$datos['fecha_cotiza'] = mdate($datestring,$time);
+			$datos['ultima_edicion'] = mdate($datestring,$time);
+			$datos['usr_edicion'] = $this->session->userdata('id_usr');
+			$datos['tiempo_elaboracion'] = $this->input->post("tiempo_elaboracion");
+			$datos['orden_cronologico'] = $this->input->post("orden_cronologico");
+			$datos['estado'] = 1;
+			$this->load->model('registros_model');
+			if($this->registros_model->insertar($datos, $tabla)) {
+				$error['mensaje'] = '<div class="container alert alert-success alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Se ha agregado un nuevo Material. Espere mientras es redireccionado :)</div>';
 				$this->index("material",$error);
 				header('Refresh:2;url="' . base_url() . '/index.php/catalogos/index/material/registros');
+			}
+		}
+		else
+		{
+			$this->index("material",null);
 		}
 	}
 
+	public function FormatoTiempo()
+	{
+		$tiempo = $this->input->post('tiempo_elaboracion');
+		for($i=0;$i<strlen($tiempo);$i++)
+		{
+			if($i==2||$i==5)
+			{
+				if(!$tiempo[$i]==":")
+					return FALSE;
+			}
+			else
+			{
+				if(!is_numeric($tiempo[$i]))
+					return FALSE;
+			}
+		}
+		return TRUE;
+	}
+
+	//verifica que el nombre del material no esté ocupado (Agregar)
+	public function isUniqueNM($texto)
+	{
+        $query = null; //emptying in case 
+        $query = $this->db->get_where('material', array(//making selection
+            'nombre' => $texto
+        ));
+        $count = $query->num_rows(); //counting result from query
+        if ($count === 0)
+			return TRUE;
+        else
+        	return FALSE;
+	}
+
+	//verifica que el nombre del material no esté ocupado (Editar)
+	public function isUniqueNME($texto)
+	{
+        $id = $this->input->post("id_material");
+		$nombre = $this->input->post("nombre");
+        $query = $this->db->get_where('material', array(//making selection
+            'nombre' => $texto
+        ));
+        $count = $query->num_rows(); //counting result from query
+        if ($count === 0)
+			return TRUE;
+        else
+        {
+        	$query = $query->result();
+        	foreach ($query as $pre) {
+        	}
+        	if($pre->id_material == $id)
+        		return TRUE;
+        	else
+        		return FALSE;
+        }
+	}
+
 	public function updateMaterial($tabla){
-		$datos['id_material'] = $this->input->post("id_material");
-		$datos['nombre'] = $this->input->post("nombre");
+		$this->form_validation->set_rules('nombre', 'Nombre', 'required|max_length[100]|trim|callback_isUniqueNME');
+		$this->form_validation->set_rules('udm_material', 'UDM', 'required');
+		$this->form_validation->set_rules('proveedor_material', 'Proveedor', 'required');
+		$this->form_validation->set_rules('presentacion', 'Presentacion', 'required');
+		$this->form_validation->set_rules('clave', 'Clave', 'required|trim|max_length[100]');
+		$this->form_validation->set_rules('smax', 'Stock_Maxima', 'trim|integer|max_length[5]');
+		$this->form_validation->set_rules('smin', 'Stock_Minima', 'trim|integer|max_length[6]');
+		$this->form_validation->set_rules('factor_redimiento', 'Factor_Redimiento', 'trim|numeric|max_length[7]');
+		$this->form_validation->set_rules('cantidad', 'Cantidad', 'required|trim|integer|max_length[7]');
+		$this->form_validation->set_rules('ultimo_costo', 'Ultimo_Costo', 'required|trim|numeric|max_length[10]');
+		$this->form_validation->set_rules('tiempo_elaboracion', 'Tiempo_Elaboracion', 'trim|exact_length[8]|callback_FormatoTiempo');
+		$this->form_validation->set_rules('orden_cronologico', 'Orden_Elaboracion', 'trim|integer|max_length[5]');
 
-		/*Busca el id de la unidad de medida seleccionada*/
-		$valor = $this->input->post("udm_material");
-		$query =  $this->db->get("udm");
-		$registros = $query->result();
-		foreach ($registros as $registro ) {
-			if($registro->nombre == $valor){
-				$datos['udm_material'] = $registro->id_udm;
-				break;
+		$this->form_validation->set_message('required', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El campo %s no puede estar vacío</div>');
+        $this->form_validation->set_message('exact_length', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El campo %s debe contener %d carácteres exactamente</div>');
+        $this->form_validation->set_message('max_length', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El campo %s no debe no puede contener más de %d caracteres</div>');
+        $this->form_validation->set_message('isUniqueNME', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El valor del campo %s, ya se ha utilizado por otro usuario. Ingrese uno diferente.</div>');
+        $this->form_validation->set_message('espacio', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El campo Nombre no debe contener espacios en blanco</div>');
+        $this->form_validation->set_message('integer', '<div class="container alert alert-info alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El campo %s debe contener sólo números</div>');
+        $this->form_validation->set_message('numeric', '<div class="container alert alert-info alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El campo %s no es un número válido. Ej: 1, 1.6, 8.98</div>');
+        $this->form_validation->set_message('FormatoTiempo', '<div class="container alert alert-info alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El campo %s no tiene el formato correcto. Ej: 12:59:59 (Horas:Minutos:Segundos)</div>');
+
+        if ($this->form_validation->run() == TRUE) 
+        {
+
+			$datos['id_material'] = $this->input->post("id_material");
+			$datos['nombre'] = $this->input->post("nombre");
+			$datos['udm_material'] = $this->input->post("udm_material");
+			$datos['proveedor_material'] = $this->input->post("proveedor_material");
+			$datos['presentacion'] = $this->input->post("presentacion");
+			$datos['clave'] = $this->input->post("clave");
+			$datos['smax'] = $this->input->post("smax");
+			$datos['smin'] = $this->input->post("smin");
+			$datos['factor_redimiento'] = $this->input->post("factor_redimiento");
+			$datos['cantidad'] = $this->input->post("cantidad");
+			$datos['ultimo_costo'] = $this->input->post("ultimo_costo");
+			$datestring = "%Y-%m-%d %h:%i:00";
+			$time = time();
+			$datos['fecha_cotiza'] = mdate($datestring,$time);
+			$datos['ultima_edicion'] = mdate($datestring,$time);
+			$datos['usr_edicion'] = $this->session->userdata('id_usr');
+			$datos['tiempo_elaboracion'] = $this->input->post("tiempo_elaboracion");
+			$datos['orden_cronologico'] = $this->input->post("orden_cronologico");
+			$datos['estado'] = 1;
+
+			$this->load->model('registros_model');
+			if($this->registros_model->editar($datos, $tabla)) {
+				$error['mensaje'] = '<div class="container alert alert-success alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Se ha modificado el Material. Espere mientras es redireccionado :)</div>';
+				$this->index("material",$error);
+				header('Refresh:2;url="' . base_url() . '/index.php/catalogos/index/material/registros');
 			}
 		}
-
-		/*Busca el id de la familia seleccionada*/
-		$valor = $this->input->post("proveedor_material");
-		$query =  $this->db->get("proveedor");
-		$registros = $query->result();
-		foreach ($registros as $registro ) {
-			if($registro->nombre == $valor){
-				$datos['proveedor_material'] = $registro->id_proveedor;
-				break;
-			}
-		}
-
-		/*Busca el id del departamento seleccionado*/
-		$valor = $this->input->post("presentacion");
-		$query =  $this->db->get("presentacion");
-		$registros = $query->result();
-		foreach ($registros as $registro ) {
-			if($registro->nombre == $valor){
-				$datos['presentacion'] = $registro->id_pres;
-				break;
-			}
-		}
-
-
-		$datos['clave'] = $this->input->post("clave");
-		$datos['smax'] = $this->input->post("smax");
-		$datos['smin'] = $this->input->post("smin");
-		$datos['factor_redimiento'] = $this->input->post("factor_redimiento");
-		$datos['cantidad'] = $this->input->post("cantidad");
-		$datos['ultimo_costo'] = $this->input->post("ultimo_costo");
-		$datestring = "%Y-%m-%d %h:%i:00";
-		$time = time();
-		$datos['fecha_cotiza'] = mdate($datestring,$time);
-		$datos['ultima_edicion'] = mdate($datestring,$time);
-		$datos['usr_edicion'] = $this->session->userdata('id_usr');
-		$datos['tiempo_elaboracion'] = $this->input->post("tiempo_elaboracion");
-		$datos['orden_cronologico'] = $this->input->post("orden_cronologico");
-		$datos['estado'] = 1;
-
-		$this->load->model('registros_model');
-		if($this->registros_model->editar($datos, $tabla)) {
-			$this->index($tabla,null);
+		else
+		{
+			$this->index("material",null);
 		}
 	}
 	public function newProduct($tabla) 

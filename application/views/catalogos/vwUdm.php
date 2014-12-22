@@ -30,10 +30,18 @@
                                                 echo "<option value=".$tipo.">".$tipo." </option>"; 
                                             }
                                         endforeach;
-                                    }else{
-                                        foreach ($tipo_unidad as $tipo): ?>
-                                            <option><?php echo $tipo; ?></option>
-                                        <?php endforeach;                
+                                    }
+                                    else{
+                                        echo '<option value="Longitud" ' . set_select('Tipo','Longitud','TRUE') . '>' . 'Longitud</option>';
+                                        echo '<option value="Área" ' . set_select('Tipo','Área') . '>' . 'Área</option>';
+                                        echo '<option value="Volúmen" ' . set_select('Tipo','Volúmen') . '>' . 'Volúmen</option>';
+                                        echo '<option value="Cuantitativo" ' . set_select('Tipo','Cuantitativo') . '>' . 'Cuantitativo</option>';
+                                        echo '<option value="Distancia" ' . set_select('Tipo','Distancia') . '>' . 'Distancia</option>';
+                                        echo '<option value="Fuerza" ' . set_select('Tipo','Fuerza') . '>' . 'Fuerza</option>';
+                                        echo '<option value="Energía" ' . set_select('Tipo','Energía') . '>' . 'Energía</option>';
+                                        echo '<option value="Peso" ' . set_select('Tipo','Peso') . '>' . 'Peso</option>';
+                                        echo '<option value="Tiempo" ' . set_select('Tipo','Tiempo') . '>' . 'Tiempo</option>';
+                                        echo '<option value="Velocidad" ' . set_select('Tipo','Velocidad') . '>' . 'Velocidad</option>';          
                                     }                                
                                     ?>
                                 </select>
