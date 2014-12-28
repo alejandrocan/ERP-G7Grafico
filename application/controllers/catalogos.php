@@ -1098,53 +1098,87 @@ class Catalogos extends CI_Controller {
 		$data['title'] = "Sistema G7 Grafico";
 		$this->load->view("vwHeader", $data);
 		$this->load->view("catalogos/vwAddMaterial");
-
 	}
+
+	public function notZero()
+	{
+		$numero = $this->input->post('cant_usada');
+		if($numero!=0&&$numero>0)
+			return TRUE;
+		else
+			return FALSE;
+	}
+
+	public function noVacio()
+	{
+		$numero = $this->input->post('cant_usada');
+		if($numero==""||$numero==NULL)
+			return FALSE;
+		else
+			return TRUE;
+	}
+
 	public function addNewMaterial() {
 		$data['id_producto'] = $this->input->post('idProducto');
-		$elemento = $this->input->post('elemento');
-		$cantidad = $this->input->post('cant_usada');
-		//////////////////////////////
-		$query = $this->db->get_where('material', array('nombre' => $elemento));
-		$query = $query->result();
-		if($query != null){
-			foreach ($query as $valor) {
-				if($valor->nombre == $elemento){
-					$data['id_elemento'] = $valor->id_material;
-					$fr = $valor->factor_redimiento;
-					$ucosto = $valor->ultimo_costo;
-					$data['costo'] = $ucosto * $fr* $cantidad;
-					$data['tipo_elemento'] = 'material';
+		$this->form_validation->set_rules('elemento', 'Elemento', 'required');
+		$this->form_validation->set_rules('cant_usada', 'Cantidad Usada', 'callback_noVacio|trim|numeric|callback_notZero');
+
+		$this->form_validation->set_message('required', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>No se ha cargado un Producto/Material</div>');
+		$this->form_validation->set_message('noVacio', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El campo %s no puede estar vacío</div>');
+		$this->form_validation->set_message('notZero', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El campo %s no puede ser Cero (0) o menor a 0</div>');
+		$this->form_validation->set_message('numeric', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El campo %s debe contener una catidad numérica</div>');
+
+        if ($this->form_validation->run() == TRUE) 
+        {
+			
+			$elemento = $this->input->post('elemento');
+			$cantidad = $this->input->post('cant_usada');
+			//////////////////////////////
+			$query = $this->db->get_where('material', array('nombre' => $elemento));
+			$query = $query->result();
+			if($query != null){
+				foreach ($query as $valor) {
+					if($valor->nombre == $elemento){
+						$data['id_elemento'] = $valor->id_material;
+						$fr = $valor->factor_redimiento;
+						$ucosto = $valor->ultimo_costo;
+						$data['costo'] = $ucosto * $fr* $cantidad;
+						$data['tipo_elemento'] = 'material';
+					}
+				}
+			}else{
+				$query = $this->db->get('producto');
+				$query = $query->result();
+				foreach ($query as $valor) {
+					if($valor->nombre == $elemento){
+						$data['id_elemento'] = $valor->id_produc;
+						$data['costo'] = $valor->costo_produc * $cantidad;
+						$data['tipo_elemento'] = 'producto';
+					}
 				}
 			}
-		}else{
-			$query = $this->db->get('producto');
+			/////////////////////////////
+			$udm = $this->input->post('udm');
+			$query = $this->db->get_where('udm', array('nombre' => $udm ));
 			$query = $query->result();
 			foreach ($query as $valor) {
-				if($valor->nombre == $elemento){
-					$data['id_elemento'] = $valor->id_produc;
-					$data['costo'] = $valor->costo_produc * $cantidad;
-					$data['tipo_elemento'] = 'producto';
-				}
+				$data['udmid'] = $valor->id_udm;
 			}
+			////////////////////////////
+			$data['cantidadusada'] =  $this->input->post('cant_usada');
+			
+			$this->db->insert('producto_material', $data);
+			$data['udm'] = $this->input->post('udm');
+			$data['producto'] = $this->input->post('elemento');
+			$data['registro'] = $this->input->post('nombreProducto');
+			$this->addMaterial($this->input->post('nombreProducto'));
+			redirect('/NewProducts/addMateriales/'. $data['id_producto']);
+			#header('Refresh:5;url="' . base_url() . '/index.php/NewProducts/addMateriales/'.$data['id_producto']);
 		}
-		/////////////////////////////
-		$udm = $this->input->post('udm');
-		$query = $this->db->get_where('udm', array('nombre' => $udm ));
-		$query = $query->result();
-		foreach ($query as $valor) {
-			$data['udmid'] = $valor->id_udm;
+		else
+		{
+			redirect('/NewProducts/addMateriales/'. $data['id_producto']);
 		}
-		////////////////////////////
-		$data['cantidadusada'] =  $this->input->post('cant_usada');
-		
-		$this->db->insert('producto_material', $data);
-		$data['udm'] = $this->input->post('udm');
-		$data['producto'] = $this->input->post('elemento');
-		$data['registro'] = $this->input->post('nombreProducto');
-		$this->addMaterial($this->input->post('nombreProducto'));
-		redirect('/NewProducts/addMateriales/'. $data['id_producto']);
-		#header('Refresh:5;url="' . base_url() . '/index.php/NewProducts/addMateriales/'.$data['id_producto']);
 	}
 	public function upProducto($producto, $id) {
 		$data['estado'] = 1;

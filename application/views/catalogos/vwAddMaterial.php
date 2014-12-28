@@ -12,6 +12,8 @@ $(document).ready(function(){
 </script>
 
 <div class="container">
+	<?=@$mensaje?>
+    <span><?php echo validation_errors(); ?></span>
 	<h1>Materiales para <?php echo $producto;?></h1>
 	<?php 
 		$query = $this->db->get_where('producto', array('nombre' => $producto));
@@ -22,6 +24,7 @@ $(document).ready(function(){
 	?>
 	<form class="navbar-form navbar-left" role="search" action="<?php echo base_url();?>/index.php/newProducts/loadMaterial" method="post">
     	<div class="form-group">
+
         	<input type="text" class="form-control" placeholder="Producto/Material" id="buscar" name="material">
         	<input class="hidden" value= "<?php echo $id_producto;?>" type="text" name="idProducto">
       	</div>

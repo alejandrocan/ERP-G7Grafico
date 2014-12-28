@@ -1,7 +1,8 @@
 <!--Apartado de insertar-->
 <div class="container table-responsive">
+        <?=@$mensaje?>
+        <span><?php echo validation_errors(); ?></span>
         <h3>Agregar Nuevo producto</h3>
-        <form action="<?php echo base_url();?>index.php/newProducts/genProduct" method="post">
         <table class="table table-bordered table-hover">
         <thead>
             <tr>
@@ -13,55 +14,48 @@
             </tr>
         </thead>
             <tr>
-                <td><input class="form-control" value="" type="text" name="nombre"></td>    
-                
-                <td><select class="form-control" name ="udm">
-                    <?php 
-                        $query = $this->db->get("udm");
-                        $valores = $query->result(); ?>
-                    <?php foreach ($valores as $valor): ?>
-                    	<?php if($valor->estado == 1): ?>
-                        	<option><?php echo $valor->nombre; ?></option>
-                        <?php endif; ?>
-                    <?php endforeach; ?>
-                    </select>
-                </td>
-
-                <td><select class="form-control" name ="familia">
-                    <?php 
-                        $query = $this->db->get("familia");
-                        $valores = $query->result(); ?>
-                    <?php foreach ($valores as $valor): ?>
-                    	<?php if($valor->estado == 1): ?>
-                        	<option><?php echo $valor->nombre; ?></option>
-                        <?php endif; ?>
-                    <?php endforeach; ?>
-                    </select>
-                </td>
-
-
-                <td><select class="form-control" name ="departamento">
-                    <?php
-                        $query = $this->db->get("departamento");
-                        $valores = $query->result(); ?>
-                    <?php foreach ($valores as $valor): ?>
-                    	<?php if ($valor->estado == 1): ?>
-                        	<option><?php echo $valor->nombre; ?></option>
-                        <?php endif; ?>
-                    <?php endforeach; ?>
-                    </select>
-                </td>
-                
+                <?php echo form_open_multipart(base_url()."index.php/newProducts/genProduct")?>
+                <td><input class="form-control" value="<?php echo set_value('nombre','');?>" type="text" name="nombre"></td>    
                 <td>
-                    
-                    <button type="submit" class="btn btn-info btn-sm">
-  						Agregar
-					</button>
+                    <select class="form-control" name ="udm">
+                        <?php
+                            $this->db->where('estado','1');                         
+                            $query = $this->db->get("udm");
+                            $valores = $query->result(); 
+                                foreach ($valores as $valor)
+                                    echo '<option value="' . $valor->id_udm . '" ' . set_select('udm',$valor->id_udm,'TRUE') . '>' . $valor->nombre . '</option>';                 
+                        ?>
+                    </select>
+                </td>
+                <td>
+                    <select class="form-control" name ="familia">
+                        <?php 
+                            $this->db->where('estado','1');                         
+                            $query = $this->db->get("familia");
+                            $valores = $query->result(); 
+                                foreach ($valores as $valor)
+                                    echo '<option value="' . $valor->id_fam . '" ' . set_select('familia',$valor->id_fam,'TRUE') . '>' . $valor->nombre . '</option>';                   
+                        ?>
+                    </select>
+                </td>
+                <td>
+                    <select class="form-control" name ="departamento">
+                        <?php
+                            $this->db->where('estado','1');                         
+                            $query = $this->db->get("departamento");
+                            $valores = $query->result(); 
+                                foreach ($valores as $valor)
+                                    echo '<option value="' . $valor->id_depto . '" ' . set_select('departamento',$valor->id_depto,'TRUE') . '>' . $valor->nombre . '</option>';                 
+                        ?>
+                    </select>
+                </td>
+                <td>
+                    <button type="submit" class="btn btn-info btn-sm">Agregar</button>
                     <input type="reset" value="Cancelar" class="btn btn-danger btn-sm" action="" method="post" >
                 </td>
+                <?php echo form_close();?>
             </tr>
         </table>
-    </form>
     <form class="navbar-form navbar-left" role="search" action="<?php echo base_url();?>/index.php/productos/chargeProductos" method="post">
         <div class="form-group">
             <input type="text" class="form-control" placeholder="Producto" name="resources" id="resources">

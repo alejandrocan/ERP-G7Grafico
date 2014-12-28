@@ -27,65 +27,134 @@ class NewProducts extends CI_Controller {
 		$this->load->view('vwHeader', $data);
 		$this->load->view('/catalogos/vwAddMaterial');
 	}
-	public function genProduct() {
-		$this->load->model('getIds');
 
-		$productName = $this->input->post('nombre');
-		$productUdm = $this->input->post('udm');
-		$productfamilia = $this->input->post('familia');
-		$productDepto = $this->input->post('departamento');
-		$data['nombre'] = $productName;
-		$data['udm_produc'] = $this->getIds->getUdmId($productUdm);
-		$data['familia_produc'] = $this->getIds->getFamiliaId($productfamilia);
-		$data['depto_produc'] = $this->getIds->getDeptoId($productDepto);
-		$data['estado'] = 0;
-		$this->db->insert('producto', $data);
-		$idproduct = $this->db->get_where('producto', array('nombre' => $productName));
-		$idproduct = $idproduct->result();
-		foreach ($idproduct as $reg) {
-			$id_produc = $reg->id_produc;
+
+
+	public function genProduct() {
+		$this->form_validation->set_rules('nombre', 'Nombre', 'required|max_length[50]|trim|callback_isUniqueNPr');
+		$this->form_validation->set_rules('udm', 'Unidad_de_Medida', 'required');
+		$this->form_validation->set_rules('familia', 'Familia', 'required');
+		$this->form_validation->set_rules('departamento', 'Departamento', 'required');
+
+		$this->form_validation->set_message('required', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El campo %s no puede estar vacío</div>');
+		$this->form_validation->set_message('max_length', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El campo %s no debe no puede contener más de %d caracteres</div>');
+		$this->form_validation->set_message('isUniqueNPr', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El valor del campo %s, ya se ha utilizado por otro usuario. Ingrese uno diferente.</div>');
+
+		if ($this->form_validation->run() == TRUE) 
+        {
+			$this->load->model('getIds');
+			$data['nombre'] = $this->input->post('nombre');
+			$data['udm_produc'] = $this->input->post('udm');
+			$data['familia_produc'] = $this->input->post('familia');
+			$data['depto_produc'] = $this->input->post('departamento');
+			$data['estado'] = 0;
+			$this->db->insert('producto', $data);
+			$idproduct = $this->db->get_where('producto', array('nombre' => $data['nombre']));
+			$idproduct = $idproduct->result();
+			foreach ($idproduct as $reg) {
+				$id_produc = $reg->id_produc;
+			}
+			header('Refresh:1;url="' . base_url() . '/index.php/NewProducts/addMateriales/'.$id_produc);
 		}
-		
-		
-		header('Refresh:1;url="' . base_url() . '/index.php/NewProducts/addMateriales/'.$id_produc);
+		else
+		{
+			if($this->session->userdata('tipo_usr') == FALSE || $this->session->userdata('tipo_usr') != 'Administrador')
+        	{
+            	redirect(base_url().'index.php/login2');
+        	}
+        	$data['user']=$this->session->userdata('user');
+        	$data['title'] = 'Sistema G7 Gráfico';
+			$this->load->view("vwHeader", $data);
+			$this->load->view('catalogos/vwProductos',null);
+			//header('Refresh:1;url="' . base_url() . '/index.php/catalogos/index/producto/registros/');
+		}
+	}
+
+	public function isUniqueNPr()
+	{
+		$nombre = $this->input->post("nombre");
+        $query = $this->db->get_where('producto', array(//making selection
+            'nombre' => $nombre
+        ));
+        $count = $query->num_rows(); //counting result from query
+        if ($count === 0)
+			return TRUE;
+        else
+        	return FALSE;
 	}
 	
 	public function loadMaterial() {
+		$this->form_validation->set_rules('material', 'Material/Producto', 'required|trim|callback_ifexist');
+
+		$this->form_validation->set_message('required', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>No ha ingresado ningún Producto/Material</div>');
+		$this->form_validation->set_message('ifexist', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>El Producto/Material ingresado no existe</div>');
+
 		$material = $this->input->post('material');
 		$id_produc = $this->input->post('idProducto');
-		 
-		$query = $this->db->get_where('material', array('nombre' => $material));
-		
-		if($query->num_rows() > 0){
-			$query = $query->result();
-			foreach ($query as $mat) {
-				$this->material = $mat->nombre;
-				
-				$this->udm = $mat->udm_material;
-				
+
+		if ($this->form_validation->run() == TRUE) 
+        {
+			$material = $this->input->post('material');
+			$id_produc = $this->input->post('idProducto');
+			$query = $this->db->get_where('material', array('nombre' => $material));
+			if($query->num_rows() > 0){
+				$query = $query->result();
+				foreach ($query as $mat) {
+					$this->material = $mat->nombre;
+					
+					$this->udm = $mat->udm_material;
+					
+				}
+				$query = $this->db->get_where('udm', array('id_udm' => $this->udm));
+				$query = $query->row();
+				$this->udm = $query->nombre;
+				$this->addMateriales($id_produc);
+			}else {
+				$query = $this->db->get_where('producto', array('nombre' => $material));
+				$query = $query->result();
+				foreach ($query as $mat) {
+					$this->material = $mat->nombre;
+					
+					$this->udm = $mat->udm_produc;
+					
+				}
+				$query = $this->db->get_where('udm', array('id_udm' => $this->udm));
+				$query = $query->row();
+				$this->udm = $query->nombre;
+				$this->addMateriales($id_produc);
 			}
-			$query = $this->db->get_where('udm', array('id_udm' => $this->udm));
-			$query = $query->row();
-			$this->udm = $query->nombre;
-			$this->addMateriales($id_produc);
-		}else {
-			$query = $this->db->get_where('producto', array('nombre' => $material));
-			$query = $query->result();
-			foreach ($query as $mat) {
-				$this->material = $mat->nombre;
-				
-				$this->udm = $mat->udm_produc;
-				
-			}
-			$query = $this->db->get_where('udm', array('id_udm' => $this->udm));
-			$query = $query->row();
-			$this->udm = $query->nombre;
-			$this->addMateriales($id_produc);
+		}
+		else
+		{
+			header('Refresh:1;url="' . base_url() . '/index.php/NewProducts/addMateriales/'.$id_produc);
 		}
 		
 		
 		#header('Refresh:2;url="' . base_url() . '/index.php/NewProducts/addMateriales/'.$id_produc);
 	}
+
+	public function ifexist()
+	{
+		$nombre = $this->input->post("material");
+        $query = $this->db->get_where('producto', array(//making selection
+            'nombre' => $nombre
+        ));
+        $count = $query->num_rows(); //counting result from query
+        if ($count === 0)
+		{
+	        $query = $this->db->get_where('material', array(//making selection
+	            'nombre' => $nombre
+	        ));
+	        $count = $query->num_rows(); //counting result from query
+	        if ($count === 0)
+				return FALSE;
+	        else
+	        	return TRUE;
+		}
+        else
+        	return TRUE;
+	}
+
 	public function deleteMaterial($idm, $idp) {
 		$this->db->delete('producto_material', array('id_elemento' => $idm, 'id_producto' => $idp));
 		$this->addMateriales($idp);
