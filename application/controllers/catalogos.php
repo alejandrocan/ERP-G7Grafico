@@ -880,8 +880,8 @@ class Catalogos extends CI_Controller {
 		$this->form_validation->set_rules('Proveedor', 'Proveedor', 'required');
 		$this->form_validation->set_rules('Presentacion', 'Presentacion', 'required');
 		$this->form_validation->set_rules('clave', 'Clave', 'required|trim|max_length[100]');
-		$this->form_validation->set_rules('smax', 'Stock_Maxima', 'trim|integer|max_length[5]');
-		$this->form_validation->set_rules('smin', 'Stock_Minima', 'trim|integer|max_length[6]');
+		$this->form_validation->set_rules('smax', 'Stock_Maxima', 'trim|numeric|max_length[5]');
+		$this->form_validation->set_rules('smin', 'Stock_Minima', 'trim|numeric|max_length[6]');
 		$this->form_validation->set_rules('factor_redimiento', 'Factor_Redimiento', 'required|trim|numeric|max_length[7]');
 		$this->form_validation->set_rules('cantidad', 'Cantidad', 'required|trim|integer|max_length[7]');
 		$this->form_validation->set_rules('ultimo_costo', 'Ultimo_Costo', 'required|trim|numeric|max_length[10]');
