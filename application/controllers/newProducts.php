@@ -47,6 +47,7 @@ class NewProducts extends CI_Controller {
 			$data['udm_produc'] = $this->input->post('udm');
 			$data['familia_produc'] = $this->input->post('familia');
 			$data['depto_produc'] = $this->input->post('departamento');
+			$data['tiempo_elaboracion'] = $this->input->post('tiempo');
 			$data['estado'] = 0;
 			$this->db->insert('producto', $data);
 			$idproduct = $this->db->get_where('producto', array('nombre' => $data['nombre']));

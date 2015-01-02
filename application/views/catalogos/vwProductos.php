@@ -10,6 +10,7 @@
                 <th>Unidad_de_medida</th>
                 <th>Familia</th>
                 <th>Departamento</th>
+                <th>Tiempo de elaboración</th>
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -48,6 +49,9 @@
                                     echo '<option value="' . $valor->id_depto . '" ' . set_select('departamento',$valor->id_depto,'TRUE') . '>' . $valor->nombre . '</option>';                 
                         ?>
                     </select>
+                </td>
+                <td>
+                    <input type="text" name="tiempo" class="form-control">
                 </td>
                 <td>
                     <button type="submit" class="btn btn-info btn-sm">Agregar</button>
