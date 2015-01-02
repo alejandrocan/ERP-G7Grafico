@@ -35,10 +35,13 @@ class NewProducts extends CI_Controller {
 		$this->form_validation->set_rules('udm', 'Unidad_de_Medida', 'required');
 		$this->form_validation->set_rules('familia', 'Familia', 'required');
 		$this->form_validation->set_rules('departamento', 'Departamento', 'required');
+		$this->form_validation->set_rules('tiempo', 'Tiempo de Elaboración', 'required|trim|exact_length[8]|callback_FormatoTiempo');
 
 		$this->form_validation->set_message('required', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El campo %s no puede estar vacío</div>');
 		$this->form_validation->set_message('max_length', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El campo %s no debe no puede contener más de %d caracteres</div>');
-		$this->form_validation->set_message('isUniqueNPr', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El valor del campo %s, ya se ha utilizado por otro usuario. Ingrese uno diferente.</div>');
+		$this->form_validation->set_message('isUniqueNPr', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El valor del campo %s, ya se ha utilizado por otro Producto. Ingrese uno diferente.</div>');
+		$this->form_validation->set_message('FormatoTiempo', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El campo %s debe tener el formato 24:59:59 -> Horas:Minutos:Segundos (HH:MM:SS) Valores máximos y mínimos posibles: 99:59:59, 00:00:00</div>');
+		$this->form_validation->set_message('exact_length', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El campo %s debe tener el formato 24:59:59 -> Horas:Minutos:Segundos (HH:MM:SS) Valores máximos y mínimos posibles: 99:59:59, 00:00:00</div>');
 
 		if ($this->form_validation->run() == TRUE) 
         {
@@ -69,6 +72,35 @@ class NewProducts extends CI_Controller {
 			$this->load->view('catalogos/vwProductos',null);
 			//header('Refresh:1;url="' . base_url() . '/index.php/catalogos/index/producto/registros/');
 		}
+	}
+
+	public function FormatoTiempo()
+	{
+		$tiempo = $this->input->post('tiempo');
+		for($i=0;$i<strlen($tiempo);$i++)
+		{
+			if($i==2||$i==5)
+			{
+				if(!$tiempo[$i]==":")
+					return FALSE;
+			}
+			else
+			{
+				if(!is_numeric($tiempo[$i]))
+					return FALSE;
+				else
+				{
+					if($i==4||$i==7)
+					{
+						$numero = substr($tiempo, $i-1,$i);
+						if($numero>59)
+							return FALSE;
+					}
+				}
+
+			}
+		}
+		return TRUE;
 	}
 
 	public function isUniqueNPr()

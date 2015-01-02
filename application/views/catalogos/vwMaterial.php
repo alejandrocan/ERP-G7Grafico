@@ -18,7 +18,6 @@
                 <th>Factor_de_rendimiento</th>
                 <th>Cantidad</th>
                 <th>Ultimo_costo</th>
-                <th>Tiempo_de_elaboracion</th>
                 <th>Orden_de_elaboracion</th>
                 <th>Acciones</th>
             </tr>
@@ -96,7 +95,6 @@
                 <td><input class="form-control" value="<?php if(@$factor){echo $factor;}else{echo set_value('Factor_Rendimiento','');}?>" type="text" name="factor_redimiento"></td>
                 <td><input class="form-control" value="<?php if(@$cantidad){echo $cantidad;}else{echo set_value('Cantidad','');}?>" type="text" name="cantidad"></td>
                 <td><input class="form-control" value="<?php if(@$costo){echo $costo;}else{echo set_value('Ultimo_Costo','');}?>" type="text" name="ultimo_costo"></td>
-                <td><input class="form-control" value="<?php if(@$tiempo){echo $tiempo;}else{echo set_value('Tiempo_Elaboracion','');}?>" type="text" name="tiempo_elaboracion"></td>
                 <td><input class="form-control" value="<?php if(@$orden_cronologico){echo $orden_cronologico;}else{echo set_value('Orden_Elaboracion','');}?>" type="text" name="orden_cronologico"></td>
                 <td>
                     <input type="submit" value="Guardar" class="btn btn-info btn-xs">
@@ -129,7 +127,6 @@
                 <th>Fecha_cotizacion</th>
                 <th>Fecha_ultima_edicion</th>
                 <th>Usuario_que_editó</th>
-                <th>Tiempo_de_elaboracion</th>
                 <th>Orden_de_elaboracion</th>
                 <th>Acciones</th>
             </tr>
@@ -205,7 +202,6 @@
                             }
                         ?>
                         <td id="user_edit<?php echo $registro->id_material;?>"><?php echo $v->nombre; ?></td>
-                        <td id="tiempo<?php echo $registro->id_material;?>"><?php echo $registro->tiempo_elaboracion; ?></td>
                         <td id="<?php echo $registro->id_material;?>"><?php echo $registro->orden_cronologico; ?></td>                           
                         <input  class="hidden" name="orden" value="<?php echo $registro->orden_cronologico;?>">
                         

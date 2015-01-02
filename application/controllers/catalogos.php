@@ -461,10 +461,10 @@ class Catalogos extends CI_Controller {
 	public function updatePresentacion($tabla){
 		$this->form_validation->set_rules('nombre', 'Nombre', 'required|trim|max_length[50]|callback_isUniqueNPreE');
 		$this->form_validation->set_rules('udm_pres', 'UDM', 'required');
-		$this->form_validation->set_rules('contenido', 'Contenido', 'required|trim|max_length[4]|integer');
+		$this->form_validation->set_rules('contenido', 'Contenido', 'required|trim|max_length[4]|numeric');
 		$this->form_validation->set_message('required', '<div class="container alert alert-info alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Modificar. El campo %s no debe estar vacío</div>');
 		$this->form_validation->set_message('max_length', '<div class="container alert alert-info alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Modificar. El campo %s no debe ser mayor a %d carácteres</div>');
-		$this->form_validation->set_message('integer', '<div class="container alert alert-info alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Modificar. El campo %s debe contener únicamente números enteros</div>');
+		$this->form_validation->set_message('numeric', '<div class="container alert alert-info alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Modificar. El campo %s debe contener únicamente números enteros</div>');
 		$this->form_validation->set_message('isUniqueNPreE', '<div class="container alert alert-info alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Modificar. El campo %s ya ha sido usado en otra Presentación. Ingrese una diferente.</div>');
 		if ($this->form_validation->run() == TRUE) 
         {
@@ -660,10 +660,10 @@ class Catalogos extends CI_Controller {
 	public function insertPresentacion($tabla) {
 		$this->form_validation->set_rules('Nombre', 'Nombre', 'required|trim|max_length[50]|callback_isUniqueNPre[' . $this->input->post('Nombre') . ']');
 		$this->form_validation->set_rules('UDM', 'UDM', 'required');
-		$this->form_validation->set_rules('Contenido', 'Contenido', 'required|trim|max_length[4]|integer');
+		$this->form_validation->set_rules('Contenido', 'Contenido', 'required|trim|max_length[4]|numeric');
 		$this->form_validation->set_message('required', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El campo %s no debe estar vacío</div>');
 		$this->form_validation->set_message('max_length', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El campo %s no debe ser mayor a %d carácteres</div>');
-		$this->form_validation->set_message('integer', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El campo %s debe contener únicamente números enteros</div>');
+		$this->form_validation->set_message('numeric', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El campo %s debe contener una expresion numérica. Ej. 1, 1.8, 4.98</div>');
 		$this->form_validation->set_message('isUniqueNPre', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El campo %s ya ha sido usado en otra Presentación. Ingrese una diferente.</div>');
 
 		if ($this->form_validation->run() == TRUE) 
@@ -885,7 +885,6 @@ class Catalogos extends CI_Controller {
 		$this->form_validation->set_rules('factor_redimiento', 'Factor_Redimiento', 'required|trim|numeric|max_length[7]');
 		$this->form_validation->set_rules('cantidad', 'Cantidad', 'required|trim|integer|max_length[7]');
 		$this->form_validation->set_rules('ultimo_costo', 'Ultimo_Costo', 'required|trim|numeric|max_length[10]');
-		$this->form_validation->set_rules('tiempo_elaboracion', 'Tiempo_Elaboracion', 'trim|exact_length[8]|callback_FormatoTiempo');
 		$this->form_validation->set_rules('orden_cronologico', 'Orden_Elaboracion', 'trim|integer|max_length[5]');
 
 		$this->form_validation->set_message('required', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El campo %s no puede estar vacío</div>');
@@ -895,7 +894,6 @@ class Catalogos extends CI_Controller {
         $this->form_validation->set_message('espacio', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El campo Nombre no debe contener espacios en blanco</div>');
         $this->form_validation->set_message('integer', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El campo %s debe contener sólo números</div>');
         $this->form_validation->set_message('numeric', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El campo %s no es un número válido. Ej: 1, 1.6, 8.98</div>');
-        $this->form_validation->set_message('FormatoTiempo', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El campo %s no tiene el formato correcto. Ej: 12:59:59 (Horas:Minutos:Segundos)</div>');
 
         if ($this->form_validation->run() == TRUE) 
         {
@@ -914,7 +912,6 @@ class Catalogos extends CI_Controller {
 			$datos['fecha_cotiza'] = mdate($datestring,$time);
 			$datos['ultima_edicion'] = mdate($datestring,$time);
 			$datos['usr_edicion'] = $this->session->userdata('id_usr');
-			$datos['tiempo_elaboracion'] = $this->input->post("tiempo_elaboracion");
 			$datos['orden_cronologico'] = $this->input->post("orden_cronologico");
 			$datos['estado'] = 1;
 			$this->load->model('registros_model');
@@ -995,9 +992,8 @@ class Catalogos extends CI_Controller {
 		$this->form_validation->set_rules('smax', 'Stock_Maxima', 'trim|integer|max_length[5]');
 		$this->form_validation->set_rules('smin', 'Stock_Minima', 'trim|integer|max_length[6]');
 		$this->form_validation->set_rules('factor_redimiento', 'Factor_Redimiento', 'trim|numeric|max_length[7]');
-		$this->form_validation->set_rules('cantidad', 'Cantidad', 'required|trim|integer|max_length[7]');
+		$this->form_validation->set_rules('cantidad', 'Cantidad', 'required|trim|numeric|max_length[7]');
 		$this->form_validation->set_rules('ultimo_costo', 'Ultimo_Costo', 'required|trim|numeric|max_length[10]');
-		$this->form_validation->set_rules('tiempo_elaboracion', 'Tiempo_Elaboracion', 'trim|exact_length[8]|callback_FormatoTiempo');
 		$this->form_validation->set_rules('orden_cronologico', 'Orden_Elaboracion', 'trim|integer|max_length[5]');
 
 		$this->form_validation->set_message('required', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El campo %s no puede estar vacío</div>');
@@ -1007,7 +1003,7 @@ class Catalogos extends CI_Controller {
         $this->form_validation->set_message('espacio', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El campo Nombre no debe contener espacios en blanco</div>');
         $this->form_validation->set_message('integer', '<div class="container alert alert-info alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El campo %s debe contener sólo números</div>');
         $this->form_validation->set_message('numeric', '<div class="container alert alert-info alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El campo %s no es un número válido. Ej: 1, 1.6, 8.98</div>');
-        $this->form_validation->set_message('FormatoTiempo', '<div class="container alert alert-info alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El campo %s no tiene el formato correcto. Ej: 12:59:59 (Horas:Minutos:Segundos)</div>');
+    
 
         if ($this->form_validation->run() == TRUE) 
         {
@@ -1028,7 +1024,6 @@ class Catalogos extends CI_Controller {
 			$datos['fecha_cotiza'] = mdate($datestring,$time);
 			$datos['ultima_edicion'] = mdate($datestring,$time);
 			$datos['usr_edicion'] = $this->session->userdata('id_usr');
-			$datos['tiempo_elaboracion'] = $this->input->post("tiempo_elaboracion");
 			$datos['orden_cronologico'] = $this->input->post("orden_cronologico");
 			$datos['estado'] = 1;
 
@@ -1127,7 +1122,6 @@ class Catalogos extends CI_Controller {
 		$this->form_validation->set_message('noVacio', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El campo %s no puede estar vacío</div>');
 		$this->form_validation->set_message('notZero', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El campo %s no puede ser Cero (0) o menor a 0</div>');
 		$this->form_validation->set_message('numeric', '<div class="container alert alert-warning alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button>Problemas al Agregar. El campo %s debe contener una catidad numérica</div>');
-
         if ($this->form_validation->run() == TRUE) 
         {
 			

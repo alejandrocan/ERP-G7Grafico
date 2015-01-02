@@ -51,7 +51,7 @@
                     </select>
                 </td>
                 <td>
-                    <input type="text" name="tiempo" class="form-control">
+                    <input type="text" value="<?php echo set_value('tiempo','');?>" name="tiempo" class="form-control">
                 </td>
                 <td>
                     <button type="submit" class="btn btn-info btn-sm">Agregar</button>
