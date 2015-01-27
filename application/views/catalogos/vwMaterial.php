@@ -1,9 +1,9 @@
-<div class="container table-responsive">
+<div class="container">
         <h1>Material</h1>
 </div>
         <?=@$mensaje?>
         <span><?php echo validation_errors(); ?></span>
-    <div class="container table-responsive">
+    <div class="table-responsive">
         <h3>Agregar nuevo Material</h3>
         <table class="table table-bordered table-hover">
         <thead>
@@ -108,11 +108,12 @@
     <div class="container alert alert-danger alert-dimissable"><button type="button" class="close" data-dismiss="alert">&times; </button><?php echo @$error2;?></div>
 <?php }?>
 
-<div class="container table-responsive">
+<div class="table-responsive">
     <h3>Materiales disponibles</h3>
     <table class="table table-bordered table-hover table-responsive">
         <thead>
             <tr>
+                <th>Acciones</th>
             	<th>ID</th>
 	            <th>Nombre</th>
                 <th>Unidad_de_medida</th>
@@ -128,7 +129,6 @@
                 <th>Fecha_ultima_edicion</th>
                 <th>Usuario_que_editó</th>
                 <th>Orden_de_elaboracion</th>
-                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -147,6 +147,12 @@
                             echo '<tr class="danger">';
                             $estado = '<a class="btn btn-success btn-sm" href='. base_url() . 'index.php/catalogos/enabled/' . $catalogo . '/' . $registro->id_material . ' role="button">Habilitar</a>';                            
                         }?>
+                        <td>
+                            <?php echo '<a class="btn btn-info btn-sm" data-toggle= "modal" data-target="#' . $registro->id_material . '" role="button">Editar</a>';?>
+                            <input type="submit" value="Duplicar" class="btn btn-primary btn-sm" method="post" name="enviar"> 
+                            <?php echo $estado;?>
+                        </td>
+
                         <td id="id<?php echo $registro->id_material;?>"><?php echo $registro->id_material; ?></td>
                         <td id="nombre<?php echo $registro->id_material;?>"><?php echo $registro->nombre; ?></td>
                         <input  class="hidden" name="nombre" value="<?php echo $registro->nombre;?>">                                            
@@ -213,11 +219,7 @@
                         <input  class="hidden" name="costo" value="<?php echo $registro->ultimo_costo;?>">                                                                    
                         <input  class="hidden" name="tiempo" value="<?php echo $registro->tiempo_elaboracion;?>">                        
 
-                        <td>
-                            <?php echo '<a class="btn btn-info btn-sm" data-toggle= "modal" data-target="#' . $registro->id_material . '" role="button">Editar</a>';?>
-                            <input type="submit" value="Duplicar" class="btn btn-primary btn-sm" method="post" name="enviar"> 
-                            <?php echo $estado;?>
-                        </td>
+                        
                     </tr>
                 </form>
                     <?php echo '<div class="modal fade" id="'.$registro->id_material.'" tabindex="-1" aria-hidden="true">';?>

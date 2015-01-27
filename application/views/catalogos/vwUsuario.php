@@ -1,12 +1,12 @@
 <div class="container">
         <h1>USUARIO</h1>
     </div>
-    <div id="formulario_usuario">
+    <div class="container table-responsive" id="formulario_usuario">
         <?=@$error?>
         <?=@$mensaje?>
         <span><?php echo validation_errors(); ?></span>
         <h3>Agregar registro </h3>
-        <table class="table table-bordered table-hover">
+        <table class="table table-bordered table-hover table-responsive">
                 <thead>
                     <tr>
                         <th>Nombre</th>
@@ -79,9 +79,9 @@
     <?php }?>
 
 
-    <div class="">
+    <div class="container table-responsive">
         <h3>Registros</h3>
-        <table class="table table-bordered table-hover">
+        <table class="table table-bordered table-hover table-responsive">
             <thead>
                 <tr>
                     <th>ID</th>

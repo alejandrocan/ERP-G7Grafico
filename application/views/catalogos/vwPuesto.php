@@ -31,7 +31,7 @@
     <?php }?>
 
 <div class="container table-responsive">
-    <h3>Puestps disponibles</h3>
+    <h3>Puestos disponibles</h3>
     <table class="table table-bordered table-hover table-responsive">
         <thead>
             <tr>
